@@ -1,10 +1,9 @@
-import { ref } from "vue";
 import { ethers } from "ethers";
 
-export function useContract(contractAddress, abi) {
+function useContract(contractAddress, abi) {
   const contract = ref(null);
 
-  const initializeContract = async () => {
+  async function initializeContract() {
     if (
       typeof ethers === "undefined" ||
       typeof ethers.providers === "undefined"
@@ -17,6 +16,7 @@ export function useContract(contractAddress, abi) {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
+
         contract.value = new ethers.Contract(contractAddress, abi, signer);
       } catch (error) {
         console.error("Error connecting to contract:", error);
@@ -24,7 +24,9 @@ export function useContract(contractAddress, abi) {
     } else {
       console.error("Ethereum provider not found. Install MetaMask.");
     }
-  };
+  }
 
   return { contract, initializeContract };
 }
+
+export { useContract };
