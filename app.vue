@@ -3,16 +3,9 @@
     <Title>MemeLabs</Title>
     <Meta name="description" content="MemeLabs" />
   </Head>
-  <div class="page">
+  <NuxtLayout>
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
 
-<style lang="scss" scoped>
-.page {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+<style lang="scss" scoped></style>
