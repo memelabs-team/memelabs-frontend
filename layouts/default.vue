@@ -1,15 +1,6 @@
 <template>
   <NavigateBar />
-  <div class="page">
-    <slot />
-  </div>
+  <slot />
 </template>
 
-<style lang="scss" scoped>
-.page {
-  display: flex;
-  justify-content: center;
-  padding: 20px 40px;
-  width: 100vw;
-}
-</style>
+<style lang="scss" scoped></style>
