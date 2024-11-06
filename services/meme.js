@@ -12,7 +12,8 @@ async function fetchConnectWallet() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
 
     contract = await initializeContract();
-    console.log("Data Wallet ", contract);
+
+    return contract;
   } catch (error) {
     console.error("Error connecting wallet:", error);
   }
