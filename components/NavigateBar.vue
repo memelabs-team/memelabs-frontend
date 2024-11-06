@@ -54,7 +54,7 @@ const items = ref([
   {
     label: "Meme Vote",
     command: () => {
-      navigateTo("/vote");
+      navigateTo("/meme-vote");
     },
   },
   {
