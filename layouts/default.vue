@@ -9,7 +9,7 @@
 .page {
   display: flex;
   justify-content: center;
-  flex-direction: column;
   padding: 20px 40px;
+  width: 100vw;
 }
 </style>

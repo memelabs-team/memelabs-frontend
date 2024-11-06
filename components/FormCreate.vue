@@ -1,24 +1,13 @@
 <template>
   <div class="form-content">
+    <!-- <div class="upload-container">
+      <ImageUploader />
+    </div> -->
     <div class="field">
       <label class="input-text">
-        Username <span class="text-danger">*</span>
+        Token Name <span class="text-danger">*</span>
       </label>
-      <InputText v-model="memeData.name" placeholder="Enter Username" />
-    </div>
-
-    <div class="field">
-      <label class="input-text">
-        Supply <span class="text-danger">*</span>
-      </label>
-      <InputText v-model="memeData.supply" />
-    </div>
-
-    <div class="field">
-      <label class="input-text">
-        Logo <span class="text-danger">*</span>
-      </label>
-      <InputText v-model="memeData.logo" />
+      <InputText v-model="memeData.name" />
     </div>
 
     <div class="field">
@@ -32,12 +21,12 @@
       <label class="input-text">
         Meme Story <span class="text-danger">*</span>
       </label>
-      <Textarea v-model="memeData.memeStory" rows="5" cols="30" />
+      <Textarea v-model="memeData.memeStory" rows="4" cols="30" />
     </div>
 
     <div class="field">
       <label class="input-text">
-        Token <span class="text-danger">*</span>
+        Raised Token <span class="text-danger">*</span>
       </label>
       <div class="token-selector">
         <Select
@@ -55,7 +44,6 @@
                 :alt="slotProps.value.value"
                 :src="slotProps.value.logo"
                 class="logo"
-                style="width: 18px"
               />
               <div>{{ slotProps.value.name }}</div>
             </div>
@@ -66,9 +54,28 @@
 
     <div class="field">
       <label class="input-text">
+        Logo <span class="text-danger">*</span>
+      </label>
+      <InputText v-model="memeData.logo" />
+    </div>
+
+    <div class="field">
+      <label class="input-text">
         Raised Amount <span class="text-optional">(Optional)</span>
       </label>
-      <InputText v-model="value" />
+      <div class="amount-group">
+        <Button class="amount-item" label="$2500" />
+        <Button class="amount-item" label="$5000" />
+        <Button class="amount-item" label="$10000" />
+        <InputText
+          class="amount-item"
+          v-model="memeData.memeRequirement.amount"
+          placeholder="Custom"
+        />
+      </div>
+      <Message class="mt-2" size="small" severity="secondary" variant="simple">
+        The minimum amount needs to be greater than 1,000,000
+      </Message>
     </div>
 
     <div class="field">
@@ -95,14 +102,13 @@
       <InputText v-model="memeData.socialChannel.telegram" />
     </div>
 
-    <div class="field">
+    <!-- <div class="field">
       <label class="input-text">
         Amount
         <span class="text-optional">(Optional)</span>
       </label>
       <InputNumber v-model="memeData.memeRequirement.amount" />
-    </div>
-
+    </div> 
     <div class="field">
       <label class="input-text">
         Platform Fee Rate
@@ -149,11 +155,26 @@
         <span class="text-optional">(Optional)</span>
       </label>
       <InputNumber v-model="memeData.memeRequirement.communityTreasuryRate" />
+    </div>-->
+
+    <div class="field">
+      <label class="input-text">
+        Max Supply <span class="text-danger">*</span>
+      </label>
+      <InputText v-model="memeData.supply" />
+      <Message class="mt-2" size="small" severity="secondary" variant="simple">
+        The minimum amount needs to be greater than 1,000,000
+      </Message>
     </div>
 
     <div class="button-group">
-      <Button label="Create Meme" rounded @click="handleClickCreate" />
-      <Button label="Get Data" rounded @click="handleClickGetData" />
+      <Button
+        class="mt-4 w-full"
+        label="Create"
+        rounded
+        @click="handleClickCreate"
+      />
+      <!-- <Button label="Get Data" rounded @click="handleClickGetData" /> -->
     </div>
   </div>
 </template>
@@ -169,7 +190,7 @@ const memeData = ref({
   socialChannel: { X: "", website: "", telegram: "" },
   memeRequirement: {
     token: "",
-    amount: 0,
+    amount: null,
     platformFeeRate: 0,
     communityDropRate: 0,
     liquidityRate: 0,
@@ -214,15 +235,20 @@ function handleClickGetData() {
 .field {
   display: flex;
   flex-direction: column;
-  margin: 8px 0;
+  margin: 8px 0 20px 0;
 }
 
 .input-text {
   margin-bottom: 8px;
+  font-weight: 700;
 }
 
 .text-danger {
   //color: red;
+}
+
+.text-optional {
+  color: #b7b7b7;
 }
 
 .token-selector {
@@ -232,11 +258,13 @@ function handleClickGetData() {
 
 .option-item {
   display: flex;
-  flex-direction: row;
+
+  gap: 8px;
 }
 
 .logo {
   margin-right: 8px;
+  width: 25px;
 }
 
 .form-content {
@@ -250,5 +278,22 @@ function handleClickGetData() {
   justify-content: center;
   margin-top: 16px;
   gap: 10px;
+}
+
+:deep(.p-inputtext),
+:deep(.p-inputnumber),
+:deep(.p-textarea),
+:deep(.p-select) {
+  border-radius: 10px;
+}
+
+.amount-group {
+  display: flex;
+  gap: 12px;
+}
+
+.amount-item {
+  width: 25%;
+  border-radius: 10px;
 }
 </style>
