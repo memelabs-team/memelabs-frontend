@@ -2,33 +2,27 @@
   <div class="detail-content">
     <div class="left-content">
       <div class="image-container">
-        <img class="image-item" :src="memeData.image" alt="meme-image" />
+        <img class="image-item" :src="memeData.logo" alt="meme-image" />
       </div>
-      <div class="vote-display">
-        <div class="vote-detail">
-          <div class="result-text">
-            <span class="result-label">Result (Yes) :</span>
-            <span class="result-value">{{ voteAmount }} / 100</span>
+      <div class="vote-container">
+        <div class="vote-display">
+          <div class="vote-detail">
+            <div class="result-text">
+              <span class="result-label">Result (Yes) :</span>
+              <span class="result-value">{{ voteAmount }} / 100</span>
+            </div>
+            <div class="day-left">
+              <span class="remain-date">{{ remainDays }}</span>
+              Days Left
+            </div>
           </div>
-          <div class="day-left">
-            <span class="remain-date">{{ remainDays }}</span>
-            Days Left
-          </div>
+          <ProgressBar :value="voteAmount" :showValue="false" />
         </div>
-        <ProgressBar :value="voteAmount" :showValue="false" />
-      </div>
-      <div class="vote-label">Vote</div>
-      <div class="button-group">
-        <Button
-          class="vote-button"
-          @click="voteYes"
-          :disabled="votedYes || voteAmount >= memeData.memeRequirement.amount"
-        >
-          Yes
-        </Button>
-        <Button class="vote-button" @click="voteNo" :disabled="votedNo">
-          No
-        </Button>
+        <div class="vote-label">Vote</div>
+        <div class="button-group">
+          <Button class="vote-button" @click="voteYes"> Yes </Button>
+          <Button class="vote-button" @click="voteNo"> No </Button>
+        </div>
       </div>
     </div>
     <div class="right-content">
@@ -107,7 +101,7 @@ const memeData = ref({
   name: "name",
   supply: 90000,
   memeStory: "sdffhrslkjdgihoijfohdskfhdfjk",
-  logo: "",
+  logo: "/images/image-placeholder.svg",
   socialChannel: { X: "", website: "", telegram: "" },
   memeRequirement: {
     token: "asdfgjhkjljhtgfdfghjkl",
@@ -162,7 +156,7 @@ function handleClickGetData() {
 .detail-content {
   border: 1px solid #ebebeb;
   border-radius: 20px;
-  padding: 30px;
+  padding: 60px;
   display: grid;
   grid-template-columns: 30% 70%;
   gap: 50px;
@@ -212,20 +206,24 @@ function handleClickGetData() {
 }
 
 .left-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .image-container {
-  width: 290px;
-  height: 290px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .image-item {
-  width: 100%;
-  height: 100%;
+  width: 290px;
+  height: 290px;
   border-radius: 50%;
-  background: url("https://placehold.co/290x290");
 }
 
 .vote-button {
@@ -237,7 +235,9 @@ function handleClickGetData() {
 }
 
 .vote-label {
-  margin-top: 16px;
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 14px;
 }
 
 .result-text {
@@ -246,5 +246,11 @@ function handleClickGetData() {
 
 .day-left {
   font-size: 12px;
+}
+
+.right-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 </style>

@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="page-header">Vote Detail</h1>
-
+    <div class="page-header">Vote Detail</div>
     <VoteDetail @create="handleClickCreate" @getData="handleClickData" />
   </div>
 </template>
@@ -27,15 +26,14 @@ function handleClickData() {
 .container {
   display: flex;
   flex-direction: column;
-  //align-items: center;
   margin-bottom: 10px;
   width: 100%;
 }
 
 .page-header {
-  font-size: 40px;
+  font-size: 48px;
   text-align: center;
-  font-weight: 500;
-  margin-bottom: 40px;
+  font-weight: 600;
+  margin: 36px;
 }
 </style>
