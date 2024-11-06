@@ -66,7 +66,7 @@ const items = ref([
   {
     label: "Board",
     command: () => {
-      navigateTo("/board");
+      navigateTo("/");
     },
   },
   {
