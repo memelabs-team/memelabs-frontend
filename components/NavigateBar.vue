@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { fetchConnectWallet } from "../services/meme.js";
 
 const items = ref([
   {
@@ -70,7 +70,7 @@ function handleClickCreate() {
 }
 
 function handleClickConnectWallet() {
-  // Implement wallet connection logic here
+  fetchConnectWallet();
 }
 </script>
 
