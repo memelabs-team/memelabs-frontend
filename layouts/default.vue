@@ -1,4 +1,5 @@
 <template>
+  <NavigateBar />
   <div class="page">
     <slot />
   </div>
