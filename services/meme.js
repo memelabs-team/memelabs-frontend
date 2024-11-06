@@ -1,8 +1,4 @@
-import { useDataStore } from "~/stores/data";
-
 const { initializeContract } = useContract();
-
-const dataStore = useDataStore();
 
 let contract;
 
@@ -17,7 +13,7 @@ async function fetchConnectWallet() {
 
     contract = await initializeContract();
 
-    dataStore.getUserContract(contract);
+    return contract;
   } catch (error) {
     console.error("Error connecting wallet:", error);
   }
