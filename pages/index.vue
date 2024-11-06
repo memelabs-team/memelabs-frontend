@@ -1,11 +1,5 @@
 <template>
-  <div class="container">
-    <h1>Create Meme</h1>
-    <Button label="Connect Wallet" @click="handleClickConnectWallet" />
-  </div>
-  <div>
-    <FormCreate @create="handleClickCreate" @getData="handleClickData" />
-  </div>
+  <div class="container">index</div>
 </template>
 
 <script setup>
