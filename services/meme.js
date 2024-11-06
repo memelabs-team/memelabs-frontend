@@ -1,4 +1,8 @@
+import { useDataStore } from "~/stores/data";
+
 const { initializeContract } = useContract();
+
+const dataStore = useDataStore();
 
 let contract;
 
@@ -12,6 +16,8 @@ async function fetchConnectWallet() {
     await window.ethereum.request({ method: "eth_requestAccounts" });
 
     contract = await initializeContract();
+
+    dataStore.getUserContract(contract);
   } catch (error) {
     console.error("Error connecting wallet:", error);
   }
