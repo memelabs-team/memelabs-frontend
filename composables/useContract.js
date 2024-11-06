@@ -21,7 +21,7 @@ function useContract() {
         const signer = provider.getSigner();
 
         contract.value = new ethers.Contract(contractAddress, abi, signer);
-        console.log(contract.value);
+        console.log("Data Wallet ", contract.value);
         return contract.value;
       } catch (error) {
         console.error("Error connecting to contract:", error);

@@ -51,7 +51,6 @@ const tokenData = [
   display: flex;
   background-color: #ffffff;
   border-radius: 9999px;
-  padding: 4px;
   height: 60px;
 }
 
