@@ -1,5 +1,9 @@
 <template>
-  <div class="container">index</div>
+  <div class="page-container">
+    <SectionHeader />
+    <SectionMemeVote />
+    <SectionMemeraising />
+  </div>
 </template>
 
 <script setup>
@@ -28,11 +32,7 @@ function handleClickData() {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.page-container {
   margin-bottom: 10px;
 }
 </style>

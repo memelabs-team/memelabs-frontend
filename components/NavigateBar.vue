@@ -3,7 +3,7 @@
     <Menubar :model="items">
       <template #start>
         <IconMemeLabIcon />
-        <span class="home-title">MemeLabs</span>
+        <span class="home-title" @click="handleClickHome">MemeLabs</span>
       </template>
       <template #item="{ item, props, hasSubmenu, root }">
         <a v-ripple class="flex items-center" v-bind="props.action">
@@ -72,6 +72,10 @@ function handleClickCreate() {
 function handleClickConnectWallet() {
   fetchConnectWallet();
 }
+
+function handleClickHome() {
+  navigateTo("/");
+}
 </script>
 
 <style lang="scss" scoped>
@@ -79,6 +83,7 @@ function handleClickConnectWallet() {
   font-size: 20px;
   font-weight: bold;
   margin-left: 8px;
+  cursor: pointer;
 }
 
 .nav-button {
