@@ -71,7 +71,26 @@ async function fetchSendTransaction(requestBody) {
 
     await response.wait();
 
-    alert("Transaction sent successfully!");
+    alert("Transaction sent successfully!", response);
+  } catch (error) {
+    console.error("Error sending transaction:", error);
+  }
+}
+
+async function fetchGetMemeProposal(requestBody) {
+  if (!checkWalletConnection()) {
+    alert("Please connect your wallet first.");
+    return;
+  }
+
+  try {
+    const response = await contract.getMemeProposalsByStatus(
+      requestBody.status
+    );
+
+    await response.wait();
+
+    alert("Transaction sent successfully!", response);
   } catch (error) {
     console.error("Error sending transaction:", error);
   }
@@ -99,4 +118,5 @@ export {
   fetchSendTransaction,
   fetchGetTransaction,
   checkWalletConnection,
+  fetchGetMemeProposal,
 };
