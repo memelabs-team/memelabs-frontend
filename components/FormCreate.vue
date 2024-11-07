@@ -108,6 +108,36 @@
     </div>
 
     <div class="field">
+      <label class="input-text"> Tokenmomic (100 %) </label>
+      <div class="tokenmomin-box">
+        <div class="token-field">
+          <label class="input-text"> Platform fee </label>
+          <InputText v-model="memeData.socialChannel.website" />
+        </div>
+        <div class="token-field">
+          <label class="input-text"> Platform fee </label>
+          <InputText v-model="memeData.socialChannel.website" />
+        </div>
+        <div class="token-field">
+          <label class="input-text"> Platform fee </label>
+          <InputText v-model="memeData.socialChannel.website" />
+        </div>
+        <div class="token-field">
+          <label class="input-text"> Platform fee </label>
+          <InputText v-model="memeData.socialChannel.website" />
+        </div>
+        <div class="token-field">
+          <label class="input-text"> Platform fee </label>
+          <InputText v-model="memeData.socialChannel.website" />
+        </div>
+        <div class="token-field">
+          <label class="input-text"> Platform fee </label>
+          <InputText v-model="memeData.socialChannel.website" />
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
       <label class="input-text">
         Website
         <span class="text-optional">(Optional)</span>
@@ -268,13 +298,25 @@ function handleClickAmount(amount) {
   margin: 8px 0 20px 0;
 }
 
+.token-field {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0 20px 0;
+}
+
 .input-text {
   margin-bottom: 8px;
   font-weight: 700;
 }
 
-.text-danger {
-  //color: red;
+.tokenmomin-box {
+  border-radius: 10px;
+  border: 1px solid #f6f6f6;
+  background: #fff;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 12px;
 }
 
 .text-optional {
