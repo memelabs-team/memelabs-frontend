@@ -1,6 +1,6 @@
 <template>
   <NavigateBar />
-  <div class="page-layout">
+  <div>
     <slot />
   </div>
 </template>
@@ -20,8 +20,4 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss" scoped>
-.page-layout {
-  height: 100vh;
-}
-</style>
+<style lang="scss" scoped></style>
