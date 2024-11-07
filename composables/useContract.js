@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 import abi from "../public/data/abi";
-const contractAddress = "0x4337f1174e0f7A09a356BfA3fC75582cFBD35259";
+const contractAddress = "0xf47f56A933eD6F9A7A195121d2c0aFCA845B1629";
 
 function useContract() {
   const contract = ref(null);
@@ -21,6 +21,8 @@ function useContract() {
         const signer = provider.getSigner();
 
         contract.value = new ethers.Contract(contractAddress, abi, signer);
+
+        console.log("Contract initialized:", contract.value);
         return contract.value;
       } catch (error) {
         console.error("Error connecting to contract:", error);

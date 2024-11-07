@@ -2,8 +2,10 @@
   <div class="card">
     <Menubar :model="items">
       <template #start>
-        <IconMemeLabIcon />
-        <span class="home-title" @click="handleClickHome">MemeLabs</span>
+        <div class="logo-box">
+          <IconMemeLabIcon />
+          <span class="home-title" @click="handleClickHome">MemeLabs</span>
+        </div>
       </template>
       <template #item="{ item, props, hasSubmenu, root }">
         <a v-ripple class="flex items-center" v-bind="props.action">
@@ -114,6 +116,12 @@ function handleClickHome() {
 </script>
 
 <style lang="scss" scoped>
+.logo-box {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .home-title {
   font-size: 20px;
   font-weight: bold;

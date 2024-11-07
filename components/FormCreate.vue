@@ -1,8 +1,11 @@
 <template>
   <div class="form-content">
-    <!-- <div class="upload-container">
-      <ImageUploader />
-    </div> -->
+    <div class="upload-container">
+      <FileUploaderImage
+        chooseFileLabel="Upload Image"
+        @selectImage="handleSelectImage"
+      />
+    </div>
     <div class="field">
       <label class="input-text">
         Token Name <span class="text-danger">*</span>
@@ -14,7 +17,7 @@
       <label class="input-text">
         Ticker Symbol <span class="text-danger">*</span>
       </label>
-      <InputText v-model="value" />
+      <InputText v-model="memeData.symbol" />
     </div>
 
     <div class="field">
@@ -52,27 +55,53 @@
       </div>
     </div>
 
-    <div class="field">
+    <!-- <div class="field">
       <label class="input-text">
         Logo <span class="text-danger">*</span>
       </label>
       <InputText v-model="memeData.logo" />
-    </div>
+    </div> -->
 
     <div class="field">
       <label class="input-text">
         Raised Amount <span class="text-optional">(Optional)</span>
       </label>
       <div class="amount-group">
-        <Button class="amount-item" label="$2500" />
-        <Button class="amount-item" label="$5000" />
-        <Button class="amount-item" label="$10000" />
+        <Button
+          class="amount-item"
+          :class="{ selected: selectedAmount === '2500' }"
+          label="$2500"
+          @click="handleClickAmount('2500')"
+        />
+        <Button
+          class="amount-item"
+          :class="{ selected: selectedAmount === '5000' }"
+          label="$5000"
+          @click="handleClickAmount('5000')"
+        />
+        <Button
+          class="amount-item"
+          :class="{ selected: selectedAmount === '10000' }"
+          label="$10000"
+          @click="handleClickAmount('10000')"
+        />
+
         <InputText
           class="amount-item"
           v-model="memeData.memeRequirement.amount"
           placeholder="Custom"
         />
       </div>
+      <Message class="mt-2" size="small" severity="secondary" variant="simple">
+        The minimum amount needs to be greater than 1,000,000
+      </Message>
+    </div>
+
+    <div class="field">
+      <label class="input-text">
+        Max Supply <span class="text-danger">*</span>
+      </label>
+      <InputText v-model="memeData.supply" />
       <Message class="mt-2" size="small" severity="secondary" variant="simple">
         The minimum amount needs to be greater than 1,000,000
       </Message>
@@ -157,20 +186,10 @@
       <InputNumber v-model="memeData.memeRequirement.communityTreasuryRate" />
     </div>-->
 
-    <div class="field">
-      <label class="input-text">
-        Max Supply <span class="text-danger">*</span>
-      </label>
-      <InputText v-model="memeData.supply" />
-      <Message class="mt-2" size="small" severity="secondary" variant="simple">
-        The minimum amount needs to be greater than 1,000,000
-      </Message>
-    </div>
-
     <div class="button-group">
       <Button
         class="mt-4 w-full"
-        label="Create"
+        label="Create Meme"
         rounded
         @click="handleClickCreate"
       />
@@ -184,29 +203,28 @@ const emits = defineEmits(["create", "getData"]);
 
 const memeData = ref({
   name: "",
-  supply: 0,
+  supply: null,
   memeStory: "",
   logo: "",
+  symbol: "",
   socialChannel: { X: "", website: "", telegram: "" },
   memeRequirement: {
     token: "",
     amount: null,
-    platformFeeRate: 0,
-    communityDropRate: 0,
-    liquidityRate: 0,
-    investorRate: 0,
-    ownerRate: 0,
-    communityTreasuryRate: 0,
+    platformFeeRate: 5,
+    communityDropRate: 10,
+    liquidityRate: 10,
+    investorRate: 10,
+    ownerRate: 10,
+    communityTreasuryRate: 50,
   },
 });
-
-const value = ref(null);
 
 const selectedToken = ref({
   name: "USDT",
   value: "usdt",
   logo: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/512/Tether-USDT-icon.png",
-  address: "0x4337f1174e0f7A09a356BfA3fC75582cFBD35259",
+  address: "0xb26463e35841898aCae40c1724D732f268F56349",
 });
 
 const tokenOptions = ref([
@@ -214,24 +232,36 @@ const tokenOptions = ref([
     name: "USDT",
     value: "usdt",
     logo: "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/512/Tether-USDT-icon.png",
-    address: "0x4337f1174e0f7A09a356BfA3fC75582cFBD35259",
+    address: "0xb26463e35841898aCae40c1724D732f268F56349",
   },
 ]);
 
+const selectedAmount = ref(2500);
+
 function handleClickCreate() {
-  console.log(memeData.value);
   memeData.value.memeRequirement.token = selectedToken.value.address;
+  memeData.value.memeRequirement.amount = selectedAmount.value;
+
+  console.log("emit create meme value:", memeData.value);
   //emits memeData
   emits("create", memeData.value);
 }
 
-function handleClickGetData() {
-  //gets memeData
-  emits("getData");
+function handleSelectImage(imageBase64) {
+  memeData.value.logo = imageBase64;
+}
+
+function handleClickAmount(amount) {
+  selectedAmount.value = amount;
 }
 </script>
 
 <style lang="scss" scoped>
+.upload-container {
+  display: flex;
+  justify-content: center;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -295,5 +325,14 @@ function handleClickGetData() {
 .amount-item {
   width: 25%;
   border-radius: 10px;
+  border-radius: 10px;
+  border: 1px solid #ebebeb;
+  background: #fff;
+  color: #000;
+
+  &.selected {
+    color: #fff;
+    background: #000;
+  }
 }
 </style>
