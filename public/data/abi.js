@@ -2,12 +2,7 @@ const abi = [
   {
     anonymous: false,
     inputs: [
-      {
-        indexed: true,
-        internalType: "address",
-        name: "user",
-        type: "address",
-      },
+      { indexed: true, internalType: "address", name: "user", type: "address" },
       {
         indexed: true,
         internalType: "uint256",
@@ -37,26 +32,14 @@ const abi = [
         components: [
           { internalType: "address", name: "token", type: "address" },
           { internalType: "uint256", name: "amount", type: "uint256" },
-          {
-            internalType: "uint256",
-            name: "platformFeeRate",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "platformFeeRate", type: "uint256" },
           {
             internalType: "uint256",
             name: "communityDropRate",
             type: "uint256",
           },
-          {
-            internalType: "uint256",
-            name: "liquidityRate",
-            type: "uint256",
-          },
-          {
-            internalType: "uint256",
-            name: "investorRate",
-            type: "uint256",
-          },
+          { internalType: "uint256", name: "liquidityRate", type: "uint256" },
+          { internalType: "uint256", name: "investorRate", type: "uint256" },
           { internalType: "uint256", name: "ownerRate", type: "uint256" },
           {
             internalType: "uint256",
@@ -98,11 +81,7 @@ const abi = [
           {
             components: [
               { internalType: "address", name: "token", type: "address" },
-              {
-                internalType: "uint256",
-                name: "amount",
-                type: "uint256",
-              },
+              { internalType: "uint256", name: "amount", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "platformFeeRate",
@@ -123,11 +102,7 @@ const abi = [
                 name: "investorRate",
                 type: "uint256",
               },
-              {
-                internalType: "uint256",
-                name: "ownerRate",
-                type: "uint256",
-              },
+              { internalType: "uint256", name: "ownerRate", type: "uint256" },
               {
                 internalType: "uint256",
                 name: "communityTreasuryRate",

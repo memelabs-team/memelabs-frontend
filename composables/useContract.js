@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 
 import abi from "../public/data/abi";
-const contractAddress = "0x4337f1174e0f7A09a356BfA3fC75582cFBD35259";
+const contractAddress = "0xf47f56A933eD6F9A7A195121d2c0aFCA845B1629";
 
 function useContract() {
   const contract = ref(null);
