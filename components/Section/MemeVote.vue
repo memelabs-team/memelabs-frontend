@@ -12,50 +12,79 @@
     </div>
     <Divider />
     <div class="meme-container">
+      <!-- Render MemeVoteCard components using filteredMemeProcess data -->
       <MemeVoteCard
-        v-for="(meme, index) in memeData"
+        v-for="(meme, index) in filteredMemeProcess"
         :key="index"
-        :title="meme.title"
-        :description="meme.description"
-        :mascotImage="meme.mascotImage"
-        :votes="meme.votes"
-        :daysLeft="meme.daysLeft"
+        :title="meme.name"
+        :description="meme.memeStory"
+        :mascotImage="meme.logo"
+        :votes="meme.voteYes"
+        :daysLeft="meme.countdown"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-const memeData = [
-  {
-    title: "Bark Bucks",
-    description:
-      "A coin to celebrate the ultimate loyal companion. Inspired by dog memes, it’s here to “fetch” you some laughs and profits!",
-    mascotImage: "https://via.placeholder.com/160",
-    votes: 25,
-    daysLeft: 12,
-  },
-  {
-    title: "Noodle Coin",
-    description:
-      "Noodle Coin is here to “stretch” your gains. Inspired by the endless noodle bowl memes, it’s a long and winding path to riches.",
-    mascotImage: "https://via.placeholder.com/160",
-    votes: 45,
-    daysLeft: 9,
-  },
-  {
-    title: "Astro Toast",
-    description:
-      "A toast to the stars! Launched for space lovers and breakfast enthusiasts, Astro Toast is for those who dare to dream…and eat carbs.",
-    mascotImage: "https://via.placeholder.com/160",
-    votes: 30,
-    daysLeft: 5,
-  },
-];
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import { defineProps } from "vue";
 
+// Declare memeProcess as a prop
+const props = defineProps({
+  memeProcess: {
+    type: Array,
+    required: true,
+  },
+});
+
+const countdowns = ref([]);
+
+// Function to navigate when View All button is clicked
 function handleClickViewAll() {
   navigateTo("/meme-vote");
 }
+
+// Function to calculate the countdown time
+function calculateCountdown(startVestingAt) {
+  const now = new Date();
+  const endDate = new Date(startVestingAt);
+  const timeDiff = endDate - now;
+
+  if (timeDiff <= 0) return "0d: 0h: 0m: 0s";
+
+  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+  return `${days}d: ${hours}h: ${minutes}m: ${seconds}s`;
+}
+
+// Update countdowns and filter out entries with "0d: 0h: 0m: 0s"
+function updateCountdowns() {
+  countdowns.value = props.memeProcess.map((meme) => ({
+    ...meme,
+    countdown: calculateCountdown(meme.startVestingAt),
+  }));
+}
+
+// Computed property to filter out memes with "0d: 0h: 0m: 0s"
+const filteredMemeProcess = computed(() =>
+  countdowns.value.filter((meme) => meme.countdown !== "0d: 0h: 0m: 0s")
+);
+
+// Set up the interval to update countdowns every second
+onMounted(() => {
+  updateCountdowns(); // Initial call
+  const interval = setInterval(updateCountdowns, 1000); // Update every second
+
+  onUnmounted(() => {
+    clearInterval(interval); // Clear the interval when the component is unmounted
+  });
+});
 </script>
 
 <style lang="scss" scoped>

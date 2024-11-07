@@ -11,8 +11,6 @@ async function getUserContract() {
   const response = await fetchConnectWallet();
 
   dataStore.contract.address = response.address;
-
-  console.log("dataStore contract", dataStore.contract);
 }
 
 function disconnectUser() {
@@ -34,7 +32,6 @@ async function createMeme(body) {
 }
 
 async function getMemeListByStatus(status) {
-  const dataStore = useDataStore();
   const response = await fetchGetTransaction(status);
   console.log("Get Meme List Response:", response);
   // Handle the response and display the meme list to the user

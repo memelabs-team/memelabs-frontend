@@ -5,6 +5,8 @@ export const useDataStore = defineStore("data", {
   state: () => {
     return {
       contract: {},
+      memeProcess: [],
+      memeMinted: [],
     };
   },
   actions,

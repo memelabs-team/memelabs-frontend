@@ -14,7 +14,11 @@ const dataStore = useDataStore();
 onMounted(async () => {
   try {
     await dataStore.getUserContract();
-    await fetchGetMemeProposal("IN-PROCESS");
+    dataStore.memeProcess = await fetchGetMemeProposal("IN-PROCESS");
+    dataStore.memeMinted = await fetchGetMemeProposal("MINTED");
+
+    console.log("Meme Process :", dataStore.memeProcess);
+    console.log("Meme Minted :", dataStore.memeMinted);
   } catch (error) {}
 });
 </script>

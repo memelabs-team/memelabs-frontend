@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 let contract;
 let isWalletConnected = false;
 
@@ -17,7 +19,6 @@ async function fetchConnectWallet() {
     if (accounts.length > 0) {
       isWalletConnected = true;
       contract = await initializeContract();
-      console.log("Contract initialized:", contract);
       return { contract, address: accounts[0] };
     } else {
       alert("No account found. Please connect your wallet.");
@@ -79,20 +80,41 @@ async function fetchSendTransaction(requestBody) {
 }
 
 async function fetchGetMemeProposal(status) {
-  console.log("Status :", status);
-
   try {
     const response = await contract.getMemeProposalsByStatus(status);
-
-    console.log("Get Meme is successfully!", response);
+    return response
+      .map((item) => ({
+        id: item[0].toNumber(),
+        name: item[2],
+        symbol: item[3],
+        supply: item[4].toNumber(),
+        memeStory: item[5],
+        logo: item[6],
+        status: item[7],
+        socialChannel: { X: item[8][0], website: item[8][1] },
+        memeRequirement: {
+          token: item[9][0],
+          amount: item[9][1].toString(),
+          platformFeeRate: item[9][2].toString(),
+          communityDropRate: item[9][3].toString(),
+          liquidityRate: item[9][4].toString(),
+        },
+        owner: item[1],
+        risedAmount: ethers.utils.formatEther(item[15]),
+        startVotingAt: new Date(item[10].toNumber() * 1000).toISOString(),
+        startInvestmentAt: new Date(item[11].toNumber() * 1000).toISOString(),
+        startVestingAt: new Date(item[12].toNumber() * 1000).toISOString(),
+        voteYes: item[13].toNumber(),
+        voteNo: item[14].toNumber(),
+      }))
+      .sort((a, b) => b.id - a.id); // Sorting in descending order by id
   } catch (error) {
     console.error("Get Meme is Error! :", error);
+    return null;
   }
 }
 
 async function fetchGetTransaction(status) {
-  // const contract = await fetchConnectWallet();
-
   if (!checkWalletConnection()) {
     alert("Please connect your wallet first.");
     return;
