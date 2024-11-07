@@ -1,7 +1,11 @@
 <template>
-  <div class="flex items-center justify-center space-x-4">
+  <div class="flex items-center space-x-4">
     <!-- Input Field -->
-    <InputText class="w-[470px] h-12 px-4" placeholder="Search Meme" />
+    <InputText
+      class="w-[470px] h-12 px-4"
+      style="border-radius: 25px"
+      placeholder="Search Meme"
+    />
 
     <!-- Icon -->
     <i
