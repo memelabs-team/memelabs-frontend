@@ -5,7 +5,6 @@ async function getUserContract() {
   const dataStore = useDataStore();
   const response = await fetchConnectWallet();
 
-  console.log("response :", response);
   dataStore.contract.address = response.address;
   dataStore.contract.createMemeProposal = response.createMemeProposal;
   dataStore.contract.getMemeProposalsByStatus =
@@ -23,7 +22,6 @@ function disconnectUser() {
   dataStore.contract.getMemeProposalsByStatus = null;
 
   console.log("Wallet disconnected.");
-  alert("Wallet disconnected.");
 }
 
 export default { getUserContract, disconnectUser };

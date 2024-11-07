@@ -26,7 +26,6 @@ import memeData from "../../public/data/meme-mockup.js";
 const memes = ref();
 
 onMounted(() => {
-  console.log(memeData);
   memes.value = memeData;
 });
 

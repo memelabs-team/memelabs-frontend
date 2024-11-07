@@ -215,6 +215,7 @@ export default {
           daysLeft: 2,
         },
       ],
+
       displayedMemeData: [], // Holds the memes currently displayed
       itemsToLoad: 6, // Number of items to load at a time
       initialLoad: 18, // Number of items to load initially
@@ -228,6 +229,7 @@ export default {
       window.addEventListener("scroll", this.handleScroll);
     }
   },
+
   destroyed() {
     if (process.client) {
       window.removeEventListener("scroll", this.handleScroll);
