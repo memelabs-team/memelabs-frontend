@@ -107,7 +107,7 @@
       </Message>
     </div>
 
-    <div class="field">
+    <!-- <div class="field">
       <label class="input-text"> Tokenmomic (100 %) </label>
       <div class="tokenmomin-box">
         <div class="token-field">
@@ -135,7 +135,7 @@
           <InputText v-model="memeData.socialChannel.website" />
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="field">
       <label class="input-text">
