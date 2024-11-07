@@ -62,6 +62,7 @@ async function fetchSendTransaction(requestBody) {
   try {
     const response = await contract.createMemeProposal(
       requestBody.name,
+      requestBody.symbol,
       requestBody.supply,
       requestBody.memeStory,
       requestBody.logo,
@@ -69,7 +70,7 @@ async function fetchSendTransaction(requestBody) {
       requestBody.memeRequirement
     );
 
-    await response.wait();
+    console.log("Create response:", response);
 
     alert("Transaction sent successfully!", response);
   } catch (error) {
@@ -90,6 +91,8 @@ async function fetchGetMemeProposal(status) {
 }
 
 async function fetchGetTransaction(status) {
+  // const contract = await fetchConnectWallet();
+
   if (!checkWalletConnection()) {
     alert("Please connect your wallet first.");
     return;
@@ -97,6 +100,7 @@ async function fetchGetTransaction(status) {
 
   try {
     const response = await contract.getMemeProposalsByStatus(status);
+
     const data = JSON.stringify(response);
     console.log("Transaction data:", data);
     return data;
