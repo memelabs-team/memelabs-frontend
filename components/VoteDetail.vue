@@ -95,6 +95,10 @@
 </template>
 
 <script setup>
+import { useDataStore } from "~/stores/data";
+
+const dataStore = useDataStore();
+
 const emits = defineEmits(["create", "getData"]);
 
 const memeData = ref({
@@ -133,6 +137,12 @@ const tokenOptions = ref([
     address: "0x4337f1174e0f7A09a356BfA3fC75582cFBD35259",
   },
 ]);
+
+const status = "MINTED";
+
+onMounted(async () => {
+  await dataStore.getMemeListByStatus(status);
+});
 
 function handleClickCreate() {
   console.log(memeData.value);

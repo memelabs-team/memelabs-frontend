@@ -1,4 +1,9 @@
-import { fetchConnectWallet, disconnectWallet } from "~/services/meme";
+import {
+  fetchConnectWallet,
+  disconnectWallet,
+  fetchSendTransaction,
+  fetchGetTransaction,
+} from "~/services/meme";
 import { useDataStore } from "./store";
 
 async function getUserContract() {
@@ -7,9 +12,8 @@ async function getUserContract() {
 
   console.log("response :", response);
   dataStore.contract.address = response.address;
-  dataStore.contract.createMemeProposal = response.createMemeProposal;
-  dataStore.contract.getMemeProposalsByStatus =
-    response.getMemeProposalsByStatus;
+
+  console.log("dataStore contract", dataStore.contract);
 }
 
 function disconnectUser() {
@@ -19,11 +23,28 @@ function disconnectUser() {
 
   // Clear the contract and address data to simulate disconnecting the wallet
   dataStore.contract.address = null;
-  dataStore.contract.createMemeProposal = null;
-  dataStore.contract.getMemeProposalsByStatus = null;
 
   console.log("Wallet disconnected.");
   alert("Wallet disconnected.");
 }
 
-export default { getUserContract, disconnectUser };
+async function createMeme(body) {
+  console.log("Create Meme Body:", body);
+  const response = await fetchSendTransaction(body);
+
+  console.log("create response :", response);
+}
+
+async function getMemeListByStatus(status) {
+  const dataStore = useDataStore();
+  const response = await fetchGetTransaction(status);
+  console.log("Get Meme List Response:", response);
+  // Handle the response and display the meme list to the user
+}
+
+export default {
+  getUserContract,
+  disconnectUser,
+  createMeme,
+  getMemeListByStatus,
+};
