@@ -1,6 +1,7 @@
-const { initializeContract } = useContract();
-
 let contract;
+let isWalletConnected = false;
+
+const { initializeContract } = useContract();
 
 async function fetchConnectWallet() {
   if (!window.ethereum) {
@@ -9,25 +10,54 @@ async function fetchConnectWallet() {
   }
 
   try {
-    await window.ethereum.request({ method: "eth_requestAccounts" });
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
 
-    contract = await initializeContract();
-
-    return contract;
+    if (accounts.length > 0) {
+      isWalletConnected = true;
+      contract = await initializeContract();
+      console.log("Contract initialized:", contract);
+      return { contract, address: accounts[0] };
+    } else {
+      alert("No account found. Please connect your wallet.");
+    }
   } catch (error) {
     console.error("Error connecting wallet:", error);
   }
 }
 
-function checkContractValue() {
-  if (contract) {
-    return true;
+function disconnectWallet() {
+  isWalletConnected = false;
+  contract = null;
+
+  if (window.ethereum && window.ethereum.request) {
+    window.ethereum
+      .request({
+        method: "wallet_requestPermissions",
+        params: [{ eth_accounts: {} }],
+      })
+      .then(() => {
+        alert("Wallet disconnected successfully.");
+        console.log("Disconnected from MetaMask");
+      })
+      .catch((error) => {
+        console.error("Error disconnecting wallet:", error);
+      });
+  } else {
+    alert("MetaMask is not available.");
   }
-  throw new Error("No Contract Value");
+}
+
+function checkWalletConnection() {
+  return isWalletConnected;
 }
 
 async function fetchSendTransaction(requestBody) {
-  checkContractValue();
+  if (!checkWalletConnection()) {
+    alert("Please connect your wallet first.");
+    return;
+  }
 
   try {
     const response = await contract.createMemeProposal(
@@ -41,23 +71,32 @@ async function fetchSendTransaction(requestBody) {
 
     await response.wait();
 
-    alert("Transaction sent!");
+    alert("Transaction sent successfully!");
   } catch (error) {
     console.error("Error sending transaction:", error);
   }
 }
 
 async function fetchGetTransaction(status) {
-  checkContractValue();
+  if (!checkWalletConnection()) {
+    alert("Please connect your wallet first.");
+    return;
+  }
 
   try {
     const response = await contract.getMemeProposalsByStatus(status);
-
     const data = JSON.stringify(response);
+    console.log("Transaction data:", data);
     return data;
   } catch (error) {
     console.error("Error reading transaction:", error);
   }
 }
 
-export { fetchConnectWallet, fetchSendTransaction, fetchGetTransaction };
+export {
+  fetchConnectWallet,
+  disconnectWallet,
+  fetchSendTransaction,
+  fetchGetTransaction,
+  checkWalletConnection,
+};
