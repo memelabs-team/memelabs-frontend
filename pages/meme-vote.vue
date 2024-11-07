@@ -1,15 +1,15 @@
 <template>
-  <div class="meme-vote-page">
+  <div class="px-4">
     <div class="flex h-36 mb-4 flex-col justify-center">
       <h2 class="text-center font-inter text-5xl font-semibold tracking-tight">
         Meme Vote
       </h2>
     </div>
-    <SearchBar />
+    <SearchBar class="flex items-center justify-center space-x-4" />
 
     <!-- Meme Vote Card Grid -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-16 md:mx-12 lg:mx-16 xl:mx-24"
+      class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
     >
       <MemeVoteCard
         v-for="(meme, index) in displayedMemeData"
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Loading Spinner -->
-    <div class="flex justify-center my-8">
+    <div v-if="isLoadingVisible" class="flex justify-center my-8">
       <span
         class="text-[#DFDFDF] text-center font-inter text-[27px] font-semibold leading-[30px]"
       >
@@ -215,50 +215,51 @@ export default {
           daysLeft: 2,
         },
       ],
-      displayedMemeData: [], // This will hold the memes currently displayed
-      itemsToLoad: 6, // Number of items to load at a time after initial load
+      displayedMemeData: [], // Holds the memes currently displayed
+      itemsToLoad: 6, // Number of items to load at a time
       initialLoad: 18, // Number of items to load initially
       loading: false, // Loading state
     };
   },
   created() {
-    // Load the initial set of items
     this.displayedMemeData = this.memeData.slice(0, this.initialLoad);
 
-    // Only add event listener if in the client environment
     if (process.client) {
       window.addEventListener("scroll", this.handleScroll);
     }
   },
   destroyed() {
-    // Only remove event listener if in the client environment
     if (process.client) {
       window.removeEventListener("scroll", this.handleScroll);
     }
   },
+  computed: {
+    isLoadingVisible() {
+      // Hide loading if all items are loaded
+      return (
+        this.loading && this.displayedMemeData.length < this.memeData.length
+      );
+    },
+  },
   methods: {
     loadMoreItems() {
-      // If we're already loading or all items are loaded, skip further calls
       if (this.loading || this.displayedMemeData.length >= this.memeData.length)
         return;
 
       this.loading = true;
 
-      // Simulate a delay for loading (e.g., API request delay)
       setTimeout(() => {
         const start = this.displayedMemeData.length;
         const end = start + this.itemsToLoad;
 
-        // Add more items to displayedMemeData
         this.displayedMemeData = this.displayedMemeData.concat(
           this.memeData.slice(start, end)
         );
 
         this.loading = false;
-      }, 1000); // Adjust delay as needed
+      }, 1000);
     },
     handleScroll() {
-      // Check if the user is near the bottom of the page
       const { scrollTop, scrollHeight, clientHeight } =
         document.documentElement;
       if (scrollTop + clientHeight >= scrollHeight - 50) {
@@ -268,5 +269,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>
