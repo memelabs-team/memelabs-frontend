@@ -9,7 +9,7 @@
 
     <!-- Mascot Image and Content -->
     <div
-      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-yellow-200 rounded-full overflow-hidden flex items-center justify-center"
+      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-yellow-200 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
     >
       <img :src="mascotImage" alt="Mascot" class="w-full h-auto object-cover" />
       <button

@@ -9,9 +9,17 @@
 
     <!-- Mascot Image and Content -->
     <div
-      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-yellow-200 rounded-full overflow-hidden flex items-center justify-center"
+      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 rounded-[68px] overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
     >
-      <img :src="mascotImage" alt="Mascot" class="w-full h-auto object-cover" />
+      <img
+        :src="mascotImage || 'https://via.placeholder.com/160'"
+        alt="Mascot"
+        class="w-full h-auto object-cover"
+        @error="
+          (event) => (event.target.src = 'https://via.placeholder.com/160')
+        "
+      />
+
       <button
         class="absolute bottom-0 h-7 bg-black text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform"
         @click="voteNow"
@@ -30,15 +38,13 @@
         class="voting-info flex justify-between text-sm font-medium text-gray-700 mt-4"
       >
         <span class="text-gray-800 font-semibold">{{ votes }}/100 Vote</span>
-        <span class="text-gray-800 font-semibold"
-          >{{ daysLeft }} Days Left</span
-        >
+        <span class="text-gray-800 font-semibold">{{ daysLeft }}</span>
       </div>
 
       <!-- Progress Bar -->
       <div class="progress-bar w-full h-2 bg-gray-200 rounded-full mt-2">
         <div
-          class="progress h-full bg-green-500 rounded-full"
+          class="progress h-full bg-blue-500 rounded-full"
           :style="{ width: progressPercentage + '%' }"
         ></div>
       </div>
@@ -54,7 +60,7 @@ const props = defineProps({
   description: { type: String, required: true },
   mascotImage: { type: String, required: true },
   votes: { type: Number, required: true },
-  daysLeft: { type: Number, required: true },
+  daysLeft: { type: String, required: true },
 });
 
 const progressPercentage = computed(() => (props.votes / 100) * 100);

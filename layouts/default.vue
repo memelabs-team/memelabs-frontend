@@ -1,6 +1,6 @@
 <template>
   <NavigateBar />
-  <div class="page-layout">
+  <div>
     <slot />
   </div>
 </template>
@@ -14,13 +14,13 @@ const dataStore = useDataStore();
 onMounted(async () => {
   try {
     await dataStore.getUserContract();
-    await fetchGetMemeProposal("IN-PROCESS");
+    dataStore.memeProcess = await fetchGetMemeProposal("IN-PROCESS");
+    dataStore.memeMinted = await fetchGetMemeProposal("MINTED");
+
+    console.log("Meme Process :", dataStore.memeProcess);
+    console.log("Meme Minted :", dataStore.memeMinted);
   } catch (error) {}
 });
 </script>
 
-<style lang="scss" scoped>
-.page-layout {
-  height: 100vh;
-}
-</style>
+<style lang="scss" scoped></style>

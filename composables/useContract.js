@@ -22,7 +22,10 @@ function useContract() {
 
         contract.value = new ethers.Contract(contractAddress, abi, signer);
 
-        console.log("Contract initialized:", contract.value);
+        console.log(
+          "The smart contract has been successfully renewed. :",
+          contract.value
+        );
         return contract.value;
       } catch (error) {
         console.error("Error connecting to contract:", error);
