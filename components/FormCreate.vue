@@ -271,6 +271,16 @@ const tokenOptions = ref([
 
 const selectedAmount = ref(2500);
 
+// Watch for changes in custom amount input and reset selectedAmount if custom input is used
+watch(
+  () => memeData.value.memeRequirement.amount,
+  (newAmount) => {
+    if (newAmount !== "2500" && newAmount !== "5000" && newAmount !== "10000") {
+      selectedAmount.value = null;
+    }
+  }
+);
+
 function handleClickCreate() {
   memeData.value.memeRequirement.token = selectedToken.value.address;
   memeData.value.memeRequirement.amount = selectedAmount.value;
