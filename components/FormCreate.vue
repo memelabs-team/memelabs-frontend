@@ -107,35 +107,38 @@
       </Message>
     </div>
 
-    <!-- <div class="field">
+    <div class="field">
       <label class="input-text"> Tokenmomic (100 %) </label>
       <div class="tokenmomin-box">
         <div class="token-field">
-          <label class="input-text"> Platform fee </label>
-          <InputText v-model="memeData.socialChannel.website" />
+          <label class="input-text">Platform fee</label>
+          <InputText
+            v-model="memeData.memeRequirement.platformFeeRate"
+            disabled
+          />
         </div>
         <div class="token-field">
-          <label class="input-text"> Platform fee </label>
-          <InputText v-model="memeData.socialChannel.website" />
+          <label class="input-text">Community Drop</label>
+          <InputText v-model="memeData.memeRequirement.communityDropRate" />
         </div>
         <div class="token-field">
-          <label class="input-text"> Platform fee </label>
-          <InputText v-model="memeData.socialChannel.website" />
+          <label class="input-text">Liquidity Provider</label>
+          <InputText v-model="memeData.memeRequirement.liquidityRate" />
         </div>
         <div class="token-field">
-          <label class="input-text"> Platform fee </label>
-          <InputText v-model="memeData.socialChannel.website" />
+          <label class="input-text">Investor</label>
+          <InputText v-model="memeData.memeRequirement.investorRate" />
         </div>
         <div class="token-field">
-          <label class="input-text"> Platform fee </label>
-          <InputText v-model="memeData.socialChannel.website" />
+          <label class="input-text">Owner</label>
+          <InputText v-model="memeData.memeRequirement.ownerRate" />
         </div>
         <div class="token-field">
-          <label class="input-text"> Platform fee </label>
-          <InputText v-model="memeData.socialChannel.website" />
+          <label class="input-text">Treasury</label>
+          <InputText v-model="memeData.memeRequirement.communityTreasuryRate" />
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="field">
       <label class="input-text">
@@ -267,6 +270,16 @@ const tokenOptions = ref([
 ]);
 
 const selectedAmount = ref(2500);
+
+// Watch for changes in custom amount input and reset selectedAmount if custom input is used
+watch(
+  () => memeData.value.memeRequirement.amount,
+  (newAmount) => {
+    if (newAmount !== "2500" && newAmount !== "5000" && newAmount !== "10000") {
+      selectedAmount.value = null;
+    }
+  }
+);
 
 function handleClickCreate() {
   memeData.value.memeRequirement.token = selectedToken.value.address;
