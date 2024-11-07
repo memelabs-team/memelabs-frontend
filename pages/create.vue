@@ -7,17 +7,21 @@
 </template>
 
 <script setup>
-import { fetchGetTransaction, fetchSendTransaction } from "../services/meme.js";
+import { useDataStore } from "~/stores/data/store.js";
+import { fetchGetTransaction } from "../services/meme.js";
 
-function handleClickCreate(memeData) {
+const dataStore = useDataStore();
+
+async function handleClickCreate(memeData) {
   // Logic to create meme goes here
   console.log("Creating meme...", memeData);
-  fetchSendTransaction(memeData);
+  const response = await dataStore.createMeme(memeData);
+  console.log("Created meme:", response);
 }
 
 function handleClickData() {
   // Logic to fetch data goes here
-  const status = "VOTING";
+  const status = "MINTED";
 
   fetchGetTransaction(status);
 }
@@ -25,7 +29,11 @@ function handleClickData() {
 
 <style lang="scss" scoped>
 .page-container {
-  margin: 40px 60px;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .page-header {

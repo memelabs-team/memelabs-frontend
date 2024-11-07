@@ -1,8 +1,9 @@
 <template>
   <div class="upload-image">
     <div class="choose" v-if="model.url === ''" @click="imageUploadRef.choose">
-      <i class="pi pi-image"></i>
-      <div class="label">{{ props.chooseFileLabel }}</div>
+      <i class="pi pi-camera"></i>
+      <div class="label">Upload Image</div>
+      <div class="max-file-label">jpeg/png/webp/gif( < 15MB )</div>
     </div>
 
     <div class="preview" v-if="model.url" @click="handleClickClear">
@@ -46,9 +47,15 @@ const model = defineModel({
     }),
 });
 
-function handleSelectedFiles(data) {
+const emits = defineEmits(["selectImage"]);
+
+async function handleSelectedFiles(data) {
   model.value.file = data.files[0];
   model.value.url = data.files[0].objectURL;
+
+  const base64 = await fileToBase64(data.files[0]);
+
+  emits("selectImage", base64);
 }
 
 function handleClickClear() {
@@ -56,6 +63,15 @@ function handleClickClear() {
   model.value.file = null;
 
   imageUploadRef.value.clear();
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result || "");
+    reader.onerror = (error) => reject(error);
+  });
 }
 </script>
 
@@ -70,25 +86,35 @@ function handleClickClear() {
 }
 
 .upload-image {
-  border-radius: var(--p-form-field-border-radius);
+  width: 240px;
+  height: 240px;
+  border-radius: 100%;
   border: 1px solid var(--p-surface-300);
   background: #f2f2f2;
 }
 
 .choose {
-  padding: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
   cursor: pointer;
   color: var(--p-surface-500);
   line-height: 1;
 
   i {
-    font-size: 30px;
+    font-size: 80px;
   }
 
   .label {
     margin-top: 6px;
     border-radius: var(--p-form-field-border-radius);
+  }
+
+  .max-file-label {
+    font-size: 11px;
+    margin-top: 4px;
   }
 }
 
@@ -98,13 +124,16 @@ function handleClickClear() {
   &:hover {
     .overlay {
       opacity: 1;
+      width: 240px;
+      height: 240px;
+      border-radius: 100%;
     }
   }
 
   img {
-    display: block;
-    width: 100%;
-    border-radius: var(--p-form-field-border-radius);
+    width: 240px;
+    height: 240px;
+    border-radius: 100%;
   }
 
   .overlay {

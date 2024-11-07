@@ -28,10 +28,6 @@ const memes = ref();
 onMounted(() => {
   memes.value = memeData;
 });
-
-function handleClickViewAll() {
-  navigateTo("/meme-vote");
-}
 </script>
 
 <style lang="scss" scoped>
