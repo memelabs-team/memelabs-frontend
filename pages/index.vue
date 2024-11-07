@@ -1,38 +1,15 @@
 <template>
-  <div class="container">index</div>
+  <div class="page-container">
+    <SectionHeader />
+    <SectionMemeVote />
+    <SectionMemeraising />
+  </div>
 </template>
 
-<script setup>
-import {
-  fetchConnectWallet,
-  fetchGetTransaction,
-  fetchSendTransaction,
-} from "../services/meme.js";
-
-function handleClickConnectWallet() {
-  fetchConnectWallet();
-}
-
-function handleClickCreate(memeData) {
-  // Logic to create meme goes here
-  console.log("Creating meme...", memeData);
-  fetchSendTransaction(memeData);
-}
-
-function handleClickData() {
-  // Logic to fetch data goes here
-  const status = "VOTING";
-
-  fetchGetTransaction(status);
-}
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.page-container {
   margin-bottom: 10px;
 }
 </style>

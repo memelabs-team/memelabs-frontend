@@ -1,7 +1,10 @@
 <template>
   <div class="flex items-center justify-center space-x-4">
     <!-- Input Field -->
-    <InputText class="w-[470px] h-12 px-4" placeholder="Search Meme" />
+    <InputText
+      class="search-box w-[470px] h-12 px-4"
+      placeholder="Search Meme"
+    />
 
     <!-- Icon -->
     <i
@@ -9,3 +12,9 @@
     ></i>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.search-box {
+  border-radius: 50px;
+}
+</style>

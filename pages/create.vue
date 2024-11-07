@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="page-container">
     <h1 class="page-header">Create Meme</h1>
 
     <FormCreate @create="handleClickCreate" @getData="handleClickData" />
@@ -24,12 +24,8 @@ function handleClickData() {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  //align-items: center;
-  margin-bottom: 10px;
-  width: 100%;
+.page-container {
+  margin: 40px 60px;
 }
 
 .page-header {

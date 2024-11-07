@@ -1,6 +1,27 @@
 <template>
   <NavigateBar />
-  <slot />
+  <div class="page-layout">
+    <slot />
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<script setup>
+import { onMounted } from "vue";
+import { useDataStore } from "../stores/data/store.js";
+const dataStore = useDataStore();
+// Automatically run fetchConnectWallet when App.vue is mounted
+onMounted(async () => {
+  try {
+    await dataStore.getUserContract();
+    console.log("Wallet connected on initial load");
+  } catch (error) {
+    console.error("Error connecting wallet:", error);
+  }
+});
+</script>
+
+<style lang="scss" scoped>
+.page-layout {
+  height: 100vh;
+}
+</style>
