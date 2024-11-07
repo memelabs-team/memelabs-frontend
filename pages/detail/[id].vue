@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="page-container">
     <div class="page-header">Vote Detail</div>
     <VoteDetail @create="handleClickCreate" @getData="handleClickData" />
   </div>
@@ -23,10 +23,10 @@ function handleClickData() {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.page-container {
+  padding: 40px 60px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
   width: 100%;
 }
 

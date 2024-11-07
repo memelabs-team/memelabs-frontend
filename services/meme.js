@@ -115,4 +115,5 @@ export {
   fetchSendTransaction,
   fetchGetTransaction,
   checkWalletConnection,
+  fetchGetMemeProposal,
 };
