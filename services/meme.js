@@ -71,9 +71,21 @@ async function fetchSendTransaction(requestBody) {
 
     await response.wait();
 
-    alert("Transaction sent successfully!");
+    alert("Transaction sent successfully!", response);
   } catch (error) {
     console.error("Error sending transaction:", error);
+  }
+}
+
+async function fetchGetMemeProposal(status) {
+  console.log("Status :", status);
+
+  try {
+    const response = await contract.getMemeProposalsByStatus(status);
+
+    console.log("Get Meme is successfully!", response);
+  } catch (error) {
+    console.error("Get Meme is Error! :", error);
   }
 }
 
