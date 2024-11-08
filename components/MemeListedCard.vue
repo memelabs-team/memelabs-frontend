@@ -1,7 +1,7 @@
 <template>
   <div
     class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
-    @click="memeListed(memeDetail, daysLeft)"
+    @click="memeListed(memeDetail)"
   >
     <!-- Binance Logo in Top Right Corner -->
     <div class="absolute top-4 right-4">
@@ -10,7 +10,7 @@
 
     <!-- Mascot Image and Content -->
     <div
-      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-yellow-200 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
     >
       <img
         :src="memeDetail.logo || 'https://via.placeholder.com/160'"
@@ -57,13 +57,12 @@ const router = useRouter();
 
 const props = defineProps({
   memeDetail: { type: Object, required: true },
-  daysLeft: { type: String, required: true },
 });
 
-const memeListed = (memeDetail, daysLeft) => {
+const memeListed = (memeDetail) => {
   router.push({
     path: `/detail/raising-detail[${memeDetail.id}]`,
-    query: { memeDetail: JSON.stringify({ ...memeDetail, daysLeft }) },
+    query: { memeDetail: JSON.stringify({ ...memeDetail }) },
   });
 };
 </script>
