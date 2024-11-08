@@ -108,34 +108,61 @@
     </div>
 
     <div class="field">
-      <label class="input-text"> Tokenmomic (100 %) </label>
+      <label class="input-text">Tokenomic (100%)</label>
       <div class="tokenmomin-box">
         <div class="token-field">
-          <label class="input-text">Platform fee</label>
-          <InputText
-            v-model="memeData.memeRequirement.platformFeeRate"
-            disabled
-          />
+          <label class="input-text">Platform Fee</label>
+          <InputNumber placeholder="5%" disabled class="w-full" />
         </div>
         <div class="token-field">
           <label class="input-text">Community Drop</label>
-          <InputText v-model="memeData.memeRequirement.communityDropRate" />
+          <Select
+            v-model="memeData.memeRequirement.communityDropRate"
+            :options="communityDropOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          />
         </div>
         <div class="token-field">
           <label class="input-text">Liquidity Provider</label>
-          <InputText v-model="memeData.memeRequirement.liquidityRate" />
+          <Select
+            v-model="memeData.memeRequirement.liquidityRate"
+            :options="liquidityProviderOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          />
         </div>
         <div class="token-field">
           <label class="input-text">Investor</label>
-          <InputText v-model="memeData.memeRequirement.investorRate" />
+          <Select
+            v-model="memeData.memeRequirement.investorRate"
+            :options="investorOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          />
         </div>
         <div class="token-field">
           <label class="input-text">Owner</label>
-          <InputText v-model="memeData.memeRequirement.ownerRate" />
+          <Select
+            v-model="memeData.memeRequirement.ownerRate"
+            :options="ownerOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          />
         </div>
         <div class="token-field">
           <label class="input-text">Treasury</label>
-          <InputText v-model="memeData.memeRequirement.communityTreasuryRate" />
+          <Select
+            v-model="memeData.memeRequirement.communityTreasuryRate"
+            :options="treasuryOptions"
+            optionLabel="label"
+            optionValue="value"
+            class="w-full"
+          />
         </div>
       </div>
     </div>
@@ -164,61 +191,6 @@
       <InputText v-model="memeData.socialChannel.telegram" />
     </div>
 
-    <!-- <div class="field">
-      <label class="input-text">
-        Amount
-        <span class="text-optional">(Optional)</span>
-      </label>
-      <InputNumber v-model="memeData.memeRequirement.amount" />
-    </div> 
-    <div class="field">
-      <label class="input-text">
-        Platform Fee Rate
-        <span class="text-optional">(Optional)</span>
-      </label>
-      <InputNumber v-model="memeData.memeRequirement.platformFeeRate" />
-    </div>
-
-    <div class="field">
-      <label class="input-text">
-        Community Drop Rate
-        <span class="text-optional">(Optional)</span>
-      </label>
-      <InputNumber v-model="memeData.memeRequirement.communityDropRate" />
-    </div>
-
-    <div class="field">
-      <label class="input-text">
-        Liquidity Rate
-        <span class="text-optional">(Optional)</span>
-      </label>
-      <InputNumber v-model="memeData.memeRequirement.liquidityRate" />
-    </div>
-
-    <div class="field">
-      <label class="input-text">
-        Investor Rate
-        <span class="text-optional">(Optional)</span>
-      </label>
-      <InputNumber v-model="memeData.memeRequirement.investorRate" />
-    </div>
-
-    <div class="field">
-      <label class="input-text">
-        Owner Rate
-        <span class="text-optional">(Optional)</span>
-      </label>
-      <InputNumber v-model="memeData.memeRequirement.ownerRate" />
-    </div>
-
-    <div class="field">
-      <label class="input-text">
-        Community Treasury Rate
-        <span class="text-optional">(Optional)</span>
-      </label>
-      <InputNumber v-model="memeData.memeRequirement.communityTreasuryRate" />
-    </div>-->
-
     <div class="button-group">
       <Button
         class="mt-4 w-full"
@@ -226,7 +198,6 @@
         rounded
         @click="handleClickCreate"
       />
-      <!-- <Button label="Get Data" rounded @click="handleClickGetData" /> -->
     </div>
   </div>
 </template>
@@ -246,7 +217,7 @@ const memeData = ref({
     amount: null,
     platformFeeRate: 5,
     communityDropRate: 10,
-    liquidityRate: 10,
+    liquidityRate: 20,
     investorRate: 10,
     ownerRate: 10,
     communityTreasuryRate: 50,
@@ -270,6 +241,43 @@ const tokenOptions = ref([
 ]);
 
 const selectedAmount = ref(2500);
+
+// Custom options for each field
+const communityDropOptions = [
+  { label: "2%", value: 2 },
+  { label: "4%", value: 4 },
+  { label: "6%", value: 6 },
+  { label: "8%", value: 8 },
+  { label: "10%", value: 10 },
+];
+
+const liquidityProviderOptions = [
+  { label: "20%", value: 20 },
+  { label: "30%", value: 30 },
+  { label: "40%", value: 40 },
+  { label: "50%", value: 50 },
+];
+
+const investorOptions = [
+  { label: "10%", value: 10 },
+  { label: "12%", value: 12 },
+  { label: "14%", value: 14 },
+  { label: "16%", value: 16 },
+  { label: "18%", value: 18 },
+  { label: "20%", value: 20 },
+];
+
+const ownerOptions = Array.from({ length: 11 }, (_, i) => ({
+  label: `${i}%`,
+  value: i,
+}));
+
+const treasuryOptions = [
+  { label: "20%", value: 20 },
+  { label: "30%", value: 30 },
+  { label: "40%", value: 40 },
+  { label: "50%", value: 50 },
+];
 
 // Watch for changes in custom amount input and reset selectedAmount if custom input is used
 watch(
@@ -314,7 +322,21 @@ function handleClickAmount(amount) {
 .token-field {
   display: flex;
   flex-direction: column;
-  margin: 8px 0 20px 0;
+  margin-bottom: 24px;
+
+  label {
+    font-size: 14px;
+    color: #555;
+  }
+
+  input,
+  .w-full {
+    font-size: 16px;
+
+    &:disabled {
+      background-color: #f9f9f9;
+    }
+  }
 }
 
 .input-text {
@@ -328,7 +350,7 @@ function handleClickAmount(amount) {
   background: #fff;
   padding: 20px;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
@@ -388,6 +410,18 @@ function handleClickAmount(amount) {
   &.selected {
     color: #fff;
     background: #000;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-content {
+    max-width: 90%;
+    padding: 16px;
+    border: 0;
+
+    .tokenmomin-box {
+      grid-template-columns: 1fr;
+    }
   }
 }
 </style>
