@@ -1,6 +1,8 @@
 <template>
   <div class="flex h-36 mb-4 flex-col justify-center">
-    <h2 class="text-center font-inter text-5xl font-semibold tracking-tight">
+    <h2
+      class="text-center font-inter text-3xl md:text-5xl font-semibold tracking-tight"
+    >
       Initial Meme Offering
     </h2>
   </div>
@@ -9,10 +11,10 @@
       class="border border-gray-200 rounded-lg p-6 md:p-14 flex flex-col md:flex-row gap-6 md:gap-12"
     >
       <!-- Left Section -->
-      <div class="flex flex-col items-center md:w-1/3">
+      <div class="flex flex-col items-center w-full md:w-1/3">
         <div class="flex justify-center mb-5 md:mb-7">
           <img
-            class="w-36 h-36 md:w-48 md:h-48 rounded-full"
+            class="w-24 h-24 sm:w-36 sm:h-36 md:w-48 md:h-48 rounded-full"
             :src="memeDetail.logo || 'https://via.placeholder.com/160'"
             alt="meme-image"
           />
@@ -50,22 +52,22 @@
             <p>Purchase</p>
             <InputText
               :value="modelValue"
-              class="w-[470px] h-12 px-4"
+              class="w-full h-10 sm:h-12 px-4"
               style="border-radius: 25px"
               placeholder=" $500-$1000"
               @input="handleInput"
             />
           </div>
 
-          <div class="flex flex-col justify-between mt-4 gap-2">
+          <div class="flex flex-col sm:flex-row justify-between mt-4 gap-2">
             <Button
-              class="h-10 md:h-12 rounded-lg bg-blue-600 text-white font-bold"
+              class="h-10 md:h-12 w-full sm:w-auto rounded-lg bg-blue-600 text-white font-bold"
               @click="approve()"
             >
               Approve
             </Button>
             <Button
-              class="h-10 md:h-12 rounded-lg bg-gray-200 text-gray-700 font-bold"
+              class="h-10 md:h-12 w-full sm:w-auto rounded-lg bg-gray-200 text-gray-700 font-bold"
               @click="purchase()"
             >
               Purchase
@@ -103,7 +105,7 @@
         </div>
 
         <!-- Financial Information -->
-        <div class="grid grid-cols-3 gap-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-5">
           <div>
             <div class="text-gray-600 font-semibold text-sm">Raised Token</div>
             <div>USDT</div>
