@@ -2,7 +2,7 @@
   <div class="px-4">
     <div class="flex h-36 mb-4 flex-col justify-center">
       <h2 class="text-center font-inter text-5xl font-semibold tracking-tight">
-        Meme Vote
+        Initial Meme Offering
       </h2>
     </div>
     <SearchBar class="flex items-center justify-center space-x-4" />
@@ -11,7 +11,7 @@
     <div
       class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
     >
-      <MemeVoteCard
+      <IMOCard
         v-for="meme in filteredMemeData"
         :memeDetail="meme"
         :daysLeft="calculateCountdown(meme.startVestingAt)"
