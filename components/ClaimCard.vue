@@ -99,7 +99,6 @@ const visible = ref(false);
 }
 
 .vesting-card {
-  max-width: 380px;
   border-radius: 10px;
   padding: 20px;
   border: 1px solid #e0e0e0;
