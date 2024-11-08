@@ -8,7 +8,7 @@
 
     <!-- Centered Selection Button -->
     <div class="flex justify-center">
-      <div class="select-button-container w-2/3">
+      <div class="select-button-container w-2/2">
         <button
           v-for="option in memeOwnershipOptions"
           :key="option"
@@ -27,7 +27,7 @@
   <!-- Card Grid Container -->
   <div class="px-4 md:mx-12 lg:mx-16 xl:mx-24">
     <!-- Token Cards -->
-    <div class="grid gap-4 lg:gap-10 grid-cols-4 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- <div class="grid gap-4 lg:gap-10 grid-cols-4 sm:grid-cols-2 lg:grid-cols-3">
       <div
         v-for="(item, index) in tokenData"
         :key="index"
@@ -39,13 +39,13 @@
       >
         <TokenCard :title="item.title" :amount="item.amount" />
       </div>
-    </div>
+    </div> -->
 
     <!-- Content Section -->
     <div class="mt-8">
       <div class="action-button-container">
         <button
-          v-for="option in userActionOptions"
+          v-for="option in userActionTabOptions"
           :key="option"
           :class="[
             'custom-button',
@@ -58,7 +58,9 @@
       </div>
 
       <SearchBar class="my-10" v-model:modelValue="searchInput" />
+
       <div
+        v-if="selectedMemeOwnership !== 'Claimed'"
         class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
       >
         <MemeCard
@@ -72,7 +74,18 @@
           :daysLeft="calculateDaysLeft(meme.startVotingAt)"
         />
       </div>
-
+      <!--claim card-->
+      <div
+        v-else
+        class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
+      >
+        <ClaimCard
+          v-for="(claim, index) in claimedData"
+          :key="index"
+          :title="claim.title"
+          :mascotImage="claim.mascotImage"
+        />
+      </div>
       <!-- Loading Spinner -->
       <div v-if="isLoadingVisible" class="flex justify-center my-8">
         <span
@@ -121,6 +134,16 @@ const memeFromSearch = computed(() => {
   return dataStore.myMemeList;
 });
 
+const userActionTabOptions = computed(() => {
+  if (selectedMemeOwnership.value === "Claimed") {
+    selectedUserAction.value = "Unclaim";
+    return ["Unclaim", "Claimed"];
+  }
+
+  selectedUserAction.value = "Pending";
+  return ["Pending", "Complete"];
+});
+
 const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];
 const userActionOptions = ["Pending", "Complete"];
 const selectedMemeOwnership = ref("Created");
@@ -130,6 +153,24 @@ const tokenData = [
   { title: "Token Owned", amount: "$100000" },
   { title: "Token Created", amount: "25000" },
   { title: "Total Trading Value", amount: "$20000" },
+];
+
+const claimedData = [
+  {
+    title: "Meme Name",
+    mascotImage:
+      "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/06aa229a-15b6-4abb-a77c-acf816436c1d/width=450/00013-764467457.jpeg",
+  },
+  {
+    title: "DENG",
+    mascotImage:
+      "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/06aa229a-15b6-4abb-a77c-acf816436c1d/width=450/00013-764467457.jpeg",
+  },
+  {
+    title: "MAIDENG",
+    mascotImage:
+      "https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/06aa229a-15b6-4abb-a77c-acf816436c1d/width=450/00013-764467457.jpeg",
+  },
 ];
 
 const loading = ref(false);
@@ -176,7 +217,7 @@ function handleScroll() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .select-button-container {
   display: flex;
   background-color: #ffffff;

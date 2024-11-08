@@ -78,9 +78,9 @@ const items = ref([
     },
   },
   {
-    label: "Portfolio",
+    label: "Profile",
     command: () => {
-      navigateTo("/portfolio");
+      navigateTo("/profile");
     },
   },
 ]);
