@@ -24,8 +24,52 @@
         <img :src="mascotImage" alt="Token" class="token-avatar" />
         <span class="vote-text">1100</span>
       </div>
-      <button class="claim-button">Claim</button>
+      <button class="claim-button" @click="visible = true">Claim</button>
     </div>
+
+    <Dialog
+      v-model:visible="visible"
+      modal
+      header="Edit Profile"
+      :style="{ width: '25rem' }"
+    >
+      <template #header>
+        <div class="inline-flex items-center justify-center gap-2 mb-4">
+          <span class="dialog-header font-bold whitespace-nowrap">
+            Claimable
+          </span>
+        </div>
+      </template>
+      <div class="card-content">
+        <div class="card-title">
+          <img :src="mascotImage" alt="icon" class="avatar" />
+          <span>{{ title }}</span>
+        </div>
+
+        <div class="vesting-box">
+          <p>Vesting Round</p>
+          <strong>0/9</strong>
+        </div>
+
+        <div class="vesting-box">
+          <p>Vesting Start</p>
+          <strong>04/01/23 09:09 UTC</strong>
+        </div>
+        <div class="vesting-box">
+          <p>Vesting End</p>
+          <strong>22/02/23 09:09 UTC</strong>
+        </div>
+      </div>
+
+      <template #footer>
+        <Button
+          class="mt-4 w-full"
+          label="Claim"
+          @click="visible = false"
+          rounded
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -34,9 +78,15 @@ const props = defineProps({
   title: { type: String, required: true },
   mascotImage: { type: String, required: true },
 });
+
+const visible = ref(false);
 </script>
 
 <style lang="scss" scoped>
+.dialog-header {
+  font-size: 30px;
+}
+
 .vote-text {
   font-size: 22px;
   font-weight: bold;
