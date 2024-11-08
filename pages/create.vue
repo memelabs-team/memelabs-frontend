@@ -42,4 +42,10 @@ function handleClickData() {
   font-weight: 500;
   margin-bottom: 40px;
 }
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 20px 0;
+  }
+}
 </style>
