@@ -1,7 +1,15 @@
 <template>
   <div>
     <div class="header-box">
-      <div class="header-title">Meme Raising</div>
+      <div class="header-title">
+        Meme Raising
+        <Button
+          class="ml-8"
+          label="View All"
+          severity="secondary"
+          @click="navigateTo(`/meme-listed`)"
+        />
+      </div>
       <div class="search-box">
         <SearchBar />
       </div>
@@ -10,13 +18,8 @@
     <div class="meme-container">
       <MemeListedCard
         v-for="(meme, index) in memeMinted"
-        :key="index"
-        :title="meme.name"
-        :description="meme.memeStory"
-        :mascotImage="meme.logo"
-        :percentage="10"
-        :marketCap="10000"
-        :daysLeft="calculateDaysLeft(meme.startVotingAt)"
+        :memeDetail="meme"
+        :daysLeft="calculateCountdown(meme.startVestingAt)"
       />
     </div>
   </div>
@@ -33,7 +36,7 @@ const props = defineProps({
 });
 
 // Function to calculate days left based on startVotingAt date
-function calculateDaysLeft(startVotingAt) {
+function calculateCountdown(startVotingAt) {
   const now = new Date();
   const endDate = new Date(startVotingAt);
   const timeDiff = endDate - now;

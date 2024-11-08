@@ -84,6 +84,12 @@ const items = ref([
     },
   },
   {
+    label: "Listed",
+    command: () => {
+      navigateTo("/meme-listed");
+    },
+  },
+  {
     label: "Portfolio",
     command: () => {
       navigateTo("/portfolio");

@@ -63,13 +63,8 @@
       >
         <MemeListedCard
           v-for="(meme, index) in memeFromSearch"
-          :key="index"
-          :title="meme.name"
-          :description="meme.memeStory"
-          :mascotImage="meme.logo"
-          :percentage="10"
-          :marketCap="10000"
-          :daysLeft="calculateDaysLeft(meme.startVotingAt)"
+          :memeDetail="meme"
+          :daysLeft="calculateCountdown(meme.startVestingAt)"
         />
       </div>
 
@@ -143,7 +138,7 @@ const isLoadingVisible = computed(() => {
 });
 
 // Function to calculate days left based on startVotingAt date
-function calculateDaysLeft(startVotingAt) {
+function calculateCountdown(startVotingAt) {
   const now = new Date();
   const endDate = new Date(startVotingAt);
   const timeDiff = endDate - now;
