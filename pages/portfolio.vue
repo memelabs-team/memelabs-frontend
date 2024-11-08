@@ -57,13 +57,13 @@
         </button>
       </div>
 
-      <SearchBar class="my-10" />
+      <SearchBar class="my-10" v-model:modelValue="searchInput" />
 
       <div
         class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
       >
         <MemeCard
-          v-for="(meme, index) in displayedMemeData"
+          v-for="(meme, index) in memeFromSearch"
           :key="index"
           :title="meme.title"
           :description="meme.description"
@@ -87,7 +87,72 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import Fuse from "fuse.js";
+
+const memeData = [
+  {
+    title: "Bark Bucks",
+    description:
+      "A coin to celebrate the ultimate loyal companion. Inspired by dog memes, it’s here to “fetch” you some laughs and profits!",
+    mascotImage: "https://via.placeholder.com/160",
+    marketCap: 2500,
+    daysLeft: 12,
+    percentage: 3000,
+  },
+  {
+    title: "Noodle Coin",
+    description:
+      "Noodle Coin is here to “stretch” your gains. Inspired by the endless noodle bowl memes, it’s a long and winding path to riches.",
+    mascotImage: "https://via.placeholder.com/160",
+    marketCap: 4500,
+    daysLeft: 9,
+    percentage: 450,
+  },
+  {
+    title: "Astro Toast",
+    description:
+      "A toast to the stars! Launched for space lovers and breakfast enthusiasts, Astro Toast is for those who dare to dream…and eat carbs.",
+    mascotImage: "https://via.placeholder.com/160",
+    marketCap: 3000,
+    daysLeft: 5,
+    percentage: 300,
+  },
+  {
+    title: "Meme-saur",
+    description:
+      "The ancient meme currency that’s making a comeback. Fossil-fueled with pure meme energy.",
+    mascotImage: "https://via.placeholder.com/160",
+    marketCap: 1500,
+    daysLeft: 7,
+    percentage: 15,
+  },
+  {
+    title: "Feline Finance",
+    description:
+      "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
+    mascotImage: "https://via.placeholder.com/160",
+    marketCap: 6500,
+    daysLeft: 2,
+    percentage: 50,
+  },
+  // ... add the rest of the meme data here
+];
+
+const searchInput = ref("");
+const displayedMemeData = ref(memeData);
+
+const fuse = new Fuse(memeData, {
+  threshold: 0.3,
+  keys: ["title"],
+});
+
+// Compute `memeFromSearch` based on `searchInput`
+const memeFromSearch = computed(() => {
+  if (searchInput.value.trim()) {
+    return fuse.search(searchInput.value).map((result) => result.item); // Retrieve matched items
+  }
+  return displayedMemeData.value; // Show all memes if no search input
+});
 
 const memeOwnershipOptions = ["Owned", "Created", "Claimed"];
 const userActionOptions = ["My Meme", "My Vote"];
@@ -99,9 +164,52 @@ const tokenData = [
   { title: "Token Created", amount: "25000" },
   { title: "Total Trading Value", amount: "$20000" },
 ];
+
+const itemsToLoad = 6;
+const initialLoad = 18;
+const loading = ref(false);
+
+const isLoadingVisible = computed(() => {
+  return loading.value && displayedMemeData.value.length < memeData.length;
+});
+
+function loadMoreItems() {
+  if (loading.value || displayedMemeData.value.length >= memeData.length)
+    return;
+
+  loading.value = true;
+
+  setTimeout(() => {
+    const start = displayedMemeData.value.length;
+    const end = start + itemsToLoad;
+
+    displayedMemeData.value = [
+      ...displayedMemeData.value,
+      ...memeData.slice(start, end),
+    ];
+
+    loading.value = false;
+  }, 1000);
+}
+
+function handleScroll() {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  if (scrollTop + clientHeight >= scrollHeight - 50) {
+    loadMoreItems();
+  }
+}
+
+onMounted(() => {
+  displayedMemeData.value = memeData.slice(0, initialLoad);
+  window.addEventListener("scroll", handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
-<script>
+<!-- <script>
 export default {
   data() {
     return {
@@ -365,7 +473,7 @@ export default {
     },
   },
 };
-</script>
+</script> -->
 
 <style scoped>
 .select-button-container {

@@ -94,7 +94,7 @@ function fileToBase64(file) {
 }
 
 .choose {
-  padding: 40px;
+  padding: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
