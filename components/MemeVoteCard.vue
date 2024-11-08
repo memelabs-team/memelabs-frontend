@@ -82,13 +82,6 @@ const voteNow = (memeDetail, daysLeft) => {
 </script>
 <style scoped>
 .meme-vote-card {
-  border-radius: 10px;
-  border: 1px solid #dfdfdf;
-  background: #fff;
-}
-
-.line-clamp-2 {
-  display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
   -webkit-line-clamp: 2; /* Limits the text to 2 lines */

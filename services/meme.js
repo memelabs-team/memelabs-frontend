@@ -79,6 +79,38 @@ async function fetchSendTransaction(requestBody) {
   }
 }
 
+async function sendVoteTransaction(id, answer) {
+  if (!checkWalletConnection()) {
+    alert("Please connect your wallet first.");
+    return;
+  }
+  try {
+    const response = await contract.vote(id, answer);
+
+    console.log("Create response:", response);
+
+    alert("Vote Transaction sent successfully!", response);
+  } catch (error) {
+    console.error("Error sending transaction:", error);
+  }
+}
+
+async function sendInvestTransaction(id, token, amount) {
+  if (!checkWalletConnection()) {
+    alert("Please connect your wallet first.");
+    return;
+  }
+  try {
+    const response = await contract.invest(id, token, amount);
+
+    console.log("Create response:", response);
+
+    alert("Invest Transaction sent successfully!", response);
+  } catch (error) {
+    console.error("Error sending transaction:", error);
+  }
+}
+
 async function fetchGetMemeProposal(status) {
   try {
     const response = await contract.getMemeProposalsByStatus(status);
