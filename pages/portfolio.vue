@@ -3,7 +3,7 @@
     <h2
       class="text-center font-inter text-5xl font-semibold tracking-tight mb-4"
     >
-      Portfolio
+      Profile
     </h2>
 
     <!-- Centered Selection Button -->
@@ -57,20 +57,19 @@
         </button>
       </div>
 
-      <SearchBar class="my-10" />
-
+      <SearchBar class="my-10" v-model:modelValue="searchInput" />
       <div
         class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
       >
         <MemeCard
-          v-for="(meme, index) in displayedMemeData"
+          v-for="(meme, index) in memeFromSearch"
           :key="index"
-          :title="meme.title"
-          :description="meme.description"
-          :mascotImage="meme.mascotImage"
-          :percentage="meme.percentage"
-          :marketCap="meme.marketCap"
-          :daysLeft="meme.daysLeft"
+          :title="meme.name"
+          :description="meme.memeStory"
+          :mascotImage="meme.logo"
+          :percentage="10"
+          :marketCap="10000"
+          :daysLeft="calculateDaysLeft(meme.startVotingAt)"
         />
       </div>
 
@@ -87,284 +86,94 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import Fuse from "fuse.js";
+import { useDataStore } from "~/stores/data";
+const dataStore = useDataStore();
 
-const memeOwnershipOptions = ["Owned", "Created", "Claimed"];
-const userActionOptions = ["My Meme", "My Vote"];
-const selectedMemeOwnership = ref("Owned");
-const selectedUserAction = ref("My Meme");
+const searchInput = ref("");
+const displayedMemeData = ref();
+
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll);
+
+  const userAddress = dataStore.contract.address
+    ? dataStore.contract.address.toLowerCase()
+    : "";
+
+  dataStore.getMemeListByUser(userAddress);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll);
+});
+
+const fuse = new Fuse(dataStore.myMemeList, {
+  threshold: 0.3,
+  keys: ["name"],
+});
+
+// Compute `memeFromSearch` based on `searchInput`
+const memeFromSearch = computed(() => {
+  if (searchInput.value.trim()) {
+    return fuse.search(searchInput.value).map((result) => result.item); // Retrieve matched items
+  }
+
+  return dataStore.myMemeList;
+});
+
+const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];
+const userActionOptions = ["Pending", "Complete"];
+const selectedMemeOwnership = ref("Created");
+const selectedUserAction = ref("Pending");
 
 const tokenData = [
   { title: "Token Owned", amount: "$100000" },
   { title: "Token Created", amount: "25000" },
   { title: "Total Trading Value", amount: "$20000" },
 ];
-</script>
 
-<script>
-export default {
-  data() {
-    return {
-      memeData: [
-        {
-          title: "Bark Bucks",
-          description:
-            "A coin to celebrate the ultimate loyal companion. Inspired by dog memes, it’s here to “fetch” you some laughs and profits!",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 2500,
-          daysLeft: 12,
-          percentage: 3000,
-        },
-        {
-          title: "Noodle Coin",
-          description:
-            "Noodle Coin is here to “stretch” your gains. Inspired by the endless noodle bowl memes, it’s a long and winding path to riches.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 4500,
-          daysLeft: 9,
-          percentage: 450,
-        },
-        {
-          title: "Astro Toast",
-          description:
-            "A toast to the stars! Launched for space lovers and breakfast enthusiasts, Astro Toast is for those who dare to dream…and eat carbs.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 3000,
-          daysLeft: 5,
-          percentage: 300,
-        },
-        {
-          title: "Meme-saur",
-          description:
-            "The ancient meme currency that’s making a comeback. Fossil-fueled with pure meme energy.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 1500,
-          daysLeft: 7,
-          percentage: 15,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: 15,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: 50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: 50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: 50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: 50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: 50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -10,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -15,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-        {
-          title: "Feline Finance",
-          description:
-            "Cat memes and crypto collide! Feline Finance aims to claw its way to the top of the meme food chain.",
-          mascotImage: "https://via.placeholder.com/160",
-          marketCap: 6500,
-          daysLeft: 2,
-          percentage: -50,
-        },
-      ],
-      displayedMemeData: [], // This will hold the memes currently displayed
-      itemsToLoad: 6, // Number of items to load at a time after initial load
-      initialLoad: 18, // Number of items to load initially
-      loading: false, // Loading state
-    };
-  },
-  created() {
-    // Load the initial set of items
-    this.displayedMemeData = this.memeData.slice(0, this.initialLoad);
+const loading = ref(false);
 
-    // Only add event listener if in the client environment
-    if (process.client) {
-      window.addEventListener("scroll", this.handleScroll);
-    }
-  },
-  destroyed() {
-    // Only remove event listener if in the client environment
-    if (process.client) {
-      window.removeEventListener("scroll", this.handleScroll);
-    }
-  },
-  computed: {
-    isLoadingVisible() {
-      // Hide loading if all items are loaded
-      return (
-        this.loading && this.displayedMemeData.length < this.memeData.length
-      );
-    },
-  },
-  methods: {
-    loadMoreItems() {
-      // If we're already loading or all items are loaded, skip further calls
-      if (this.loading || this.displayedMemeData.length >= this.memeData.length)
-        return;
+const memeData = ref([]);
 
-      this.loading = true;
+const itemsToLoad = 6;
 
-      // Simulate a delay for loading (e.g., API request delay)
-      setTimeout(() => {
-        const start = this.displayedMemeData.length;
-        const end = start + this.itemsToLoad;
+const isLoadingVisible = computed(() => {
+  return loading.value;
+});
 
-        // Add more items to displayedMemeData
-        this.displayedMemeData = this.displayedMemeData.concat(
-          this.memeData.slice(start, end)
-        );
+// Function to calculate days left based on startVotingAt date
+function calculateDaysLeft(startVotingAt) {
+  const now = new Date();
+  const endDate = new Date(startVotingAt);
+  const timeDiff = endDate - now;
+  return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+}
 
-        this.loading = false;
-      }, 1000); // Adjust delay as needed
-    },
-    handleScroll() {
-      // Check if the user is near the bottom of the page
-      const { scrollTop, scrollHeight, clientHeight } =
-        document.documentElement;
-      if (scrollTop + clientHeight >= scrollHeight - 50) {
-        this.loadMoreItems();
-      }
-    },
-  },
-};
+function loadMoreItems() {
+  if (loading.value) return;
+
+  loading.value = true;
+
+  setTimeout(() => {
+    const start = dataStore.myMemeList.length;
+    const end = start + itemsToLoad;
+
+    dataStore.myMemeList = [
+      ...dataStore.myMemeList,
+      ...memeData.slice(start, end),
+    ];
+
+    loading.value = false;
+  }, 1000);
+}
+
+function handleScroll() {
+  const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+  if (scrollTop + clientHeight >= scrollHeight - 50) {
+    // loadMoreItems();
+  }
+}
 </script>
 
 <style scoped>
