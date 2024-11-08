@@ -13,7 +13,7 @@
     >
       <MemeVoteCard
         v-for="meme in filteredMemeData"
-        :memeDetails="meme"
+        :memeDetail="meme"
         :daysLeft="calculateCountdown(meme.startVestingAt)"
       />
     </div>

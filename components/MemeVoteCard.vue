@@ -12,7 +12,7 @@
       class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 rounded-[68px] overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
     >
       <img
-        :src="memeDetails.logo || 'https://via.placeholder.com/160'"
+        :src="memeDetail.logo || 'https://via.placeholder.com/160'"
         alt="Mascot"
         class="w-full h-auto object-cover"
         @error="
@@ -22,7 +22,7 @@
 
       <button
         class="absolute bottom-0 h-7 bg-black text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform"
-        @click="voteNow(id)"
+        @click="voteNow(memeDetail, daysLeft)"
       >
         Vote Now
       </button>
@@ -31,10 +31,10 @@
     <!-- Card Text Content -->
     <div class="flex-1">
       <h3 class="text-xl font-semibold text-gray-800">
-        {{ memeDetails.name }}
+        {{ memeDetail.name }}
       </h3>
       <p class="text-gray-600 text-sm mt-2 line-clamp-2">
-        {{ memeDetails.memeStory }}
+        {{ memeDetail.memeStory }}
       </p>
 
       <!-- Voting Info -->
@@ -42,7 +42,7 @@
         class="voting-info flex justify-between text-sm font-medium text-gray-700 mt-4"
       >
         <span class="text-gray-800 font-semibold"
-          >{{ memeDetails.voteYes }}/100 Vote</span
+          >{{ memeDetail.voteYes }}/100 Vote</span
         >
         <span class="text-gray-800 font-semibold">{{ daysLeft }}</span>
       </div>
@@ -60,21 +60,26 @@
 
 <script setup>
 import { computed, defineProps } from "vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
-  memeDetails: { type: Object, required: true },
+  memeDetail: { type: Object, required: true },
   daysLeft: { type: String, required: true },
 });
 
+const router = useRouter();
+
 const progressPercentage = computed(
-  () => (props.memeDetails.voteYes / 100) * 100
+  () => (props.memeDetail.voteYes / 100) * 100
 );
 
-const voteNow = (id) => {
-  navigateTo(`/vote-detail/vote[${props.memeDetails.id}].vue`);
+const voteNow = (memeDetail, daysLeft) => {
+  router.push({
+    path: `/vote-detail/vote[${memeDetail.id}]`,
+    query: { memeDetail: JSON.stringify({ ...memeDetail, daysLeft }) },
+  });
 };
 </script>
-
 <style scoped>
 .meme-vote-card {
   border-radius: 10px;

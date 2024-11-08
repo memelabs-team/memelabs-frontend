@@ -14,7 +14,7 @@
     <div class="meme-container">
       <MemeVoteCard
         v-for="meme in filteredMemeProcess"
-        :memeDetails="meme"
+        :memeDetail="meme"
         :daysLeft="meme.countdown"
       />
     </div>
