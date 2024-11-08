@@ -290,7 +290,6 @@ watch(
 );
 
 function handleClickCreate() {
-  console.log(selectedAmount.value);
   memeData.value.memeRequirement.token = selectedToken.value.address;
   memeData.value.memeRequirement.amount = selectedAmount.value;
 
