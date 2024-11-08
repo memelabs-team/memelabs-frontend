@@ -3,7 +3,7 @@
     <h2
       class="text-center font-inter text-5xl font-semibold tracking-tight mb-4"
     >
-      Portfolio
+      Profile
     </h2>
 
     <!-- Centered Selection Button -->
@@ -121,10 +121,10 @@ const memeFromSearch = computed(() => {
   return dataStore.myMemeList;
 });
 
-const memeOwnershipOptions = ["Owned", "Created", "Claimed"];
-const userActionOptions = ["My Meme", "My Vote"];
-const selectedMemeOwnership = ref("Owned");
-const selectedUserAction = ref("My Meme");
+const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];
+const userActionOptions = ["Pending", "Complete"];
+const selectedMemeOwnership = ref("Created");
+const selectedUserAction = ref("Pending");
 
 const tokenData = [
   { title: "Token Owned", amount: "$100000" },

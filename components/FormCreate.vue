@@ -101,7 +101,7 @@
       <label class="input-text">
         Max Supply <span class="text-danger">*</span>
       </label>
-      <InputText v-model="memeData.supply" />
+      <InputNumber v-model="memeData.supply" />
       <Message class="mt-2" size="small" severity="secondary" variant="simple">
         The minimum amount needs to be greater than 1,000,000
       </Message>
@@ -216,9 +216,9 @@ const memeData = ref({
     token: "",
     amount: null,
     platformFeeRate: 5,
-    communityDropRate: 10,
+    communityDropRate: 2,
     liquidityRate: 20,
-    investorRate: 10,
+    investorRate: 18,
     ownerRate: 10,
     communityTreasuryRate: 50,
   },
@@ -284,12 +284,13 @@ watch(
   () => memeData.value.memeRequirement.amount,
   (newAmount) => {
     if (newAmount !== "2500" && newAmount !== "5000" && newAmount !== "10000") {
-      selectedAmount.value = null;
+      selectedAmount.value = newAmount;
     }
   }
 );
 
 function handleClickCreate() {
+  console.log(selectedAmount.value);
   memeData.value.memeRequirement.token = selectedToken.value.address;
   memeData.value.memeRequirement.amount = selectedAmount.value;
 
