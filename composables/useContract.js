@@ -1,10 +1,12 @@
-import { ref } from "vue";
 import { ethers } from "ethers";
 
-export function useContract(contractAddress, abi) {
+import abi from "../public/data/abi";
+const contractAddress = "0xf47f56A933eD6F9A7A195121d2c0aFCA845B1629";
+
+function useContract() {
   const contract = ref(null);
 
-  const initializeContract = async () => {
+  async function initializeContract() {
     if (
       typeof ethers === "undefined" ||
       typeof ethers.providers === "undefined"
@@ -17,14 +19,23 @@ export function useContract(contractAddress, abi) {
       try {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
+
         contract.value = new ethers.Contract(contractAddress, abi, signer);
+
+        console.log(
+          "The smart contract has been successfully renewed. :",
+          contract.value
+        );
+        return contract.value;
       } catch (error) {
         console.error("Error connecting to contract:", error);
       }
     } else {
       console.error("Ethereum provider not found. Install MetaMask.");
     }
-  };
+  }
 
-  return { contract, initializeContract };
+  return { initializeContract };
 }
+
+export default useContract;
