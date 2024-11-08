@@ -20,10 +20,16 @@
         <div class="w-full flex flex-col">
           <div class="mb-4">
             <div class="flex justify-between mb-2 text-sm">
-              <div class="font-bold">{{ memeDetail.voteYes }}/100 Vote</div>
-              <div class="text-xs">{{ memeDetail.daysLeft }}</div>
+              <div class="font-bold">
+                {{ parseInt(memeDetail.memeRequirement.amount).toFixed(0) }}/
+                {{
+                  parseInt(memeDetail.memeRequirement.amount).toFixed(0)
+                }}
+                Vote
+              </div>
+              <span>Complete</span>
             </div>
-            <ProgressBar :value="memeDetail.voteYes" :showValue="false" />
+            <ProgressBar :value="100" :showValue="false" />
           </div>
 
           <div class="flex justify-between mt-4 gap-2">
@@ -42,29 +48,47 @@
         <div class="grid grid-cols-2 gap-5">
           <div>
             <div class="text-gray-600 font-semibold text-sm">Token Name</div>
-            <div>{{ memeDetail.name }}</div>
+            <div
+              class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {{ memeDetail.name }}
+            </div>
           </div>
           <div>
             <div class="text-gray-600 font-semibold text-sm">Ticker Symbol</div>
-            <div>{{ memeDetail.symbol }}</div>
+            <div
+              class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {{ memeDetail.symbol }}
+            </div>
           </div>
         </div>
 
         <!-- Meme Story -->
         <div>
           <div class="text-gray-600 font-semibold text-sm">Meme Story</div>
-          <div>{{ memeDetail.memeStory }}</div>
+          <div class="truncate overflow-hidden text-ellipsis whitespace-nowrap">
+            {{ memeDetail.memeStory }}
+          </div>
         </div>
 
         <!-- Financial Information -->
         <div class="grid grid-cols-2 gap-5">
           <div>
             <div class="text-gray-600 font-semibold text-sm">Raised Token</div>
-            <div>USDT</div>
+            <div
+              class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              USDT
+            </div>
           </div>
           <div>
             <div class="text-gray-600 font-semibold text-sm">Raised Amount</div>
-            <div>${{ memeDetail.memeRequirement.amount }}</div>
+            <div
+              class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              ${{ memeDetail.memeRequirement.amount }}
+            </div>
           </div>
         </div>
 
@@ -75,7 +99,7 @@
             <div>
               <a
                 :href="memeDetail.socialChannel.website"
-                class="text-blue-500 hover:underline"
+                class="text-blue-500 hover:underline truncate overflow-hidden text-ellipsis whitespace-nowrap block"
               >
                 {{ memeDetail.socialChannel.website || "-" }}
               </a>
@@ -86,7 +110,7 @@
             <div>
               <a
                 :href="memeDetail.socialChannel.X"
-                class="text-blue-500 hover:underline"
+                class="text-blue-500 hover:underline truncate overflow-hidden text-ellipsis whitespace-nowrap block"
               >
                 {{ memeDetail.socialChannel.X || "-" }}
               </a>
@@ -98,11 +122,19 @@
         <div class="grid grid-cols-2 gap-5">
           <div>
             <div class="text-gray-600 font-semibold text-sm">Telegram</div>
-            <div>{{ memeDetail.socialChannel.telegram || "-" }}</div>
+            <div
+              class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {{ memeDetail.socialChannel.telegram || "-" }}
+            </div>
           </div>
           <div>
             <div class="text-gray-600 font-semibold text-sm">Max Supply</div>
-            <div>{{ memeDetail.supply }}</div>
+            <div
+              class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {{ memeDetail.supply }}
+            </div>
           </div>
         </div>
       </div>
