@@ -6,20 +6,15 @@
         <Button
           label="View All"
           severity="secondary"
-          @click="handleClickViewAll"
+          @click="navigateTo(`/meme-vote`)"
         />
       </div>
     </div>
     <Divider />
     <div class="meme-container">
-      <!-- Render MemeVoteCard components using filteredMemeProcess data -->
       <MemeVoteCard
-        v-for="(meme, index) in filteredMemeProcess"
-        :key="index"
-        :title="meme.name"
-        :description="meme.memeStory"
-        :mascotImage="meme.logo"
-        :votes="meme.voteYes"
+        v-for="meme in filteredMemeProcess"
+        :memeDetails="meme"
         :daysLeft="meme.countdown"
       />
     </div>
