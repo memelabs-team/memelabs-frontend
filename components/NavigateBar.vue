@@ -2,13 +2,9 @@
   <div class="bg-white shadow-md">
     <Menubar :model="items">
       <template #start>
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2" @click="handleClickHome">
           <IconMemeLabIcon />
-          <span
-            class="text-xl font-bold cursor-pointer"
-            @click="handleClickHome"
-            >MemeLabs</span
-          >
+          <span class="text-xl font-bold cursor-pointer">MemeLabs</span>
         </div>
       </template>
 
