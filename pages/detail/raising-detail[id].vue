@@ -22,9 +22,7 @@
             <div class="flex justify-between mb-2 text-sm">
               <div class="font-bold">
                 {{ parseInt(memeDetail.memeRequirement.amount).toFixed(0) }}/
-                {{
-                  parseInt(memeDetail.memeRequirement.amount).toFixed(0)
-                }}
+                {{ parseInt(memeDetail.memeRequirement.amount).toFixed(0) }}
                 Vote
               </div>
               <span>Complete</span>
@@ -73,7 +71,7 @@
         </div>
 
         <!-- Financial Information -->
-        <div class="grid grid-cols-2 gap-5">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-5">
           <div>
             <div class="text-gray-600 font-semibold text-sm">Raised Token</div>
             <div
@@ -87,45 +85,7 @@
             <div
               class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              ${{ memeDetail.memeRequirement.amount }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Social Links -->
-        <div class="grid grid-cols-2 gap-5">
-          <div>
-            <div class="text-gray-600 font-semibold text-sm">Website</div>
-            <div>
-              <a
-                :href="memeDetail.socialChannel.website"
-                class="text-blue-500 hover:underline truncate overflow-hidden text-ellipsis whitespace-nowrap block"
-              >
-                {{ memeDetail.socialChannel.website || "-" }}
-              </a>
-            </div>
-          </div>
-          <div>
-            <div class="text-gray-600 font-semibold text-sm">X</div>
-            <div>
-              <a
-                :href="memeDetail.socialChannel.X"
-                class="text-blue-500 hover:underline truncate overflow-hidden text-ellipsis whitespace-nowrap block"
-              >
-                {{ memeDetail.socialChannel.X || "-" }}
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Additional Information -->
-        <div class="grid grid-cols-2 gap-5">
-          <div>
-            <div class="text-gray-600 font-semibold text-sm">Telegram</div>
-            <div
-              class="truncate overflow-hidden text-ellipsis whitespace-nowrap"
-            >
-              {{ memeDetail.socialChannel.telegram || "-" }}
+              {{ parseInt(memeDetail.memeRequirement.amount).toFixed(0) }}
             </div>
           </div>
           <div>
