@@ -1,23 +1,27 @@
 <template>
   <div>
-    <div class="header-box">
-      <div class="header-title">
-        Meme Raising
+    <div class="flex flex-col sm:flex-row sm:justify-between p-4 gap-4">
+      <div class="flex items-center justify-between lg:justify-start gap-4">
+        <div class="text-2xl lg:text-4xl font-bold">Meme Raising</div>
+
         <Button
-          class="ml-8"
           label="View All"
           severity="secondary"
           @click="navigateTo(`/meme-listed`)"
         />
       </div>
-      <div class="search-box">
-        <SearchBar />
-      </div>
+
+      <SearchBar />
     </div>
-    <Divider />
-    <div class="meme-container">
+
+    <Divider class="my-4" />
+
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 py-4"
+    >
       <MemeListedCard
         v-for="(meme, index) in memeMinted"
+        :key="index"
         :memeDetail="meme"
         :daysLeft="calculateCountdown(meme.startVestingAt)"
       />
@@ -43,22 +47,3 @@ function calculateCountdown(startVotingAt) {
   return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 }
 </script>
-
-<style lang="scss" scoped>
-.header-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.header-title {
-  font-weight: bold;
-  font-size: 30px;
-}
-
-.meme-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 36px;
-}
-</style>

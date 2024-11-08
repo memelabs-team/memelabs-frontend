@@ -3,7 +3,7 @@
     <!-- Input Field -->
     <InputText
       :value="modelValue"
-      class="w-[470px] h-12 px-4"
+      class="w-full max-w-[470px] h-12 px-4"
       style="border-radius: 25px"
       placeholder="Search Meme"
       @input="handleInput"

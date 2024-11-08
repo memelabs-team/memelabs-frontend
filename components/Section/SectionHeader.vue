@@ -1,14 +1,20 @@
 <template>
-  <div class="section">
-    <div class="header-title">Meme Labs</div>
-    <div class="subtitile">
-      Jumpstart Your Meme with IMO(Initial Meme Offering): Secure, Simple, and
+  <div class="text-center p-4">
+    <div
+      class="font-bold text-4xl sm:text-6xl md:text-8xl lg:text-[120px] leading-tight"
+    >
+      Meme Labs
+    </div>
+
+    <div class="text-base sm:text-lg text-gray-600 my-4 sm:my-6 lg:my-8">
+      Jumpstart Your Meme with IMO (Initial Meme Offering): Secure, Simple, and
       <br />
       Community-Powered from Day One!
     </div>
-    <div class="create-button">
+
+    <div class="mt-10 lg:mt-16">
       <Button
-        class="button-item"
+        class="min-w-[260px] px-6 py-3 shadow-lg"
         label="Create Meme"
         @click="handleClickCreate"
         rounded
@@ -22,30 +28,3 @@ function handleClickCreate() {
   navigateTo("/create");
 }
 </script>
-
-<style lang="scss" scoped>
-.section {
-  text-align: center;
-}
-
-.header-title {
-  font-weight: bold;
-  font-size: 120px;
-}
-
-.subtitile {
-  font-size: 16px;
-  color: #5f5f5f;
-  margin: 20px 0 40px 0;
-}
-
-.create-button {
-  margin-top: 60px;
-}
-
-.button-item {
-  min-width: 260px;
-  padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-}
-</style>
