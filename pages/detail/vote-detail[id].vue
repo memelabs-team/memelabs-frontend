@@ -69,7 +69,7 @@
         <div class="grid grid-cols-2 gap-5">
           <div>
             <div class="text-gray-600 font-semibold text-sm">Raised Token</div>
-            <div>{{ memeDetail.memeRequirement.token }}</div>
+            <div>USDT</div>
           </div>
           <div>
             <div class="text-gray-600 font-semibold text-sm">Raised Amount</div>

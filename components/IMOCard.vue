@@ -1,7 +1,7 @@
 <template>
   <div
     class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
-    @click="voteNow(memeDetail, daysLeft)"
+    @click="raiseFundMeme(memeDetail, daysLeft)"
   >
     <!-- Binance Logo in Top Right Corner -->
     <div class="absolute top-4 right-4">
@@ -60,7 +60,8 @@
 
 <script setup>
 import { computed, defineProps } from "vue";
-
+import { useRouter } from "vue-router";
+const router = useRouter();
 const props = defineProps({
   memeDetail: { type: Object, required: true },
   daysLeft: { type: String, required: true },
@@ -71,9 +72,9 @@ const progressPercentage = computed(
     (props.memeDetail.risedAmount / props.memeDetail.memeRequirement.amount) *
     100
 );
-const voteNow = (memeDetail, daysLeft) => {
+const raiseFundMeme = (memeDetail, daysLeft) => {
   router.push({
-    path: `/vote-detail/vote[${memeDetail.id}]`,
+    path: `/detail/imo-detail[${memeDetail.id}]`,
     query: { memeDetail: JSON.stringify({ ...memeDetail, daysLeft }) },
   });
 };

@@ -75,7 +75,7 @@ const progressPercentage = computed(
 
 const voteNow = (memeDetail, daysLeft) => {
   router.push({
-    path: `/vote-detail/vote[${memeDetail.id}]`,
+    path: `/detail/vote-detail[${memeDetail.id}]`,
     query: { memeDetail: JSON.stringify({ ...memeDetail, daysLeft }) },
   });
 };

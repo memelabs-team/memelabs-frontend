@@ -2,7 +2,7 @@
   <SectionHeader class="mt-16" />
   <div class="p-28 space-y-28">
     <SectionMemeVote :memeProcess="dataStore.memeProcess" />
-    <SectionInitialMemeOffering :memeProcess="dataStore.memeProcess" />
+    <SectionIMO :memeProcess="dataStore.memeProcess" />
     <SectionMemeraising :memeMinted="dataStore.memeMinted" />
   </div>
 </template>
