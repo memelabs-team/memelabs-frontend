@@ -16,6 +16,7 @@
       <MemeVoteCard
         v-for="(meme, index) in filteredMemeProcess"
         :key="index"
+        :id="meme.id"
         :title="meme.name"
         :description="meme.memeStory"
         :mascotImage="meme.logo"

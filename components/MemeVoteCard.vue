@@ -24,7 +24,7 @@
         class="absolute bottom-0 h-7 bg-black text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform"
         @click="voteNow"
       >
-        Vote Now
+        Vote Now 
       </button>
     </div>
 
@@ -54,8 +54,10 @@
 
 <script setup>
 import { computed, defineProps } from "vue";
+import { sendVoteTransaction } from "../services/meme.js";
 
 const props = defineProps({
+  id: { type: Number, required: true },
   title: { type: String, required: true },
   description: { type: String, required: true },
   mascotImage: { type: String, required: true },
@@ -65,8 +67,11 @@ const props = defineProps({
 
 const progressPercentage = computed(() => (props.votes / 100) * 100);
 
-const voteNow = () => {
-  alert(`You voted for ${props.title}!`);
+const voteNow = async () => {
+  // alert(`You voted for ${props.title}!`);
+  //0= YES
+  //1= NO
+  await sendVoteTransaction(props.id, 0);
 };
 </script>
 
