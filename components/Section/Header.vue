@@ -25,7 +25,6 @@ function handleClickCreate() {
 
 <style lang="scss" scoped>
 .section {
-  padding: 60px;
   text-align: center;
 }
 

@@ -1,8 +1,10 @@
 <template>
-  <div class="p-5 md:p-10 flex flex-col w-full mx-auto">
-    <div class="text-2xl md:text-4xl text-center font-semibold mb-6 md:mb-9">
+  <div class="flex h-36 mb-4 flex-col justify-center">
+    <h2 class="text-center font-inter text-5xl font-semibold tracking-tight">
       Vote Detail
-    </div>
+    </h2>
+  </div>
+  <div class="p-5 md:p-10 flex flex-col w-full mx-auto">
     <div
       class="border border-gray-200 rounded-lg p-6 md:p-14 flex flex-col md:flex-row gap-6 md:gap-12"
     >
@@ -11,7 +13,7 @@
         <div class="flex justify-center mb-5 md:mb-7">
           <img
             class="w-36 h-36 md:w-48 md:h-48 rounded-full"
-            :src="memeDetail.logo"
+            :src="memeDetail.logo || 'https://via.placeholder.com/160'"
             alt="meme-image"
           />
         </div>

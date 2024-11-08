@@ -1,18 +1,23 @@
 <template>
   <div>
     <div class="header-box">
-      <div class="header-title">Meme Vote</div>
-      <div class="view-all-button">
+      <div class="header-title">
+        Initial Meme Offering
         <Button
+          class="ml-8"
           label="View All"
           severity="secondary"
-          @click="navigateTo(`/meme-vote`)"
+          @click="navigateTo(`/initial-meme-offering`)"
         />
+      </div>
+
+      <div class="search-box">
+        <SearchBar />
       </div>
     </div>
     <Divider />
     <div class="meme-container">
-      <MemeVoteCard
+      <IMOCard
         v-for="meme in filteredMemeProcess"
         :memeDetail="meme"
         :daysLeft="meme.countdown"

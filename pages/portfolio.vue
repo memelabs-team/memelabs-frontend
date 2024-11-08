@@ -61,7 +61,7 @@
       <div
         class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
       >
-        <MemeCard
+        <MemeListedCard
           v-for="(meme, index) in memeFromSearch"
           :key="index"
           :title="meme.name"

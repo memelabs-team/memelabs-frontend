@@ -1,5 +1,5 @@
 <template>
-  <div class="section">
+  <div>
     <div class="header-box">
       <div class="header-title">Meme Raising</div>
       <div class="search-box">
@@ -8,7 +8,7 @@
     </div>
     <Divider />
     <div class="meme-container">
-      <MemeCard
+      <MemeListedCard
         v-for="(meme, index) in memeMinted"
         :key="index"
         :title="meme.name"
@@ -42,10 +42,6 @@ function calculateDaysLeft(startVotingAt) {
 </script>
 
 <style lang="scss" scoped>
-.section {
-  padding: 80px;
-}
-
 .header-box {
   display: flex;
   flex-direction: row;
@@ -58,9 +54,8 @@ function calculateDaysLeft(startVotingAt) {
 }
 
 .meme-container {
-  margin: 40px 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 20px 15px;
+  gap: 36px;
 }
 </style>
