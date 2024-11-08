@@ -37,9 +37,22 @@ async function getMemeListByStatus(status) {
   // Handle the response and display the meme list to the user
 }
 
+function getMemeListByUser(userAddress) {
+  const dataStore = useDataStore();
+  const memes = dataStore.memeProcess;
+
+  dataStore.myMemeList = memes.filter((meme) => {
+    if (meme.owner.toLowerCase() === userAddress) {
+      return true;
+    }
+  });
+  console.log("My Meme List:", dataStore.myMemeList);
+}
+
 export default {
   getUserContract,
   disconnectUser,
   createMeme,
   getMemeListByStatus,
+  getMemeListByUser,
 };
