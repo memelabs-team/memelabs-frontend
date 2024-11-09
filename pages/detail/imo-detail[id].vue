@@ -31,6 +31,10 @@
                 }}
                 USDT
               </span>
+
+              <span class="text-gray-800 font-semibold">
+                {{ countdown }}
+              </span>
             </div>
             <!-- Progress Bar -->
             <div class="progress-bar w-full h-2 bg-gray-200 rounded-full mt-2">
@@ -146,4 +150,24 @@ function approve() {
 function purchase() {
   alert("Purchase");
 }
+
+// Countdown until voting starts
+const countdown = ref("");
+const timeLeft = ref(0);
+
+const updateCountdown = () => {
+  const startInvestmentAt = new Date(
+    memeDetail.value.startInvestmentAt
+  ).getTime();
+
+  timeLeft.value = startInvestmentAt - Date.now();
+
+  countdown.value =
+    timeLeft.value > 0 ? formatTime(timeLeft.value) : "Voting started!";
+};
+
+onMounted(() => {
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
 </script>

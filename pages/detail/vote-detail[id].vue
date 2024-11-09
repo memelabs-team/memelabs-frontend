@@ -21,6 +21,9 @@
           <div class="mb-4">
             <div class="flex justify-between mb-2 text-sm">
               <div class="font-bold">{{ memeDetail.voteYes }}/100 Vote</div>
+              <span class="text-gray-800 font-semibold">
+                {{ countdown }}
+              </span>
             </div>
             <ProgressBar :value="memeDetail.voteYes" :showValue="false" />
           </div>
@@ -195,4 +198,24 @@ async function voteNo(id, status) {
     console.error("Error voting No:", error);
   }
 }
+
+// Countdown until voting starts
+const countdown = ref("");
+const timeLeft = ref(0);
+
+const updateCountdown = () => {
+  const startInvestmentAt = new Date(
+    memeDetail.value.startInvestmentAt
+  ).getTime();
+
+  timeLeft.value = startInvestmentAt - Date.now();
+
+  countdown.value =
+    timeLeft.value > 0 ? formatTime(timeLeft.value) : "Voting started!";
+};
+
+onMounted(() => {
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
 </script>
