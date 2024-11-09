@@ -9,9 +9,9 @@
 
     <!-- Meme Vote Card Grid -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
+      class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
     >
-      <CardIMOCard v-for="meme in filteredMemeData" :memeDetail="meme" />
+      <CardIMOCard v-for="meme in displayedMemeData" :memeDetail="meme" />
     </div>
 
     <!-- Loading Spinner -->
@@ -34,13 +34,6 @@ const displayedMemeData = ref([]);
 const loading = ref(false);
 const itemsToLoad = 6;
 const initialLoad = 18;
-
-// Computed property to filter memes with valid days left
-const filteredMemeData = computed(() => {
-  return displayedMemeData.value.filter(
-    (meme) => calculateCountdown(meme.startVestingAt) !== "0d: 0h: 0m: 0s"
-  );
-});
 
 // Computed properties for loading state visibility
 const isLoadingVisible = computed(() => {

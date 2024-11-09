@@ -9,6 +9,9 @@
           :src="memeDetail.logo || 'https://via.placeholder.com/160'"
           alt="Mascot"
           class="w-full h-full object-cover max-w-20 max-h-20 rounded-full"
+          @error="
+            (event) => (event.target.src = 'https://via.placeholder.com/160')
+          "
         />
         <h3 class="text-2xl font-semibold text-gray-800">
           {{ memeDetail.symbol }}
