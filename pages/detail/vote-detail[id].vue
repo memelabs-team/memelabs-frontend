@@ -1,8 +1,10 @@
 <template>
-  <div class="p-5 md:p-10 flex flex-col w-full mx-auto">
-    <div class="text-2xl md:text-4xl text-center font-semibold mb-6 md:mb-9">
+  <div class="flex h-36 mb-4 flex-col justify-center">
+    <h2 class="text-center font-inter text-5xl font-semibold tracking-tight">
       Vote Detail
-    </div>
+    </h2>
+  </div>
+  <div class="p-5 md:p-10 flex flex-col w-full mx-auto">
     <div
       class="border border-gray-200 rounded-lg p-6 md:p-14 flex flex-col md:flex-row gap-6 md:gap-12"
     >
@@ -11,7 +13,7 @@
         <div class="flex justify-center mb-5 md:mb-7">
           <img
             class="w-36 h-36 md:w-48 md:h-48 rounded-full"
-            :src="memeDetail.logo"
+            :src="memeDetail.logo || 'https://via.placeholder.com/160'"
             alt="meme-image"
           />
         </div>
@@ -63,66 +65,72 @@
           <div>{{ memeDetail.memeStory }}</div>
         </div>
 
-        <!-- Financial Information -->
-        <div class="grid grid-cols-2 gap-5">
-          <div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-5">
+          <div class="truncate-text">
             <div class="text-gray-600 font-semibold text-sm">Raised Token</div>
-            <div>{{ memeDetail.memeRequirement.token }}</div>
+            <div class="flex items-center gap-2">
+              <img src="/images/usdt-icon.svg" alt="Binance Logo" />
+              <span>USDT</span>
+            </div>
           </div>
-          <div>
+          <div class="truncate-text">
             <div class="text-gray-600 font-semibold text-sm">Raised Amount</div>
-            <div>${{ memeDetail.memeRequirement.amount }}</div>
+            <div
+              class="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              ${{ parseInt(memeDetail.memeRequirement.amount).toFixed(0) }}
+            </div>
           </div>
-        </div>
-
-        <!-- Social Links -->
-        <div class="grid grid-cols-2 gap-5">
-          <div>
+          <div class="truncate-text">
+            <div class="text-gray-600 font-semibold text-sm">Max Supply</div>
+            <div
+              class="max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {{ memeDetail.supply }}
+            </div>
+          </div>
+          <div class="truncate-text">
             <div class="text-gray-600 font-semibold text-sm">Website</div>
             <div>
               <a
                 :href="memeDetail.socialChannel.website"
-                class="text-blue-500 hover:underline"
+                class="text-blue-500 hover:underline max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap block"
               >
                 {{ memeDetail.socialChannel.website || "-" }}
               </a>
             </div>
           </div>
-          <div>
+          <div class="truncate-text">
             <div class="text-gray-600 font-semibold text-sm">X</div>
             <div>
               <a
                 :href="memeDetail.socialChannel.X"
-                class="text-blue-500 hover:underline"
+                class="text-blue-500 hover:underline max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap block"
               >
                 {{ memeDetail.socialChannel.X || "-" }}
               </a>
             </div>
           </div>
-        </div>
-
-        <!-- Additional Information -->
-        <div class="grid grid-cols-2 gap-5">
-          <div>
+          <div class="truncate-text">
             <div class="text-gray-600 font-semibold text-sm">Telegram</div>
-            <div>{{ memeDetail.socialChannel.telegram || "-" }}</div>
-          </div>
-          <div>
-            <div class="text-gray-600 font-semibold text-sm">Max Supply</div>
-            <div>{{ memeDetail.supply }}</div>
+            <div
+              class="max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {{ memeDetail.socialChannel.telegram || "-" }}
+            </div>
           </div>
         </div>
 
         <!-- Distribution Section -->
-        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
           <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-sm">Platform Fee</div>
+            <div class="text-gray-600 font-semibold text-xs">Platform Fee</div>
             <div class="text-2xl font-bold">
               {{ memeDetail.memeRequirement.platformFeeRate }}%
             </div>
           </div>
           <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-sm">
+            <div class="text-gray-600 font-semibold text-xs">
               Community Drop
             </div>
             <div class="text-2xl font-bold">
@@ -130,7 +138,7 @@
             </div>
           </div>
           <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-sm">
+            <div class="text-gray-600 font-semibold text-xs">
               Liquidity Provider
             </div>
             <div class="text-2xl font-bold">
@@ -138,19 +146,19 @@
             </div>
           </div>
           <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-sm">Investor</div>
+            <div class="text-gray-600 font-semibold text-xs">Investor</div>
             <div class="text-2xl font-bold">
               {{ memeDetail.memeRequirement.investorRate }}%
             </div>
           </div>
           <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-sm">Owner</div>
+            <div class="text-gray-600 font-semibold text-xs">Owner</div>
             <div class="text-2xl font-bold">
               {{ memeDetail.memeRequirement.ownerRate }}%
             </div>
           </div>
           <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-sm">Treasury</div>
+            <div class="text-gray-600 font-semibold text-xs">Treasury</div>
             <div class="text-2xl font-bold">
               {{ memeDetail.memeRequirement.communityTreasuryRate }}%
             </div>

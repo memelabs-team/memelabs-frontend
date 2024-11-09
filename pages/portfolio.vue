@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex-col justify-center mb-12 bg-[#ECECEC] gap-12 py-20">
+  <div
+    class="flex flex-col justify-center mb-12 bg-[#ECECEC] gap-12 py-20 px-4 sm:px-6 md:px-8"
+  >
     <h2
       class="text-center font-inter text-5xl font-semibold tracking-tight mb-4"
     >
@@ -8,13 +10,15 @@
 
     <!-- Centered Selection Button -->
     <div class="flex justify-center">
-      <div class="select-button-container w-2/3">
+      <div class="flex bg-white h-14 rounded-full max-w-[600px] w-full mx-auto">
         <button
           v-for="option in memeOwnershipOptions"
           :key="option"
           :class="[
-            'select-button',
-            { active: selectedMemeOwnership === option },
+            'flex-1 h-full font-semibold text-xs sm:text-lg sm:px-4 sm:py-3 w-full rounded-full transition-colors duration-300',
+            selectedMemeOwnership === option
+              ? 'bg-black text-white'
+              : 'bg-white text-black',
           ]"
           @click="selectedMemeOwnership = option"
         >
@@ -26,30 +30,17 @@
 
   <!-- Card Grid Container -->
   <div class="px-4 md:mx-12 lg:mx-16 xl:mx-24">
-    <!-- Token Cards -->
-    <div class="grid gap-4 lg:gap-10 grid-cols-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div
-        v-for="(item, index) in tokenData"
-        :key="index"
-        :class="
-          index === 0
-            ? 'col-span-4 sm:col-span-1'
-            : 'col-span-2 sm:col-span-1 lg:col-span-1'
-        "
-      >
-        <TokenCard :title="item.title" :amount="item.amount" />
-      </div>
-    </div>
-
     <!-- Content Section -->
     <div class="mt-8">
-      <div class="action-button-container">
+      <div class="flex border-b border-gray-300">
         <button
           v-for="option in userActionOptions"
           :key="option"
           :class="[
-            'custom-button',
-            { selected: option === selectedUserAction },
+            'px-5 py-2 text-xl font-semibold transition-colors duration-300',
+            option === selectedUserAction
+              ? 'text-black font-bold border-b-2 border-black'
+              : 'text-gray-500',
           ]"
           @click="selectedUserAction = option"
         >
@@ -58,25 +49,21 @@
       </div>
 
       <SearchBar class="my-10" v-model:modelValue="searchInput" />
+
+      <!-- Meme Listed Cards -->
       <div
         class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
       >
-        <MemeCard
+        <MemeListedCard
           v-for="(meme, index) in memeFromSearch"
-          :key="index"
-          :title="meme.name"
-          :description="meme.memeStory"
-          :mascotImage="meme.logo"
-          :percentage="10"
-          :marketCap="10000"
-          :daysLeft="calculateDaysLeft(meme.startVotingAt)"
+          :memeDetail="meme"
         />
       </div>
 
       <!-- Loading Spinner -->
       <div v-if="isLoadingVisible" class="flex justify-center my-8">
         <span
-          class="text-[#DFDFDF] text-center font-inter text-[27px] font-semibold leading-[30px]"
+          class="text-[#DFDFDF] text-center font-inter text-xl font-semibold"
         >
           Loading...
         </span>
@@ -86,69 +73,60 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import Fuse from "fuse.js";
-import { useDataStore } from "~/stores/data";
+import { useDataStore } from "../stores/data/store.js";
+
 const dataStore = useDataStore();
-
 const searchInput = ref("");
-const displayedMemeData = ref();
+const loading = ref(false);
+const memeData = ref([]);
+const itemsToLoad = 6;
+const selectedMemeOwnership = ref("Created");
+const selectedUserAction = ref("Pending");
+const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];
+const userActionOptions = ["Pending", "Complete"];
 
-onMounted(() => {
+const fuse = ref(null);
+
+// Fetch user meme list on component mount
+onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
 
-  const userAddress = dataStore.contract.address
-    ? dataStore.contract.address.toLowerCase()
-    : "";
-
-  dataStore.getMemeListByUser(userAddress);
+  // Initialize Fuse search with the fetched data
+  fuse.value = new Fuse(dataStore.memeMinted, {
+    threshold: 0.3,
+    keys: ["name"],
+  });
 });
 
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-const fuse = new Fuse(dataStore.myMemeList, {
-  threshold: 0.3,
-  keys: ["name"],
-});
+// Watch for changes in memeMinted to update Fuse search
+watch(
+  () => dataStore.memeMinted,
+  (newList) => {
+    fuse.value = new Fuse(newList, {
+      threshold: 0.3,
+      keys: ["name"],
+    });
+  },
+  { immediate: true }
+);
 
-// Compute `memeFromSearch` based on `searchInput`
+// Compute memeFromSearch based on searchInput
 const memeFromSearch = computed(() => {
   if (searchInput.value.trim()) {
-    return fuse.search(searchInput.value).map((result) => result.item); // Retrieve matched items
+    return fuse.value.search(searchInput.value).map((result) => result.item);
   }
-
-  return dataStore.myMemeList;
+  return dataStore.memeMinted;
 });
-
-const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];
-const userActionOptions = ["Pending", "Complete"];
-const selectedMemeOwnership = ref("Created");
-const selectedUserAction = ref("Pending");
-
-const tokenData = [
-  { title: "Token Owned", amount: "$100000" },
-  { title: "Token Created", amount: "25000" },
-  { title: "Total Trading Value", amount: "$20000" },
-];
-
-const loading = ref(false);
-
-const memeData = ref([]);
-
-const itemsToLoad = 6;
 
 const isLoadingVisible = computed(() => {
   return loading.value;
 });
-
-// Function to calculate days left based on startVotingAt date
-function calculateDaysLeft(startVotingAt) {
-  const now = new Date();
-  const endDate = new Date(startVotingAt);
-  const timeDiff = endDate - now;
-  return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-}
 
 function loadMoreItems() {
   if (loading.value) return;
@@ -156,11 +134,11 @@ function loadMoreItems() {
   loading.value = true;
 
   setTimeout(() => {
-    const start = dataStore.myMemeList.length;
+    const start = dataStore.memeMinted.length;
     const end = start + itemsToLoad;
 
-    dataStore.myMemeList = [
-      ...dataStore.myMemeList,
+    dataStore.memeMinted = [
+      ...dataStore.memeMinted,
       ...memeData.slice(start, end),
     ];
 
@@ -175,63 +153,3 @@ function handleScroll() {
   }
 }
 </script>
-
-<style scoped>
-.select-button-container {
-  display: flex;
-  background-color: #ffffff;
-  border-radius: 9999px;
-  height: 60px;
-}
-
-.select-button {
-  flex: 1;
-  padding: 12px 24px;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  background: white;
-  color: black;
-  border-radius: 9999px;
-  transition: background-color 0.3s, color 0.3s;
-  cursor: pointer;
-}
-
-.select-button.active {
-  background-color: black;
-  color: white;
-}
-
-.action-button-container {
-  display: flex;
-  border-bottom: 1px solid #e0e0e0; /* เส้นบางๆ ใต้กลุ่มปุ่ม */
-}
-
-.custom-button {
-  background: none;
-  border: none;
-  padding: 10px 20px;
-  font-size: 26px;
-  font-weight: 600;
-  color: #888;
-  cursor: pointer;
-  outline: none;
-  transition: color 0.3s ease;
-  position: relative;
-}
-
-.custom-button.selected {
-  color: black;
-  font-weight: bold;
-}
-
-.custom-button.selected::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: black; /* สีของเส้นใต้ */
-}
-</style>

@@ -1,8 +1,8 @@
 <template>
-  <div class="section">
-    <div class="header-box">
-      <div class="header-title">Meme Vote</div>
-      <div class="view-all-button">
+  <div>
+    <div class="flex justify-between items-center p-4">
+      <div class="text-2xl sm:text-4xl font-bold">Meme Vote</div>
+      <div class="mt-4 sm:mt-0">
         <Button
           label="View All"
           severity="secondary"
@@ -10,10 +10,13 @@
         />
       </div>
     </div>
+
     <Divider />
-    <div class="meme-container">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-4">
       <MemeVoteCard
         v-for="meme in filteredMemeProcess"
+        :key="meme.id"
         :memeDetail="meme"
         :daysLeft="meme.countdown"
       />
@@ -62,7 +65,7 @@ function calculateCountdown(startVestingAt) {
 function updateCountdowns() {
   countdowns.value = props.memeProcess.map((meme) => ({
     ...meme,
-    countdown: calculateCountdown(meme.startVestingAt),
+    countdown: calculateCountdown(meme.startInvestmentAt),
   }));
 }
 
@@ -81,27 +84,3 @@ onMounted(() => {
   });
 });
 </script>
-
-<style lang="scss" scoped>
-.section {
-  padding: 80px 80px 40px 80px;
-}
-
-.header-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.header-title {
-  font-weight: bold;
-  font-size: 30px;
-}
-
-.meme-container {
-  margin: 40px 0 20px 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-  gap: 10px;
-}
-</style>

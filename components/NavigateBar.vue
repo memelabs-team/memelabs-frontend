@@ -1,44 +1,61 @@
 <template>
-  <div class="card">
+  <div class="bg-white shadow-md">
     <Menubar :model="items">
       <template #start>
-        <div class="logo-box">
+        <div class="flex items-center space-x-2" @click="handleClickHome">
           <IconMemeLabIcon />
-          <span class="home-title" @click="handleClickHome">MemeLabs</span>
+          <span class="text-xl font-bold cursor-pointer">MemeLabs</span>
         </div>
       </template>
+
       <template #item="{ item, props, hasSubmenu, root }">
-        <a v-ripple class="flex items-center" v-bind="props.action">
+        <a
+          v-ripple
+          class="flex items-center text-gray-800 hover:text-blue-600"
+          v-bind="props.action"
+        >
           <span>{{ item.label }}</span>
           <span
             v-if="item.shortcut"
-            class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1"
-            >{{ item.shortcut }}</span
+            class="ml-auto border border-gray-300 rounded bg-gray-100 text-gray-500 text-xs px-2 py-0.5"
           >
+            {{ item.shortcut }}
+          </span>
           <i
             v-if="hasSubmenu"
             :class="[
-              'pi pi-angle-down ml-auto',
+              'pi pi-angle-down ml-auto transition-transform duration-300',
               { 'pi-angle-down': root, 'pi-angle-right': !root },
             ]"
           ></i>
         </a>
       </template>
+
       <template #end>
         <div class="flex items-center gap-2">
+          <!-- Apply the custom hide-on-mobile class -->
           <Button
-            class="nav-button"
+            class="hide-on-mobile rounded-md px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
             label="Create Meme"
             @click="handleClickCreate"
           />
 
           <div v-if="dataStore.contract.address" class="relative">
-            <button class="wallet-button" @click="toggleMenu">
+            <button
+              class="bg-gray-100 rounded-md px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-200"
+              @click="toggleMenu"
+            >
               {{ formattedAddress }}
               <i class="pi pi-angle-down"></i>
             </button>
-            <div v-if="showMenu" class="menu">
-              <button @click="handleLogout" class="logout-button">
+            <div
+              v-if="showMenu"
+              class="absolute bg-white border border-gray-300 rounded-lg p-2 shadow-lg z-10 right-0 mt-1"
+            >
+              <button
+                @click="handleLogout"
+                class="w-full text-center text-gray-800 hover:bg-gray-100 rounded-md py-2"
+              >
                 Log Out
               </button>
             </div>
@@ -46,7 +63,7 @@
 
           <Button
             v-else
-            class="nav-button"
+            class="rounded-md px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
             label="Connect Wallet"
             severity="secondary"
             @click="handleClickConnectWallet"
@@ -75,6 +92,18 @@ const items = ref([
     label: "Meme Vote",
     command: () => {
       navigateTo("/meme-vote");
+    },
+  },
+  {
+    label: "Offering",
+    command: () => {
+      navigateTo("/initial-meme-offering");
+    },
+  },
+  {
+    label: "Listed",
+    command: () => {
+      navigateTo("/meme-listed");
     },
   },
   {
@@ -115,57 +144,15 @@ function handleClickHome() {
 }
 </script>
 
-<style lang="scss" scoped>
-.logo-box {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+<style scoped>
+/* Custom class to hide the button on mobile screens */
+.hide-on-mobile {
+  display: none;
 }
 
-.home-title {
-  font-size: 20px;
-  font-weight: bold;
-  margin-left: 8px;
-  cursor: pointer;
-}
-
-.nav-button {
-  border-radius: 8px;
-}
-
-.wallet-button {
-  background-color: #f3f4f6;
-  border-radius: 8px;
-  padding: 9px 12px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-}
-
-.menu {
-  position: absolute;
-  background-color: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 50px;
-  padding: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  right: 0;
-}
-
-.logout-button {
-  background-color: transparent;
-  border: none;
-  color: black;
-  padding: 0px 12px;
-  width: 100%;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.logout-button:hover {
-  background-color: #f3f4f6;
+@media (min-width: 768px) {
+  .hide-on-mobile {
+    display: flex; /* Or inline-flex if needed */
+  }
 }
 </style>

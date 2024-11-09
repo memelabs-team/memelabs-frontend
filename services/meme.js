@@ -131,7 +131,7 @@ async function fetchGetMemeProposal(status) {
           },
           memeRequirement: {
             token: item[9][0],
-            amount: item[9][1].toString(),
+            amount: ethers.utils.formatEther(item[9][1]).toString(),
             platformFeeRate: item[9][2].toString(),
             communityDropRate: item[9][3].toString(),
             investorRate: item[9][4].toString(),
