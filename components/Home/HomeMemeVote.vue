@@ -18,7 +18,6 @@
         v-for="meme in filteredMemeProcess"
         :key="meme.id"
         :memeDetail="meme"
-        :daysLeft="meme.countdown"
       />
     </div>
   </div>

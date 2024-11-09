@@ -1,7 +1,7 @@
 <template>
   <div
     class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
-    @click="raiseFundMeme(memeDetail, daysLeft)"
+    @click="raiseFundMeme(memeDetail)"
   >
     <!-- Mascot Image and Content -->
     <div
@@ -37,8 +37,6 @@
           }}
           USDT
         </span>
-
-        <span class="text-gray-800 font-semibold">{{ daysLeft }}</span>
       </div>
       <!-- Progress Bar -->
       <div class="progress-bar w-full h-2 bg-gray-200 rounded-full mt-2">
@@ -59,7 +57,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const props = defineProps({
   memeDetail: { type: Object, required: true },
-  daysLeft: { type: String, required: true },
 });
 
 const progressPercentage = computed(
@@ -67,10 +64,10 @@ const progressPercentage = computed(
     (props.memeDetail.risedAmount / props.memeDetail.memeRequirement.amount) *
     100
 );
-const raiseFundMeme = (memeDetail, daysLeft) => {
+const raiseFundMeme = (memeDetail) => {
   router.push({
     path: `/detail/imo-detail[${memeDetail.id}]`,
-    query: { memeDetail: JSON.stringify({ ...memeDetail, daysLeft }) },
+    query: { memeDetail: JSON.stringify({ ...memeDetail }) },
   });
 };
 </script>

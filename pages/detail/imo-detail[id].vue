@@ -31,7 +31,6 @@
                 }}
                 USDT
               </span>
-              <div class="text-xs">{{ memeDetail.daysLeft }}</div>
             </div>
             <!-- Progress Bar -->
             <div class="progress-bar w-full h-2 bg-gray-200 rounded-full mt-2">

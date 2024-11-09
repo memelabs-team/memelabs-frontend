@@ -21,7 +21,6 @@
           <div class="mb-4">
             <div class="flex justify-between mb-2 text-sm">
               <div class="font-bold">{{ memeDetail.voteYes }}/100 Vote</div>
-              <div class="text-xs">{{ memeDetail.daysLeft }}</div>
             </div>
             <ProgressBar :value="memeDetail.voteYes" :showValue="false" />
           </div>
