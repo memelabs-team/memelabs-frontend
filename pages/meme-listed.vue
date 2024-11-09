@@ -9,9 +9,9 @@
 
     <!-- Meme Vote Card Grid -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
+      class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
     >
-      <MemeListedCard
+      <CardMemeListedCard
         v-for="(meme, index) in dataStore.memeMinted"
         :memeDetail="meme"
       />

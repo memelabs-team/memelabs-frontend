@@ -9,13 +9,9 @@
 
     <!-- Meme Vote Card Grid -->
     <div
-      class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
+      class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
     >
-      <IMOCard
-        v-for="meme in filteredMemeData"
-        :memeDetail="meme"
-        :daysLeft="calculateCountdown(meme.startVestingAt)"
-      />
+      <CardIMOCard v-for="meme in displayedMemeData" :memeDetail="meme" />
     </div>
 
     <!-- Loading Spinner -->
@@ -38,13 +34,6 @@ const displayedMemeData = ref([]);
 const loading = ref(false);
 const itemsToLoad = 6;
 const initialLoad = 18;
-
-// Computed property to filter memes with valid days left
-const filteredMemeData = computed(() => {
-  return displayedMemeData.value.filter(
-    (meme) => calculateCountdown(meme.startVestingAt) !== "0d: 0h: 0m: 0s"
-  );
-});
 
 // Computed properties for loading state visibility
 const isLoadingVisible = computed(() => {
@@ -105,24 +94,6 @@ function handleScroll() {
   if (scrollTop + clientHeight >= scrollHeight - 50) {
     loadMoreItems();
   }
-}
-
-// Function to calculate full countdown time
-function calculateCountdown(startVestingAt) {
-  const now = new Date();
-  const endDate = new Date(startVestingAt);
-  const timeDiff = endDate - now;
-
-  if (timeDiff <= 0) return "0d: 0h: 0m: 0s";
-
-  const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(
-    (timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-
-  return `${days}d: ${hours}h: ${minutes}m: ${seconds}s`;
 }
 
 // Set interval to refresh countdown every second

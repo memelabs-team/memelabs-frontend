@@ -1,21 +1,17 @@
 <template>
   <div
+    v-if="timeLeft > 0"
     class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
-    @click="voteNow(memeDetail, daysLeft)"
+    @click="voteNow(memeDetail)"
   >
-    <!-- Binance Logo in Top Right Corner -->
-    <div class="absolute top-4 right-4">
-      <img src="/images/icon_binance.svg" alt="Binance Logo" class="w-8 h-8" />
-    </div>
-
     <!-- Mascot Image and Content -->
     <div
-      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 rounded-[68px] overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+      class="flex-shrink-0 rounded-[68px] w-full h-full max-w-32 max-h-32 overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
     >
       <img
         :src="memeDetail.logo || 'https://via.placeholder.com/160'"
         alt="Mascot"
-        class="w-full h-auto object-cover"
+        class="object-cover w-full h-full"
         @error="
           (event) => (event.target.src = 'https://via.placeholder.com/160')
         "
@@ -41,10 +37,12 @@
       <div
         class="voting-info flex justify-between text-sm font-medium text-gray-700 mt-4"
       >
-        <span class="text-gray-800 font-semibold"
-          >{{ memeDetail.voteYes }}/100 Vote</span
-        >
-        <span class="text-gray-800 font-semibold">{{ daysLeft }}</span>
+        <span class="text-gray-800 font-semibold">
+          {{ memeDetail.voteYes || 0 }}/100 Vote
+        </span>
+        <span class="text-gray-800 font-semibold">
+          {{ countdown }}
+        </span>
       </div>
 
       <!-- Progress Bar -->
@@ -59,27 +57,48 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed, defineProps, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { formatTime } from "@/utils/timeUtils"; // Import the utility function
 
 const props = defineProps({
   memeDetail: { type: Object, required: true },
-  daysLeft: { type: String, required: true },
 });
 
 const router = useRouter();
 
+// Calculate percentage progress
 const progressPercentage = computed(
-  () => (props.memeDetail.voteYes / 100) * 100
+  () => ((props.memeDetail.voteYes || 0) / 100) * 100
 );
 
-const voteNow = (memeDetail, daysLeft) => {
+// Countdown until voting starts
+const countdown = ref("");
+const timeLeft = ref(0);
+
+const updateCountdown = () => {
+  const startInvestmentAt = new Date(
+    props.memeDetail.startInvestmentAt
+  ).getTime();
+
+  timeLeft.value = startInvestmentAt - Date.now();
+  countdown.value =
+    timeLeft.value > 0 ? formatTime(timeLeft.value) : "Voting started!";
+};
+
+onMounted(() => {
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+});
+
+const voteNow = (memeDetail) => {
   router.push({
     path: `/detail/vote-detail[${memeDetail.id}]`,
-    query: { memeDetail: JSON.stringify({ ...memeDetail, daysLeft }) },
+    query: { memeDetail: JSON.stringify(memeDetail) },
   });
 };
 </script>
+
 <style scoped>
 .meme-vote-card {
   border-radius: 10px;

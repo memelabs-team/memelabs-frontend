@@ -83,7 +83,7 @@ const showMenu = ref(false);
 
 const items = ref([
   {
-    label: "Board",
+    label: "Home",
     command: () => {
       navigateTo("/");
     },
