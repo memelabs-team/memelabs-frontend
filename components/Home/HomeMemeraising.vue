@@ -17,7 +17,7 @@
     <Divider class="my-4" />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-4">
-      <MemeListedCard
+      <CardMemeListedCard
         v-for="(meme, index) in memeMinted"
         :key="index"
         :memeDetail="meme"

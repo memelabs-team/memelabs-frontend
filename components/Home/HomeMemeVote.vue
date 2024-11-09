@@ -1,22 +1,20 @@
 <template>
   <div>
-    <div class="flex flex-col sm:flex-row sm:justify-between p-4 gap-4">
-      <div class="flex items-center justify-between lg:justify-start gap-4">
-        <div class="text-2xl lg:text-4xl font-bold">Initial Meme Offering</div>
+    <div class="flex justify-between items-center p-4">
+      <div class="text-2xl sm:text-4xl font-bold">Meme Vote</div>
+      <div class="mt-4 sm:mt-0">
         <Button
           label="View All"
           severity="secondary"
-          @click="navigateTo(`/initial-meme-offering`)"
+          @click="navigateTo(`/meme-vote`)"
         />
       </div>
-
-      <SearchBar />
     </div>
 
-    <Divider class="my-4" />
+    <Divider />
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 py-4">
-      <IMOCard
+      <CardMemeVoteCard
         v-for="meme in filteredMemeProcess"
         :key="meme.id"
         :memeDetail="meme"
@@ -67,7 +65,7 @@ function calculateCountdown(startVestingAt) {
 function updateCountdowns() {
   countdowns.value = props.memeProcess.map((meme) => ({
     ...meme,
-    countdown: calculateCountdown(meme.startVestingAt),
+    countdown: calculateCountdown(meme.startInvestmentAt),
   }));
 }
 

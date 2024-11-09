@@ -3,11 +3,6 @@
     class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
     @click="memeListed(memeDetail)"
   >
-    <!-- Binance Logo in Top Right Corner -->
-    <div class="absolute top-4 right-4">
-      <img src="/images/icon_binance.svg" alt="Binance Logo" class="w-8 h-8" />
-    </div>
-
     <!-- Mascot Image and Content -->
     <div
       class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
