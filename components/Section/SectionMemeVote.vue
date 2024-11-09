@@ -65,7 +65,7 @@ function calculateCountdown(startVestingAt) {
 function updateCountdowns() {
   countdowns.value = props.memeProcess.map((meme) => ({
     ...meme,
-    countdown: calculateCountdown(meme.startVestingAt),
+    countdown: calculateCountdown(meme.startInvestmentAt),
   }));
 }
 

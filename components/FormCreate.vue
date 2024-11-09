@@ -203,11 +203,13 @@
 </template>
 
 <script setup>
+import { ethers } from "ethers";
+
 const emits = defineEmits(["create", "getData"]);
 
 const memeData = ref({
   name: "",
-  supply: null,
+  supply: 1000000,
   memeStory: "",
   logo: "",
   symbol: "",
@@ -290,12 +292,15 @@ watch(
 );
 
 function handleClickCreate() {
-  console.log(selectedAmount.value);
+  const amountInWei = ethers.utils
+    .parseUnits(selectedAmount.value.toString(), "ether")
+    .toString();
+
   memeData.value.memeRequirement.token = selectedToken.value.address;
-  memeData.value.memeRequirement.amount = selectedAmount.value;
+  memeData.value.memeRequirement.amount = amountInWei;
 
   console.log("emit create meme value:", memeData.value);
-  //emits memeData
+  // Emits memeData
   emits("create", memeData.value);
 }
 

@@ -25,10 +25,17 @@ function disconnectUser() {
 }
 
 async function createMeme(body) {
-  console.log("Create Meme Body:", body);
-  const response = await fetchSendTransaction(body);
+  try {
+    // Ensure that `amount` is a BigNumber instance
+    body.memeRequirement.amount = ethers.BigNumber.from(
+      body.memeRequirement.amount
+    );
 
-  console.log("create response :", response);
+    const response = await fetchSendTransaction(body);
+    console.log("create response :", response);
+  } catch (error) {
+    console.error("Error sending transaction:", error);
+  }
 }
 
 async function getMemeListByStatus(status) {

@@ -13,8 +13,6 @@ import { fetchGetTransaction } from "../services/meme.js";
 const dataStore = useDataStore();
 
 async function handleClickCreate(memeData) {
-  // Logic to create meme goes here
-  console.log("Creating meme...", memeData);
   const response = await dataStore.createMeme(memeData);
   console.log("Created meme:", response);
 }
