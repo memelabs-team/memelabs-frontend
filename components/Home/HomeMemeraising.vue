@@ -21,7 +21,6 @@
         v-for="(meme, index) in memeMinted"
         :key="index"
         :memeDetail="meme"
-        :daysLeft="calculateCountdown(meme.startVestingAt)"
       />
     </div>
   </div>
@@ -36,12 +35,4 @@ const props = defineProps({
     required: true,
   },
 });
-
-// Function to calculate days left based on startVotingAt date
-function calculateCountdown(startVotingAt) {
-  const now = new Date();
-  const endDate = new Date(startVotingAt);
-  const timeDiff = endDate - now;
-  return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-}
 </script>
