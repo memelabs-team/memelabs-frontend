@@ -1,6 +1,6 @@
 <template>
   <div
-    class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
+    class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
     @click="memeListed(memeDetail)"
   >
     <!-- Mascot Image and Content -->
