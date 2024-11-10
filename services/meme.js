@@ -78,7 +78,6 @@ async function createMemeProposal(requestBody) {
     console.error("Error sending transaction:", error);
   }
 }
-
 // Meme Vote
 async function getVotingProposals() {
   try {
@@ -207,15 +206,7 @@ async function getInvestingProposals() {
   }
 }
 
-async function hasVoted(id, address) {
-  if (!checkWalletConnection()) {
-    alert("Please connect your wallet first.");
-    return;
-  }
-  const response = await contract.hasAlreadyVoted(id, address);
-  return response;
-}
-
+// Meme List
 async function getMentedMemes() {
   try {
     const response = await contract.getMentedMemes(0, 5);
@@ -277,7 +268,14 @@ async function getMentedMemes() {
     return null;
   }
 }
-
+async function hasVoted(id, address) {
+  if (!checkWalletConnection()) {
+    alert("Please connect your wallet first.");
+    return;
+  }
+  const response = await contract.hasAlreadyVoted(id, address);
+  return response;
+}
 async function voteMemeProposal(id, status) {
   if (!checkWalletConnection()) {
     alert("Please connect your wallet first.");

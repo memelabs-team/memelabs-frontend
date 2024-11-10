@@ -42,4 +42,11 @@ import { ref } from "vue";
 
 const selectedMemeOwnership = ref("Created");
 const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];
+
+// Fetch user meme list on component mount
+onMounted(async () => {
+  // const dataByUser = await getMemeListByUser(userAddress);
+
+  console.log("Get user data :");
+});
 </script>

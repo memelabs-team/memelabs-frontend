@@ -39,21 +39,8 @@ async function createMeme(body) {
   }
 }
 
-function getMemeListByUser(userAddress) {
-  const dataStore = useDataStore();
-  const memes = dataStore.memeProcess;
-
-  dataStore.myMemeList = memes.filter((meme) => {
-    if (meme.owner.toLowerCase() === userAddress) {
-      return true;
-    }
-  });
-  console.log("My Meme List:", dataStore.myMemeList);
-}
-
 export default {
   getUserContract,
   disconnectUser,
   createMeme,
-  getMemeListByUser,
 };
