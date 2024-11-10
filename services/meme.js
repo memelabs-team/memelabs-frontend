@@ -261,7 +261,6 @@ async function getInvestingProposals() {
 
 async function hasVoted(id,address) {
     const response = await contract.hasAlreadyVoted(id,address);
-    console.log("hasVoted:",response)
     return response
 }
 

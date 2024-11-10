@@ -20,7 +20,7 @@
         <div class="w-full flex flex-col">
           <div class="mb-4">
             <div class="flex justify-between mb-2 text-sm">
-              <div class="font-bold">{{ memeDetail.voteYes}}/{{ memeDetail.minimumVoter }} Votes</div>
+              <div class="font-bold">{{ memeDetail.voteYes +memeDetail.voteNo }}/{{ memeDetail.minimumVoter }} Votes</div>
               <span class="text-gray-800 font-semibold">
                 {{ countdown }}
               </span>
@@ -31,13 +31,13 @@
             Vote Now
           </div>
           <div class="flex justify-between mt-4 gap-2">
-            <Button
+            <Button :disabled="disabledVoteBtn"
               class="w-1/2 h-10 md:h-12 rounded-lg bg-blue-600 text-white font-bold"
               @click="voteYes(memeDetail.id, 1)"
             >
               Yes
             </Button>
-            <Button
+            <Button :disabled="disabledVoteBtn"
               class="w-1/2 h-10 md:h-12 rounded-lg bg-gray-200 text-gray-700 font-bold"
               @click="voteNo(memeDetail.id, 0)"
             >
@@ -162,16 +162,15 @@ import { voteMemeProposal, hasVoted } from "../services/meme.js";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
 import { useDataStore } from "~/stores/data/store.js";
-import { useMounted } from "@vueuse/core";
+ 
 
 const route = useRoute();
 const memeDetail = ref(
   route.query.memeDetail ? JSON.parse(route.query.memeDetail) : {}
 );
-
-useMounted(() => {
-  // console.log(memeDetail.value.id)
-  //  hasVotedProject(memeDetail.value.id);
+const disabledVoteBtn = ref(false)
+onMounted(() => {
+  disabledVoteBtn.value = hasVotedProject(memeDetail.value.id)
 });
 
 // Function to handle voting Yes
@@ -185,8 +184,8 @@ async function voteYes(id, status) {
 
 async function hasVotedProject(id) {
   const dataStore = useDataStore();
- const response = await hasVoted(id,dataStore.walletAddress)
- console.log("hasVotedProject:",response)
+  const response = await hasVoted(id,dataStore.walletAddress)
+ return response
 }
 
 // Function to handle voting No
