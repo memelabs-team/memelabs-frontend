@@ -10,6 +10,7 @@ export const useDataStore = defineStore("data", {
       memeVotes: [],
       memeIMO: [],
       memeMint: [],
+      memeByUser: [],
     };
   },
   actions,
