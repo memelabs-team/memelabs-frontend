@@ -207,13 +207,13 @@ async function getInvestingProposals() {
   }
 }
 
-async function hasVoted(id,address) {
-    if (!checkWalletConnection()) {
-       alert("Please connect your wallet first.");
-      return;
-    }
-    const response = await contract.hasAlreadyVoted(id,address);
-    return response
+async function hasVoted(id, address) {
+  if (!checkWalletConnection()) {
+    alert("Please connect your wallet first.");
+    return;
+  }
+  const response = await contract.hasAlreadyVoted(id, address);
+  return response;
 }
 
 async function getMentedMemes() {
@@ -278,12 +278,6 @@ async function getMentedMemes() {
   }
 }
 
-async function hasVoted(id, address) {
-  const response = await contract.hasAlreadyVoted(id, address);
-  console.log("hasVoted:", response);
-  return response;
-}
-
 async function voteMemeProposal(id, status) {
   if (!checkWalletConnection()) {
     alert("Please connect your wallet first.");
@@ -300,28 +294,11 @@ async function voteMemeProposal(id, status) {
     console.error("Voted Meme is Error:", error);
   }
 }
-async function fetchGetTransaction(status) {
-  if (!checkWalletConnection()) {
-    alert("Please connect your wallet first.");
-    return;
-  }
-
-  try {
-    const response = await contract.getMemeProposalsByStatus(status);
-
-    const data = JSON.stringify(response);
-    console.log("Transaction data:", data);
-    return data;
-  } catch (error) {
-    console.error("Error reading transaction:", error);
-  }
-}
 
 export {
   fetchConnectWallet,
   disconnectWallet,
   createMemeProposal,
-  fetchGetTransaction,
   checkWalletConnection,
   voteMemeProposal,
   getInvestingProposals,

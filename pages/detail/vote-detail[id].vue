@@ -20,7 +20,12 @@
         <div class="w-full flex flex-col">
           <div class="mb-4">
             <div class="flex justify-between mb-2 text-sm">
-              <div class="font-bold">{{ memeDetail.voteYes + memeDetail.voteNo }}/{{ memeDetail.minimumVoter }} Votes</div>
+              <div class="font-bold">
+                {{ memeDetail.voteYes + memeDetail.voteNo }}/{{
+                  memeDetail.minimumVoter
+                }}
+                Votes
+              </div>
               <span class="text-gray-800 font-semibold">
                 {{ countdown }}
               </span>
@@ -31,13 +36,15 @@
             Vote Now
           </div>
           <div class="flex justify-between mt-4 gap-2">
-            <Button :disabled="disabledVoteBtn"
+            <Button
+              :disabled="disabledVoteBtn"
               class="w-1/2 h-10 md:h-12 rounded-lg bg-blue-600 text-white font-bold"
               @click="voteYes(memeDetail.id, 1)"
             >
               Yes
             </Button>
-            <Button :disabled="disabledVoteBtn"
+            <Button
+              :disabled="disabledVoteBtn"
               class="w-1/2 h-10 md:h-12 rounded-lg bg-gray-200 text-gray-700 font-bold"
               @click="voteNo(memeDetail.id, 0)"
             >
@@ -169,11 +176,11 @@ const route = useRoute();
 const memeDetail = ref(
   route.query.memeDetail ? JSON.parse(route.query.memeDetail) : {}
 );
-const disabledVoteBtn = ref(false)
-onMounted( async () => {
+const disabledVoteBtn = ref(false);
+onMounted(async () => {
   await dataStore.getUserContract();
-  disabledVoteBtn.value = await hasVotedProject(memeDetail.value.id)
-  console.log("onMounted")
+  disabledVoteBtn.value = await hasVotedProject(memeDetail.value.id);
+  console.log("onMounted");
 });
 
 // Function to handle voting Yes
@@ -187,8 +194,8 @@ async function voteYes(id, status) {
 
 async function hasVotedProject(id) {
   const dataStore = useDataStore();
-  const response = await hasVoted(id,dataStore.walletAddress)
- return response
+  const response = await hasVoted(id, dataStore.walletAddress);
+  return response;
 }
 
 // Function to handle voting No
