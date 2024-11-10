@@ -134,10 +134,10 @@ async function fetchGetMemeProposal(status) {
           memeRequirement: {
             token: item.memeRequirement.token,
             amount: ethers.utils.formatEther(item.memeRequirement.amount).toString(),
-            investorRate: item.memeRequirement.investorRate.toString(),
-            liquidityRate: item.memeRequirement.liquidityRate.toString(),
-            ownerRate: item.memeRequirement.ownerRate.toString(),
-            communityTreasuryRate: item.memeRequirement.communityTreasuryRate.toString(),
+            investorRate: (item.memeRequirement.investorRate/100).toString(),
+            liquidityRate: (item.memeRequirement.liquidityRate/100).toString(),
+            ownerRate: (item.memeRequirement.ownerRate/100).toString(),
+            communityTreasuryRate: (item.memeRequirement.communityTreasuryRate/100).toString(),
           },
           owner: item[1],
           risedAmount: ethers.utils.formatEther(item.risedAmount),
@@ -184,10 +184,10 @@ async function getVotingProposals() {
           memeRequirement: {
             token: item.memeRequirement.token,
             amount: ethers.utils.formatEther(item.memeRequirement.amount).toString(),
-            investorRate: item.memeRequirement.investorRate.toString(),
-            liquidityRate: item.memeRequirement.liquidityRate.toString(),
-            ownerRate: item.memeRequirement.ownerRate.toString(),
-            communityTreasuryRate: item.memeRequirement.communityTreasuryRate.toString(),
+            investorRate: (item.memeRequirement.investorRate/100).toString(),
+            liquidityRate: (item.memeRequirement.liquidityRate/100).toString(),
+            ownerRate: (item.memeRequirement.ownerRate/100).toString(),
+            communityTreasuryRate: (item.memeRequirement.communityTreasuryRate/100).toString(),
           },
           owner: item.owner,
           risedAmount: ethers.utils.formatEther(item.risedAmount),
@@ -234,10 +234,10 @@ async function getInvestingProposals() {
           memeRequirement: {
             token: item.memeRequirement.token,
             amount: ethers.utils.formatEther(item.memeRequirement.amount).toString(),
-            investorRate: item.memeRequirement.investorRate.toString(),
-            liquidityRate: item.memeRequirement.liquidityRate.toString(),
-            ownerRate: item.memeRequirement.ownerRate.toString(),
-            communityTreasuryRate: item.memeRequirement.communityTreasuryRate.toString(),
+            investorRate: (item.memeRequirement.investorRate/100).toString(),
+            liquidityRate: (item.memeRequirement.liquidityRate/100).toString(),
+            ownerRate: (item.memeRequirement.ownerRate/100).toString(),
+            communityTreasuryRate: (item.memeRequirement.communityTreasuryRate/100).toString(),
           },
           owner: item.owner,
           risedAmount: ethers.utils.formatEther(item.risedAmount),
@@ -259,6 +259,11 @@ async function getInvestingProposals() {
   }
 }
 
+async function hasVoted(id,address) {
+    const response = await contract.hasAlreadyVoted(id,address);
+    console.log("hasVoted:",response)
+    return response
+}
 
 async function getMentedMemes() {
   try {
@@ -282,10 +287,10 @@ async function getMentedMemes() {
           memeRequirement: {
             token: item.memeRequirement.token,
             amount: ethers.utils.formatEther(item.memeRequirement.amount).toString(),
-            investorRate: item.memeRequirement.investorRate.toString(),
-            liquidityRate: item.memeRequirement.liquidityRate.toString(),
-            ownerRate: item.memeRequirement.ownerRate.toString(),
-            communityTreasuryRate: item.memeRequirement.communityTreasuryRate.toString(),
+            investorRate: (item.memeRequirement.investorRate/100).toString(),
+            liquidityRate: (item.memeRequirement.liquidityRate/100).toString(),
+            ownerRate: (item.memeRequirement.ownerRate/100).toString(),
+            communityTreasuryRate: (item.memeRequirement.communityTreasuryRate/100).toString(),
           },
           owner: item.owner,
           risedAmount: ethers.utils.formatEther(item.risedAmount),
@@ -350,5 +355,6 @@ export {
   voteMemeProposal,
   getInvestingProposals,
   getVotingProposals,
-  getMentedMemes
+  getMentedMemes,
+  hasVoted
 };

@@ -20,7 +20,7 @@
         <div class="w-full flex flex-col">
           <div class="mb-4">
             <div class="flex justify-between mb-2 text-sm">
-              <div class="font-bold">{{ memeDetail.voteYes }}/100 Vote</div>
+              <div class="font-bold">{{ memeDetail.voteYes}}/{{ memeDetail.minimumVoter }} Votes</div>
               <span class="text-gray-800 font-semibold">
                 {{ countdown }}
               </span>
@@ -33,13 +33,13 @@
           <div class="flex justify-between mt-4 gap-2">
             <Button
               class="w-1/2 h-10 md:h-12 rounded-lg bg-blue-600 text-white font-bold"
-              @click="voteYes(memeDetail.id, 0)"
+              @click="voteYes(memeDetail.id, 1)"
             >
               Yes
             </Button>
             <Button
               class="w-1/2 h-10 md:h-12 rounded-lg bg-gray-200 text-gray-700 font-bold"
-              @click="voteNo(memeDetail.id, 1)"
+              @click="voteNo(memeDetail.id, 0)"
             >
               No
             </Button>
@@ -126,20 +126,6 @@
         <!-- Distribution Section -->
         <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
           <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-xs">Platform Fee</div>
-            <div class="text-2xl font-bold">
-              {{ memeDetail.memeRequirement.platformFeeRate }}%
-            </div>
-          </div>
-          <div class="border border-gray-200 rounded-lg p-4 text-center">
-            <div class="text-gray-600 font-semibold text-xs">
-              Community Drop
-            </div>
-            <div class="text-2xl font-bold">
-              {{ memeDetail.memeRequirement.communityDropRate }}%
-            </div>
-          </div>
-          <div class="border border-gray-200 rounded-lg p-4 text-center">
             <div class="text-gray-600 font-semibold text-xs">
               Liquidity Provider
             </div>
@@ -172,14 +158,21 @@
 </template>
 
 <script setup>
-import { voteMemeProposal } from "../services/meme.js";
+import { voteMemeProposal, hasVoted } from "../services/meme.js";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
+import { useDataStore } from "~/stores/data/store.js";
+import { useMounted } from "@vueuse/core";
 
 const route = useRoute();
 const memeDetail = ref(
   route.query.memeDetail ? JSON.parse(route.query.memeDetail) : {}
 );
+
+useMounted(() => {
+  // console.log(memeDetail.value.id)
+  //  hasVotedProject(memeDetail.value.id);
+});
 
 // Function to handle voting Yes
 async function voteYes(id, status) {
@@ -188,6 +181,12 @@ async function voteYes(id, status) {
   } catch (error) {
     console.error("Error voting Yes:", error);
   }
+}
+
+async function hasVotedProject(id) {
+  const dataStore = useDataStore();
+ const response = await hasVoted(id,dataStore.walletAddress)
+ console.log("hasVotedProject:",response)
 }
 
 // Function to handle voting No

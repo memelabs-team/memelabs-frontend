@@ -11,6 +11,7 @@ async function getUserContract() {
   const response = await fetchConnectWallet();
 
   dataStore.contract.address = response.address;
+  dataStore.walletAddress = response.address;
 }
 
 function disconnectUser() {
