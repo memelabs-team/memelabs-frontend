@@ -25,6 +25,7 @@
         <CardMemeVoteCard
           :memeDetail="slotProps.data"
           @updateTimeLeft="handleTimeLeft"
+          class="mx-2 my-1"
         />
       </template>
       ></Carousel

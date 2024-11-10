@@ -1,6 +1,7 @@
 <template>
   <div
-    class="meme-card p-4 bg-white rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    class="meme-card p-4 border bg-white rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    style="height: 200px"
     @click="memeListed(memeDetail)"
   >
     <!-- Mascot Image and Content -->
@@ -63,13 +64,6 @@ const memeListed = (memeDetail) => {
 </script>
 
 <style scoped>
-.meme-card {
-  border-radius: 10px;
-  border: 1px solid #dfdfdf;
-  background: #fff;
-  height: 200px;
-}
-
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;

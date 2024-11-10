@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="timeLeft > 0"
-    class="border p-4 bg-white rounded-lg shadow-md items-center relative flex gap-4 cursor-pointer mx-2 my-1"
+    class="border p-4 bg-white rounded-lg shadow-md items-center relative flex gap-4 cursor-pointer"
     @click="voteNow(memeDetail)"
   >
     <!-- Mascot Image and Content -->
@@ -101,3 +101,17 @@ const voteNow = (memeDetail) => {
   });
 };
 </script>
+
+<style scoped>
+.progress {
+  transition: width 0.3s ease-in-out;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+  line-clamp: 2; /* Standard property for compatibility */
+}
+</style>

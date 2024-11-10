@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="timeLeft > 0"
-    class="meme-card p-4 bg-white rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    class="p-4 bg-white border rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    style="height: 200px"
     @click="raiseFundMeme(memeDetail)"
   >
     <!-- Mascot Image and Content -->
@@ -98,13 +99,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.meme-card {
-  border-radius: 10px;
-  border: 1px solid #dfdfdf;
-  background: #fff;
-  height: 200px;
-}
-
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
