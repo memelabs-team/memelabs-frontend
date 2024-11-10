@@ -8,17 +8,23 @@
 <script setup>
 import { onMounted } from "vue";
 import { useDataStore } from "../stores/data/store.js";
-import { fetchGetMemeProposal } from "~/services/meme";
+import {
+  getVotingProposals,
+  getInvestingProposals,
+  getMentedMemes,
+} from "~/services/meme";
 
 const dataStore = useDataStore();
 onMounted(async () => {
   try {
     await dataStore.getUserContract();
-    dataStore.memeProcess = await fetchGetMemeProposal("IN-PROCESS");
-    dataStore.memeMinted = await fetchGetMemeProposal("MINTED");
+    dataStore.memeVotes = await getVotingProposals();
+    dataStore.memeIMO = await getInvestingProposals();
+    dataStore.memeMint = await getMentedMemes();
 
-    console.log("Meme Process :", dataStore.memeProcess);
-    console.log("Meme Minted :", dataStore.memeMinted);
+    console.log("Meme Votes :", dataStore.memeVotes);
+    console.log("Meme IMO :", dataStore.memeIMO);
+    console.log("Meme Mint :", dataStore.memeMint);
   } catch (error) {}
 });
 </script>
