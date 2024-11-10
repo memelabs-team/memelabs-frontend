@@ -260,6 +260,11 @@ async function getInvestingProposals() {
 }
 
 async function hasVoted(id,address) {
+    if (!checkWalletConnection()) {
+      // alert("Please connect your wallet first.");
+      await fetchConnectWallet()
+      return;
+    }
     const response = await contract.hasAlreadyVoted(id,address);
     return response
 }

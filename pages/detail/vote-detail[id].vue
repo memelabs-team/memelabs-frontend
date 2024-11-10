@@ -20,7 +20,7 @@
         <div class="w-full flex flex-col">
           <div class="mb-4">
             <div class="flex justify-between mb-2 text-sm">
-              <div class="font-bold">{{ memeDetail.voteYes +memeDetail.voteNo }}/{{ memeDetail.minimumVoter }} Votes</div>
+              <div class="font-bold">{{ memeDetail.voteYes + memeDetail.voteNo }}/{{ memeDetail.minimumVoter }} Votes</div>
               <span class="text-gray-800 font-semibold">
                 {{ countdown }}
               </span>
@@ -161,16 +161,19 @@
 import { voteMemeProposal, hasVoted } from "../services/meme.js";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
+
 import { useDataStore } from "~/stores/data/store.js";
- 
+const dataStore = useDataStore();
 
 const route = useRoute();
 const memeDetail = ref(
   route.query.memeDetail ? JSON.parse(route.query.memeDetail) : {}
 );
 const disabledVoteBtn = ref(false)
-onMounted(() => {
-  disabledVoteBtn.value = hasVotedProject(memeDetail.value.id)
+onMounted( async () => {
+  await dataStore.getUserContract();
+  disabledVoteBtn.value = await hasVotedProject(memeDetail.value.id)
+  console.log("onMounted")
 });
 
 // Function to handle voting Yes
