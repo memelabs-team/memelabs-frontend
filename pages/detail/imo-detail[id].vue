@@ -50,10 +50,11 @@
               ></div>
             </div>
           </div>
-
+{{proposal}}
           <div class="font-semibold text-sm mt-4 md:mt-5">
             <p>Purchase</p>
             <InputText
+            @change="checkAllowance"
               :value="modelValue"
               class="w-full h-10 sm:h-12 px-4"
               style="border-radius: 25px"
@@ -63,13 +64,17 @@
           </div>
 
           <div class="flex flex-col sm:flex-row justify-between mt-4 gap-2">
-            <Button
+            <Button :disabled="disabledApproveBtn"
               class="h-10 md:h-12 w-full sm:w-auto rounded-lg bg-blue-600 text-white font-bold"
+              :class="{ 'animate-spin': approveLoading }"
               @click="approve()"
             >
               Approve
             </Button>
-            <Button
+            <Button 
+          
+            :disabled="!disabledApproveBtn"
+                :class="{ 'animate-spin': purchaseLoading }"
               class="h-10 md:h-12 w-full sm:w-auto rounded-lg bg-gray-200 text-gray-700 font-bold"
               @click="purchase()"
             >
@@ -128,27 +133,89 @@
 </template>
 
 <script setup>
-import { voteMemeProposal } from "../services/meme.js";
+import { getInvestingProposals } from "../services/meme.js";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
-
+import { ethers } from "ethers";
+const { initializeErc20Contract,initializeContract } = useContract();
+import { useDataStore } from "~/stores/data/store.js";
+ 
 const route = useRoute();
 const memeDetail = ref(
   route.query.memeDetail ? JSON.parse(route.query.memeDetail) : {}
 );
 
-const modelValue = ref();
+const erc20Contract = ref(null);
+const memeBuilderContract = ref(null);
+const dataStore = useDataStore();
+onMounted(async () => {
+  await loadData()
+  memeBuilderContract.value = await initializeContract()
+  erc20Contract.value = await initializeErc20Contract(memeDetail.value.memeRequirement.token);
+  console.log("initializeErc20Contract",memeDetail.value.memeRequirement.token );
+  modelValue.value = 300;
+})
+ 
+async function loadData(){
+  const proposals = await getInvestingProposals()
+  if (!proposals) return
+  if(proposals.length >= 0){
+    memeDetail.value = proposals[0]
+  }  
+  return null
+ 
+}
 
+const modelValue = ref();
+const disabledApproveBtn = ref(false);
+let timer = null
+async function checkAllowance(){
+
+  if (!modelValue.value){
+    return
+  }
+
+  if (timer) clearTimeout(timer)
+  timer = setTimeout(async () => {
+    const result = await isValidAllowance()
+    disabledApproveBtn.value = result
+    console.log("checkAllowance:",result)
+  }, 2000)
+}
 function handleInput(event) {
   modelValue.value = event.target.value;
 }
 
-function approve() {
-  alert("Aprove");
+async function isValidAllowance() {
+  const amount = ethers.utils.parseUnits(modelValue.value.toString(), "ether");
+
+  const result = await erc20Contract.value.allowance(dataStore.walletAddress, contractAddress);
+  const ok = result >= amount
+  console.log("isValidAllowance:",ok)
+  return ok
 }
 
-function purchase() {
+const approveLoading = ref(false)
+async function approve() {
+
+  console.log(contractAddress,modelValue.value);
+ const amount = ethers.utils.parseUnits(modelValue.value.toString(), "ether");
+ console.log("approve:",amount)
+ const tx = await erc20Contract.value.approve(contractAddress,amount);
+ approveLoading.value = true
+ await tx.wait();
+ approveLoading.value = false
+}
+
+const purchaseLoading = ref(false)
+async function purchase() {
+
   alert("Purchase");
+  const amount = ethers.utils.parseUnits(modelValue.value.toString(), "ether");
+  const tx = await memeBuilderContract.value.invest(memeDetail.value.id,memeDetail.value.memeRequirement.token , amount);
+  purchaseLoading.value = true
+  await tx.wait();
+  purchaseLoading.value = false
 }
 
 // Countdown until voting starts
