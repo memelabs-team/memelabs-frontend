@@ -1561,6 +1561,176 @@ const abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "_page",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "_pageSize",
+        type: "uint256"
+      }
+    ],
+    name: "getWaitingMintProposals",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "id",
+            type: "uint256"
+          },
+          {
+            internalType: "address",
+            name: "owner",
+            type: "address"
+          },
+          {
+            internalType: "string",
+            name: "name",
+            type: "string"
+          },
+          {
+            internalType: "string",
+            name: "symbol",
+            type: "string"
+          },
+          {
+            internalType: "uint256",
+            name: "supply",
+            type: "uint256"
+          },
+          {
+            internalType: "string",
+            name: "memeStory",
+            type: "string"
+          },
+          {
+            internalType: "string",
+            name: "logo",
+            type: "string"
+          },
+          {
+            internalType: "string",
+            name: "status",
+            type: "string"
+          },
+          {
+            components: [
+              {
+                internalType: "string",
+                name: "X",
+                type: "string"
+              },
+              {
+                internalType: "string",
+                name: "website",
+                type: "string"
+              },
+              {
+                internalType: "string",
+                name: "telegram",
+                type: "string"
+              }
+            ],
+            internalType: "struct MemeBuilder.SocialChannel",
+            name: "socialChannel",
+            type: "tuple"
+          },
+          {
+            components: [
+              {
+                internalType: "address",
+                name: "token",
+                type: "address"
+              },
+              {
+                internalType: "uint256",
+                name: "amount",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "liquidityRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "investorRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "ownerRate",
+                type: "uint256"
+              },
+              {
+                internalType: "uint256",
+                name: "communityTreasuryRate",
+                type: "uint256"
+              }
+            ],
+            internalType: "struct MemeBuilder.MemeRequirement",
+            name: "memeRequirement",
+            type: "tuple"
+          },
+          {
+            internalType: "uint256",
+            name: "startVotingAt",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "startInvestmentAt",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "startVestingAt",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "voteYes",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "voteNo",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "risedAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "minimumVoter",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "minimumInvestmentAmount",
+            type: "uint256"
+          },
+          {
+            internalType: "uint256",
+            name: "maximumInvestmentAmount",
+            type: "uint256"
+          }
+        ],
+        internalType: "struct MemeBuilder.MemeProposal[]",
+        name: "",
+        type: "tuple[]"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes32",
         name: "role",
         type: "bytes32"
@@ -1655,6 +1825,38 @@ const abi = [
         internalType: "uint256",
         name: "",
         type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "investmentRate",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "id",
+        type: "uint256"
+      }
+    ],
+    name: "isReadyToMint",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
       }
     ],
     stateMutability: "view",
@@ -1849,6 +2051,19 @@ const abi = [
       }
     ],
     name: "setInvestPeriod",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "value",
+        type: "uint256"
+      }
+    ],
+    name: "setInvestmentRate",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function"

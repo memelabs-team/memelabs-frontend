@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 
 import abi from "../public/data/abi";
 import erc20Abi from "../public/data/erc20Abi";
-export const contractAddress = "0xed9061a79A1eb53Fa5D45f879665Ce1cAc61104E";
+export const contractAddress = "0x9aa189e9Fb830aFAA17AAA41F8b02ff0E47A381F";
 
 function useContract() {
   const contract = ref(null);
