@@ -8,7 +8,6 @@
 
 <script setup>
 import { useDataStore } from "~/stores/data/store.js";
-import { fetchGetTransaction } from "../services/meme.js";
 
 const dataStore = useDataStore();
 
@@ -20,8 +19,6 @@ async function handleClickCreate(memeData) {
 function handleClickData() {
   // Logic to fetch data goes here
   const status = "MINTED";
-
-  fetchGetTransaction(status);
 }
 </script>
 

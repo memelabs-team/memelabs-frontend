@@ -8,17 +8,38 @@
 <script setup>
 import { onMounted } from "vue";
 import { useDataStore } from "../stores/data/store.js";
-import { fetchGetMemeProposal } from "~/services/meme";
+import {
+  getVotingProposals,
+  getInvestingProposals,
+  getMentedMemes,
+  getVotingByUser,
+  getInvestingByUser,
+  getMyProposals,
+} from "~/services/meme";
 
 const dataStore = useDataStore();
 onMounted(async () => {
   try {
     await dataStore.getUserContract();
-    dataStore.memeProcess = await fetchGetMemeProposal("IN-PROCESS");
-    dataStore.memeMinted = await fetchGetMemeProposal("MINTED");
+    dataStore.memeVotes = await getVotingProposals(0, 100);
+    dataStore.memeIMO = await getInvestingProposals(0, 100);
+    dataStore.memeMint = await getMentedMemes(0, 100);
+    dataStore.memeByUser = await getMyProposals(
+      0,
+      100,
+      dataStore.walletAddress
+    );
 
-    console.log("Meme Process :", dataStore.memeProcess);
-    console.log("Meme Minted :", dataStore.memeMinted);
+    // dataStore.memeByUser = [
+    //   ...(await getVotingByUser(0, 100, dataStore.walletAddress)),
+    //   ...(await getInvestingByUser(0, 100, dataStore.walletAddress)),
+    //   ...(await getMentedMemes(0, 100)
+    //   ),
+    // ];
+    console.log("Meme Votes :", dataStore.memeVotes);
+    console.log("Meme IMO :", dataStore.memeIMO);
+    console.log("Meme Mint :", dataStore.memeMint);
+    console.log("Meme By User :", dataStore.memeByUser);
   } catch (error) {}
 });
 </script>

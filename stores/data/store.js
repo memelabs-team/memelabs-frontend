@@ -4,10 +4,13 @@ import actions from "./actions";
 export const useDataStore = defineStore("data", {
   state: () => {
     return {
+      walletAddress: null,
       contract: {},
-      memeProcess: [],
-      memeMinted: [],
-      myMemeList: [],
+
+      memeVotes: [],
+      memeIMO: [],
+      memeMint: [],
+      memeByUser: [],
     };
   },
   actions,

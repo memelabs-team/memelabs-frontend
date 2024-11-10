@@ -1,11 +1,32 @@
 import { ethers } from "ethers";
 
 import abi from "../public/data/abi";
-const contractAddress = "0xf47f56A933eD6F9A7A195121d2c0aFCA845B1629";
+import erc20Abi from "../public/data/erc20Abi";
+export const contractAddress = "0xed9061a79A1eb53Fa5D45f879665Ce1cAc61104E";
 
 function useContract() {
   const contract = ref(null);
 
+  async function initializeErc20Contract(contractAddress) {
+    if (window.ethereum) {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        contract.value = new ethers.Contract(contractAddress, erc20Abi, signer);
+
+        console.log(
+          "The smart contract has been successfully renewed. :",
+          contract.value
+        );
+        return contract.value;
+      } catch (error) {
+        console.error("Error connecting to contract:", error);
+      }
+    } else {
+      console.error("Ethereum provider not found. Install MetaMask.");
+    }
+  }
   async function initializeContract() {
     if (
       typeof ethers === "undefined" ||
@@ -35,7 +56,7 @@ function useContract() {
     }
   }
 
-  return { initializeContract };
+  return { initializeContract,initializeErc20Contract };
 }
 
 export default useContract;

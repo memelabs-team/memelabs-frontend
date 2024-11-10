@@ -45,21 +45,20 @@ const filteredMemeData = computed(() => {
 // Computed properties for loading state visibility
 const isLoadingVisible = computed(() => {
   return (
-    loading.value &&
-    displayedMemeData.value.length < dataStore.memeProcess.length
+    loading.value && displayedMemeData.value.length < dataStore.memeVotes.length
   );
 });
 
 // Load initial data
 onMounted(() => {
-  if (dataStore.memeProcess.length > 0) {
-    displayedMemeData.value = dataStore.memeProcess.slice(0, initialLoad);
+  if (dataStore.memeVotes.length > 0) {
+    displayedMemeData.value = dataStore.memeVotes.slice(0, initialLoad);
   }
   window.addEventListener("scroll", handleScroll);
 });
 
 watch(
-  () => dataStore.memeProcess,
+  () => dataStore.memeVotes,
   (newVal) => {
     if (newVal.length > 0) {
       displayedMemeData.value = newVal.slice(0, initialLoad);
@@ -76,7 +75,7 @@ onUnmounted(() => {
 function loadMoreItems() {
   if (
     loading.value ||
-    displayedMemeData.value.length >= dataStore.memeProcess.length
+    displayedMemeData.value.length >= dataStore.memeVotes.length
   )
     return;
 
@@ -88,7 +87,7 @@ function loadMoreItems() {
 
     displayedMemeData.value = [
       ...displayedMemeData.value,
-      ...dataStore.memeProcess.slice(start, end),
+      ...dataStore.memeVotes.slice(start, end),
     ];
 
     loading.value = false;
@@ -106,7 +105,7 @@ function handleScroll() {
 // Set interval to refresh countdown every second
 onMounted(() => {
   const interval = setInterval(() => {
-    displayedMemeData.value = [...dataStore.memeProcess]; // Trigger reactivity
+    displayedMemeData.value = [...dataStore.memeVotes]; // Trigger reactivity
   }, 1000);
 
   onUnmounted(() => {

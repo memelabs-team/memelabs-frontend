@@ -1,23 +1,24 @@
 <template>
   <div
     v-if="timeLeft > 0"
-    class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
+    class="p-4 bg-white border rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    style="height: 200px"
     @click="raiseFundMeme(memeDetail)"
   >
     <!-- Mascot Image and Content -->
     <div
-      class="flex-shrink-0 rounded-[68px] w-full h-full max-w-32 max-h-32 overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
     >
       <img
         :src="memeDetail.logo || 'https://via.placeholder.com/160'"
         alt="Mascot"
-        class="object-cover w-full h-full"
+        class="w-full h-auto object-cover"
         @error="
           (event) => (event.target.src = 'https://via.placeholder.com/160')
         "
       />
       <button
-        class="absolute bottom-4 text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform bg-green-500"
+        class="absolute bottom-6 text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform bg-green-500"
       >
         100 %
       </button>
@@ -98,12 +99,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.meme-vote-card {
-  border-radius: 10px;
-  border: 1px solid #dfdfdf;
-  background: #fff;
-}
-
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;

@@ -1,24 +1,23 @@
 <template>
   <div
     v-if="timeLeft > 0"
-    class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex gap-4 cursor-pointer"
+    class="border p-4 bg-white rounded-lg shadow-md items-center relative flex gap-4 cursor-pointer"
     @click="voteNow(memeDetail)"
   >
     <!-- Mascot Image and Content -->
     <div
-      class="flex-shrink-0 rounded-[68px] w-full h-full max-w-32 max-h-32 overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+      class="flex-shrink-0 w-24 sm:w-36 h-24 sm:h-36 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
     >
       <img
         :src="memeDetail.logo || 'https://via.placeholder.com/160'"
         alt="Mascot"
-        class="object-cover w-full h-full"
+        class="w-full h-auto object-cover"
         @error="
           (event) => (event.target.src = 'https://via.placeholder.com/160')
         "
       />
-
       <button
-        class="absolute bottom-0 h-7 bg-black text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform"
+        class="absolute text-white text-xs font-semibold h-7 bg-black rounded-full px-4 py-1 -translate-y-2/4 transform bottom-0"
       >
         Vote Now
       </button>
@@ -57,22 +56,21 @@
 </template>
 
 <script setup>
-import { computed, defineProps, ref, onMounted } from "vue";
+import { computed, defineProps, defineEmits, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { formatTime } from "@/utils/timeUtils"; // Import the utility function
+import { formatTime } from "@/utils/timeUtils";
 
 const props = defineProps({
   memeDetail: { type: Object, required: true },
 });
 
+const emit = defineEmits(["updateTimeLeft"]);
 const router = useRouter();
 
-// Calculate percentage progress
 const progressPercentage = computed(
   () => ((props.memeDetail.voteYes || 0) / 100) * 100
 );
 
-// Countdown until voting starts
 const countdown = ref("");
 const timeLeft = ref(0);
 
@@ -84,6 +82,11 @@ const updateCountdown = () => {
   timeLeft.value = startInvestmentAt - Date.now();
   countdown.value =
     timeLeft.value > 0 ? formatTime(timeLeft.value) : "Voting started!";
+
+  emit("updateTimeLeft", {
+    timeLeft: timeLeft.value,
+    memeDetail: props.memeDetail,
+  });
 };
 
 onMounted(() => {
@@ -100,9 +103,15 @@ const voteNow = (memeDetail) => {
 </script>
 
 <style scoped>
-.meme-vote-card {
-  border-radius: 10px;
-  border: 1px solid #dfdfdf;
-  background: #fff;
+.progress {
+  transition: width 0.3s ease-in-out;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+  line-clamp: 2; /* Standard property for compatibility */
 }
 </style>
