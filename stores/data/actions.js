@@ -1,10 +1,10 @@
 import {
   fetchConnectWallet,
   disconnectWallet,
-  fetchSendTransaction,
-  fetchGetTransaction,
+  createMemeProposal,
 } from "~/services/meme";
 import { useDataStore } from "./store";
+import { ethers } from "ethers";
 
 async function getUserContract() {
   const dataStore = useDataStore();
@@ -32,17 +32,11 @@ async function createMeme(body) {
       body.memeRequirement.amount
     );
 
-    const response = await fetchSendTransaction(body);
+    const response = await createMemeProposal(body);
     console.log("create response :", response);
   } catch (error) {
     console.error("Error sending transaction:", error);
   }
-}
-
-async function getMemeListByStatus(status) {
-  const response = await fetchGetTransaction(status);
-  console.log("Get Meme List Response:", response);
-  // Handle the response and display the meme list to the user
 }
 
 function getMemeListByUser(userAddress) {
@@ -61,6 +55,5 @@ export default {
   getUserContract,
   disconnectUser,
   createMeme,
-  getMemeListByStatus,
   getMemeListByUser,
 };

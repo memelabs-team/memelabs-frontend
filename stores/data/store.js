@@ -6,9 +6,10 @@ export const useDataStore = defineStore("data", {
     return {
       walletAddress: null,
       contract: {},
-      memeProcess: [],
-      memeMinted: [],
-      myMemeList: [],
+
+      memeVotes: [],
+      memeIMO: [],
+      memeMint: [],
     };
   },
   actions,
