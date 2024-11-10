@@ -19,7 +19,6 @@
 
     <SearchBar class="my-10" v-model:modelValue="searchInput" />
 
-    <!-- Meme Listed Cards -->
     <div
       class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-16"
     >

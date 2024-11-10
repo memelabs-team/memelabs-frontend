@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="timeLeft > 0"
-    class="meme-vote-card p-4 bg-white rounded-lg shadow-md items-center relative flex gap-4 cursor-pointer"
+    class="border p-4 bg-white rounded-lg shadow-md items-center relative flex gap-4 cursor-pointer"
     @click="voteNow(memeDetail)"
   >
     <!-- Mascot Image and Content -->
@@ -56,22 +56,21 @@
 </template>
 
 <script setup>
-import { computed, defineProps, ref, onMounted } from "vue";
+import { computed, defineProps, defineEmits, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { formatTime } from "@/utils/timeUtils"; // Import the utility function
+import { formatTime } from "@/utils/timeUtils";
 
 const props = defineProps({
   memeDetail: { type: Object, required: true },
 });
 
+const emit = defineEmits(["updateTimeLeft"]);
 const router = useRouter();
 
-// Calculate percentage progress
 const progressPercentage = computed(
   () => ((props.memeDetail.voteYes || 0) / 100) * 100
 );
 
-// Countdown until voting starts
 const countdown = ref("");
 const timeLeft = ref(0);
 
@@ -83,6 +82,11 @@ const updateCountdown = () => {
   timeLeft.value = startInvestmentAt - Date.now();
   countdown.value =
     timeLeft.value > 0 ? formatTime(timeLeft.value) : "Voting started!";
+
+  emit("updateTimeLeft", {
+    timeLeft: timeLeft.value,
+    memeDetail: props.memeDetail,
+  });
 };
 
 onMounted(() => {
@@ -99,9 +103,15 @@ const voteNow = (memeDetail) => {
 </script>
 
 <style scoped>
-.meme-vote-card {
-  border-radius: 10px;
-  border: 1px solid #dfdfdf;
-  background: #fff;
+.progress {
+  transition: width 0.3s ease-in-out;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2; /* Limits the text to 2 lines */
+  line-clamp: 2; /* Standard property for compatibility */
 }
 </style>
