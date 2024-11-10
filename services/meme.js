@@ -206,7 +206,16 @@ async function getInvestingProposals() {
     return null;
   }
 }
-// Meme Raising
+
+async function hasVoted(id,address) {
+    if (!checkWalletConnection()) {
+       alert("Please connect your wallet first.");
+      return;
+    }
+    const response = await contract.hasAlreadyVoted(id,address);
+    return response
+}
+
 async function getMentedMemes() {
   try {
     const response = await contract.getMentedMemes(0, 5);
