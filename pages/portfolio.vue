@@ -30,7 +30,10 @@
 
   <!-- Card Grid Container -->
   <div class="px-4 md:mx-12 lg:mx-16 xl:mx-24">
-    <ProfileCreated v-if="selectedMemeOwnership === 'Created'" />
+    <ProfileCreated
+      v-if="selectedMemeOwnership === 'Created'"
+      :memeByUser="dataStore.memeByUser"
+    />
     <ProfileVoted v-if="selectedMemeOwnership === 'Vote'" />
     <ProfileInvested v-if="selectedMemeOwnership === 'Invested'" />
     <ProfileClaimed v-if="selectedMemeOwnership === 'Claimed'" />
@@ -39,14 +42,14 @@
 
 <script setup>
 import { ref } from "vue";
+import { useDataStore } from "../stores/data/store.js";
 
 const selectedMemeOwnership = ref("Created");
 const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];
+const dataStore = useDataStore();
 
 // Fetch user meme list on component mount
 onMounted(async () => {
-  // const dataByUser = await getMemeListByUser(userAddress);
-
-  console.log("Get user data :");
+  console.log("Get user data :", dataStore.memeByUser);
 });
 </script>

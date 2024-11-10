@@ -79,9 +79,9 @@ async function createMemeProposal(requestBody) {
   }
 }
 // Meme Vote
-async function getVotingProposals() {
+async function getVotingProposals(page, limit) {
   try {
-    const response = await contract.getVotingProposals(0, 5);
+    const response = await contract.getVotingProposals(page, limit);
 
     return response
       .map((item) => {
@@ -143,9 +143,9 @@ async function getVotingProposals() {
   }
 }
 // Initial Meme Offering
-async function getInvestingProposals() {
+async function getInvestingProposals(page, limit) {
   try {
-    const response = await contract.getInvestingProposals(0, 5);
+    const response = await contract.getInvestingProposals(page, limit);
 
     return response
       .map((item) => {
@@ -205,11 +205,10 @@ async function getInvestingProposals() {
     return null;
   }
 }
-
 // Meme List
-async function getMentedMemes() {
+async function getMentedMemes(page, limit) {
   try {
-    const response = await contract.getMentedMemes(0, 5);
+    const response = await contract.getMentedMemes(page, limit);
     return response
       .map((item) => {
         const newItem = {
@@ -268,6 +267,200 @@ async function getMentedMemes() {
     return null;
   }
 }
+// Meme By User
+async function getMyProposals(page, limit, address) {
+  try {
+    const response = await contract.getMyProposals(page, limit, address);
+
+    return response
+      .map((item) => {
+        const newItem = {
+          id: item.id.toNumber(),
+          name: item.name,
+          symbol: item.symbol,
+          supply: ethers.utils.formatEther(item.supply).toString(),
+          memeStory: item.memeStory,
+          logo: item.logo,
+          status: item.status,
+          socialChannel: {
+            X: item.socialChannel.X,
+            website: item.socialChannel.website,
+            telegram: item.socialChannel.telegram,
+          },
+          memeRequirement: {
+            token: item.memeRequirement.token,
+            amount: ethers.utils
+              .formatEther(item.memeRequirement.amount)
+              .toString(),
+            investorRate: (item.memeRequirement.investorRate / 100).toString(),
+            liquidityRate: (
+              item.memeRequirement.liquidityRate / 100
+            ).toString(),
+            ownerRate: (item.memeRequirement.ownerRate / 100).toString(),
+            communityTreasuryRate: (
+              item.memeRequirement.communityTreasuryRate / 100
+            ).toString(),
+          },
+          owner: item.owner,
+          risedAmount: ethers.utils.formatEther(item.risedAmount),
+          startVotingAt: new Date(
+            item.startVotingAt.toNumber() * 1000
+          ).toISOString(),
+          startInvestmentAt: new Date(
+            item.startInvestmentAt.toNumber() * 1000
+          ).toISOString(),
+          startVestingAt: new Date(
+            item.startVestingAt.toNumber() * 1000
+          ).toISOString(),
+          voteYes: item.voteYes.toNumber(),
+          voteNo: item.voteNo.toNumber(),
+          minimumVoter: item.minimumVoter.toNumber(),
+          minimumInvestmentAmount: ethers.utils
+            .formatEther(item.minimumInvestmentAmount)
+            .toString(),
+          maximumInvestmentAmount: ethers.utils
+            .formatEther(item.maximumInvestmentAmount)
+            .toString(),
+        };
+
+        return newItem;
+      })
+      .sort((a, b) => b.id - a.id); // Sorting in descending order by id
+  } catch (error) {
+    console.error("Get Meme is Error! :", error);
+    return null;
+  }
+}
+async function getVotingByUser(page, limit, address) {
+  try {
+    const response = await contract.getMyVotedProposals(page, limit, address);
+
+    return response
+      .map((item) => {
+        const newItem = {
+          id: item.id.toNumber(),
+          name: item.name,
+          symbol: item.symbol,
+          supply: ethers.utils.formatEther(item.supply).toString(),
+          memeStory: item.memeStory,
+          logo: item.logo,
+          status: item.status,
+          socialChannel: {
+            X: item.socialChannel.X,
+            website: item.socialChannel.website,
+            telegram: item.socialChannel.telegram,
+          },
+          memeRequirement: {
+            token: item.memeRequirement.token,
+            amount: ethers.utils
+              .formatEther(item.memeRequirement.amount)
+              .toString(),
+            investorRate: (item.memeRequirement.investorRate / 100).toString(),
+            liquidityRate: (
+              item.memeRequirement.liquidityRate / 100
+            ).toString(),
+            ownerRate: (item.memeRequirement.ownerRate / 100).toString(),
+            communityTreasuryRate: (
+              item.memeRequirement.communityTreasuryRate / 100
+            ).toString(),
+          },
+          owner: item.owner,
+          risedAmount: ethers.utils.formatEther(item.risedAmount),
+          startVotingAt: new Date(
+            item.startVotingAt.toNumber() * 1000
+          ).toISOString(),
+          startInvestmentAt: new Date(
+            item.startInvestmentAt.toNumber() * 1000
+          ).toISOString(),
+          startVestingAt: new Date(
+            item.startVestingAt.toNumber() * 1000
+          ).toISOString(),
+          voteYes: item.voteYes.toNumber(),
+          voteNo: item.voteNo.toNumber(),
+          minimumVoter: item.minimumVoter.toNumber(),
+          minimumInvestmentAmount: ethers.utils
+            .formatEther(item.minimumInvestmentAmount)
+            .toString(),
+          maximumInvestmentAmount: ethers.utils
+            .formatEther(item.maximumInvestmentAmount)
+            .toString(),
+        };
+
+        return newItem;
+      })
+      .sort((a, b) => b.id - a.id); // Sorting in descending order by id
+  } catch (error) {
+    console.error("Get Meme is Error! :", error);
+    return null;
+  }
+}
+async function getInvestingByUser(page, limit, address) {
+  try {
+    const response = await contract.getMyInvestedProposals(
+      page,
+      limit,
+      address
+    );
+
+    return response
+      .map((item) => {
+        const newItem = {
+          id: item.id.toNumber(),
+          name: item.name,
+          symbol: item.symbol,
+          supply: ethers.utils.formatEther(item.supply).toString(),
+          memeStory: item.memeStory,
+          logo: item.logo,
+          status: item.status,
+          socialChannel: {
+            X: item.socialChannel.X,
+            website: item.socialChannel.website,
+            telegram: item.socialChannel.telegram,
+          },
+          memeRequirement: {
+            token: item.memeRequirement.token,
+            amount: ethers.utils
+              .formatEther(item.memeRequirement.amount)
+              .toString(),
+            investorRate: (item.memeRequirement.investorRate / 100).toString(),
+            liquidityRate: (
+              item.memeRequirement.liquidityRate / 100
+            ).toString(),
+            ownerRate: (item.memeRequirement.ownerRate / 100).toString(),
+            communityTreasuryRate: (
+              item.memeRequirement.communityTreasuryRate / 100
+            ).toString(),
+          },
+          owner: item.owner,
+          risedAmount: ethers.utils.formatEther(item.risedAmount),
+          startVotingAt: new Date(
+            item.startVotingAt.toNumber() * 1000
+          ).toISOString(),
+          startInvestmentAt: new Date(
+            item.startInvestmentAt.toNumber() * 1000
+          ).toISOString(),
+          startVestingAt: new Date(
+            item.startVestingAt.toNumber() * 1000
+          ).toISOString(),
+          voteYes: item.voteYes.toNumber(),
+          voteNo: item.voteNo.toNumber(),
+          minimumVoter: item.minimumVoter.toNumber(),
+          minimumInvestmentAmount: ethers.utils
+            .formatEther(item.minimumInvestmentAmount)
+            .toString(),
+          maximumInvestmentAmount: ethers.utils
+            .formatEther(item.maximumInvestmentAmount)
+            .toString(),
+        };
+        return newItem;
+      })
+      .sort((a, b) => b.id - a.id); // Sorting in descending order by id
+  } catch (error) {
+    console.error("Get Meme is Error! :", error);
+    return null;
+  }
+}
+// Close Meme By User
 async function hasVoted(id, address) {
   if (!checkWalletConnection()) {
     alert("Please connect your wallet first.");
@@ -302,5 +495,8 @@ export {
   getInvestingProposals,
   getVotingProposals,
   getMentedMemes,
+  getMyProposals,
+  getVotingByUser,
+  getInvestingByUser,
   hasVoted,
 };

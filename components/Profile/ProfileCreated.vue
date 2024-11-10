@@ -37,24 +37,27 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import Fuse from "fuse.js";
-import { useDataStore } from "../stores/data/store.js";
 
-const dataStore = useDataStore();
 const searchInput = ref("");
 const loading = ref(false);
 const memeData = ref([]);
 const itemsToLoad = 6;
 const selectedUserAction = ref("Pending");
 const userActionOptions = ["Pending", "Complete", "Failed"];
+import { defineProps } from "vue";
 
 const fuse = ref(null);
+
+const props = defineProps({
+  memeByUser: { type: Array, required: true },
+});
 
 // Fetch user meme list on component mount
 onMounted(async () => {
   window.addEventListener("scroll", handleScroll);
 
   // Initialize Fuse search with the fetched data
-  fuse.value = new Fuse(dataStore.memeProcess, {
+  fuse.value = new Fuse(props.memeByUser, {
     threshold: 0.3,
     keys: ["name"],
   });
@@ -64,9 +67,9 @@ onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
 
-// Watch for changes in memeProcess to update Fuse search
+// Watch for changes in memeByUser to update Fuse search
 watch(
-  () => dataStore.memeProcess,
+  () => props.memeByUser,
   (newList) => {
     fuse.value = new Fuse(newList, {
       threshold: 0.3,
@@ -81,7 +84,7 @@ const memeFromSearch = computed(() => {
   if (searchInput.value.trim()) {
     return fuse.value.search(searchInput.value).map((result) => result.item);
   }
-  return dataStore.memeProcess;
+  return props.memeByUser;
 });
 
 const isLoadingVisible = computed(() => {
@@ -94,13 +97,10 @@ function loadMoreItems() {
   loading.value = true;
 
   setTimeout(() => {
-    const start = dataStore.memeProcess.length;
+    const start = props.memeByUser.length;
     const end = start + itemsToLoad;
 
-    dataStore.memeProcess = [
-      ...dataStore.memeProcess,
-      ...memeData.slice(start, end),
-    ];
+    props.memeByUser = [...props.memeByUser, ...memeData.slice(start, end)];
 
     loading.value = false;
   }, 1000);
