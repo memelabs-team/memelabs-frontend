@@ -11,7 +11,7 @@
     <div
       class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
     >
-      <CardMemeVoteCard v-for="meme in filteredMemeData" :memeDetail="meme" />
+      <CardMemeVoteCard :memeDetails="filteredMemeData" />
     </div>
 
     <!-- Loading Spinner -->

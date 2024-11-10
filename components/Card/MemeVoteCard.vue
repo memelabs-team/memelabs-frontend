@@ -1,5 +1,12 @@
 <template>
-  <Carousel :value="filteredMemeDetails" :numVisible="3" :numScroll="1">
+  <Carousel
+    :key="carouselKey"
+    :showNavigators="false"
+    :value="filteredMemeDetails"
+    :numVisible="numVisible"
+    :numScroll="1"
+    class="px-4"
+  >
     <template #item="slotProps">
       <div
         class="p-4 bg-white border rounded-lg shadow-md items-center relative flex gap-4 cursor-pointer mx-2 my-1"
@@ -61,7 +68,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from "vue";
+import { computed, ref, onMounted, onUnmounted, defineProps } from "vue";
 import { useRouter } from "vue-router";
 import { formatTime } from "@/utils/timeUtils"; // Import the utility function
 
@@ -70,12 +77,38 @@ const props = defineProps({
 });
 
 const router = useRouter();
+const numVisible = ref(3); // Default value for larger screens
 
 // Computed property to filter memeDetails where timeLeft > 0
 const filteredMemeDetails = computed(() => {
   return props.memeDetails.filter(
     (meme) => calculateTimeLeft(meme.startInvestmentAt) > 0
   );
+});
+
+// Computed property to generate a unique key for the carousel to force re-rendering
+const carouselKey = computed(() => `carousel-${numVisible.value}`);
+
+// Function to adjust numVisible based on screen width
+const adjustNumVisible = () => {
+  const screenWidth = window.innerWidth;
+  if (screenWidth >= 1024) {
+    numVisible.value = 3;
+  } else if (screenWidth >= 768) {
+    numVisible.value = 2;
+  } else {
+    numVisible.value = 1;
+  }
+};
+
+// Listen for window resize to dynamically adjust numVisible
+onMounted(() => {
+  adjustNumVisible(); // Initial adjustment
+  window.addEventListener("resize", adjustNumVisible);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", adjustNumVisible);
 });
 
 // Function to calculate progress percentage
@@ -103,4 +136,6 @@ const voteNow = (memeDetail) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/* Additional styles if needed */
+</style>
