@@ -111,20 +111,6 @@
       <label class="input-text">Tokenomic (100%)</label>
       <div class="tokenmomin-box">
         <div class="token-field">
-          <label class="input-text">Platform Fee</label>
-          <InputNumber placeholder="5%" disabled class="w-full" />
-        </div>
-        <div class="token-field">
-          <label class="input-text">Community Drop</label>
-          <Select
-            v-model="memeData.memeRequirement.communityDropRate"
-            :options="communityDropOptions"
-            optionLabel="label"
-            optionValue="value"
-            class="w-full"
-          />
-        </div>
-        <div class="token-field">
           <label class="input-text">Liquidity Provider</label>
           <Select
             v-model="memeData.memeRequirement.liquidityRate"
@@ -217,12 +203,10 @@ const memeData = ref({
   memeRequirement: {
     token: "",
     amount: null,
-    platformFeeRate: 5,
-    communityDropRate: 2,
-    liquidityRate: 20,
-    investorRate: 18,
+    liquidityRate: 30,
+    investorRate: 20,
     ownerRate: 10,
-    communityTreasuryRate: 50,
+    communityTreasuryRate: 40,
   },
 });
 
