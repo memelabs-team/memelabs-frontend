@@ -1,6 +1,6 @@
 <template>
   <div
-    class="meme-vote-card p-6 bg-white rounded-lg border border-gray-300 shadow-md flex flex-col gap-4 cursor-pointer"
+    class="p-6 bg-white rounded-lg border border-gray-300 shadow-md flex flex-col gap-4 cursor-pointer"
   >
     <!-- Top Section with Logo and Symbol -->
     <div class="flex items-center justify-between gap-4">

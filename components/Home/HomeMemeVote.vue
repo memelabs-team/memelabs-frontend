@@ -13,21 +13,29 @@
 
     <Divider />
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 px-4 py-4">
-      <CardMemeVoteCard
-        v-for="meme in memeProcess"
-        :key="meme.id"
-        :memeDetail="meme"
-      />
-    </div>
+    <Carousel
+      :key="carouselKey"
+      :showNavigators="false"
+      :value="filteredMemeProcess"
+      :numVisible="numVisible"
+      :numScroll="1"
+      class="px-4"
+    >
+      <template #item="slotProps">
+        <CardMemeVoteCard
+          :memeDetail="slotProps.data"
+          @updateTimeLeft="handleTimeLeft"
+          class="mx-2 my-1"
+        />
+      </template>
+      ></Carousel
+    >
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { defineProps } from "vue";
+import { defineProps, ref, computed, onMounted, onUnmounted, watch } from "vue";
 
-// Declare memeProcess as a prop
 const props = defineProps({
   memeProcess: {
     type: Array,
@@ -35,8 +43,52 @@ const props = defineProps({
   },
 });
 
-// Function to navigate when View All button is clicked
-function handleClickViewAll() {
-  navigateTo("/meme-vote");
-}
+const numVisible = ref(3);
+const carouselKey = computed(() => `carousel-${numVisible.value}`);
+const filteredMemeProcess = ref([]);
+
+// Watch for changes to memeProcess and update filteredMemeProcess once it has data
+watch(
+  () => props.memeProcess,
+  (newMemeProcess) => {
+    if (newMemeProcess && newMemeProcess.length > 0) {
+      filteredMemeProcess.value = newMemeProcess.filter(
+        (meme) => new Date(meme.startInvestmentAt).getTime() - Date.now() > 0
+      );
+    }
+  },
+  { immediate: true } // Run the watch immediately in case memeProcess already has data
+);
+
+const adjustNumVisible = () => {
+  const screenWidth = window.innerWidth;
+  if (screenWidth >= 1024) {
+    numVisible.value = 3;
+  } else if (screenWidth >= 768) {
+    numVisible.value = 2;
+  } else {
+    numVisible.value = 1;
+  }
+};
+
+onMounted(() => {
+  adjustNumVisible();
+  window.addEventListener("resize", adjustNumVisible);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", adjustNumVisible);
+});
+
+const handleTimeLeft = ({ timeLeft, memeDetail }) => {
+  if (timeLeft > 0) {
+    if (!filteredMemeProcess.value.some((item) => item.id === memeDetail.id)) {
+      filteredMemeProcess.value.push(memeDetail);
+    }
+  } else {
+    filteredMemeProcess.value = filteredMemeProcess.value.filter(
+      (item) => item.id !== memeDetail.id
+    );
+  }
+};
 </script>

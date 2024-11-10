@@ -1,7 +1,8 @@
 <template>
   <div
     v-if="timeLeft > 0"
-    class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    class="p-4 bg-white border rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    style="height: 200px"
     @click="raiseFundMeme(memeDetail)"
   >
     <!-- Mascot Image and Content -->
@@ -17,7 +18,7 @@
         "
       />
       <button
-        class="absolute bottom-4 text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform bg-green-500"
+        class="absolute bottom-6 text-white text-xs font-semibold rounded-full px-4 py-1 -translate-y-2/4 transform bg-green-500"
       >
         100 %
       </button>
@@ -98,12 +99,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.meme-vote-card {
-  border-radius: 10px;
-  border: 1px solid #dfdfdf;
-  background: #fff;
-}
-
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-box-orient: vertical;
