@@ -5,16 +5,21 @@
     <!-- Top Section with Logo and Symbol -->
     <div class="flex items-center justify-between gap-4">
       <div class="flex items-center gap-4">
-        <img
-          :src="memeDetail.logo || 'https://via.placeholder.com/160'"
-          alt="Mascot"
-          class="w-full h-full object-cover max-w-20 max-h-20 rounded-full"
-          @error="
-            (event) => (event.target.src = 'https://via.placeholder.com/160')
-          "
-        />
+        <div
+          class="flex-shrink-0 w-16 h-16 rounded-full overflow-hidden flex items-center justify-center bg-black shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]"
+        >
+          <img
+            :src="memeByUser.logo || 'https://via.placeholder.com/160'"
+            alt="Mascot"
+            class="w-full h-auto object-cover"
+            @error="
+              (event) => (event.target.src = 'https://via.placeholder.com/160')
+            "
+          />
+        </div>
+
         <h3 class="text-2xl font-semibold text-gray-800">
-          {{ memeDetail.symbol }}
+          {{ memeByUser.symbol }}
         </h3>
       </div>
 
@@ -40,7 +45,7 @@
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2">
         <img
-          :src="memeDetail.logo || 'https://via.placeholder.com/160'"
+          :src="memeByUser.logo || 'https://via.placeholder.com/160'"
           alt="Token Icon"
           class="w-10 h-10 object-cover rounded-full"
         />
@@ -59,6 +64,6 @@
 import { defineProps } from "vue";
 
 const props = defineProps({
-  memeDetail: { type: Object, required: true },
+  memeByUser: { type: Object, required: true },
 });
 </script>
