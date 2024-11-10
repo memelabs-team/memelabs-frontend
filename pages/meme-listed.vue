@@ -12,7 +12,7 @@
       class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 my-16 md:mx-12 lg:mx-16 xl:mx-24"
     >
       <CardMemeListedCard
-        v-for="(meme, index) in dataStore.memeMinted"
+        v-for="(meme, index) in dataStore.memeMint"
         :memeDetail="meme"
       />
     </div>
@@ -40,21 +40,20 @@ const initialLoad = 18;
 // Computed properties for loading state visibility
 const isLoadingVisible = computed(() => {
   return (
-    loading.value &&
-    displayedMemeData.value.length < dataStore.memeMinted.length
+    loading.value && displayedMemeData.value.length < dataStore.memeMint.length
   );
 });
 
 // Load initial data
 onMounted(() => {
-  if (dataStore.memeMinted.length > 0) {
-    displayedMemeData.value = dataStore.memeMinted.slice(0, initialLoad);
+  if (dataStore.memeMint.length > 0) {
+    displayedMemeData.value = dataStore.memeMint.slice(0, initialLoad);
   }
   window.addEventListener("scroll", handleScroll);
 });
 
 watch(
-  () => dataStore.memeMinted,
+  () => dataStore.memeMint,
   (newVal) => {
     if (newVal.length > 0) {
       displayedMemeData.value = newVal.slice(0, initialLoad);
@@ -71,7 +70,7 @@ onUnmounted(() => {
 function loadMoreItems() {
   if (
     loading.value ||
-    displayedMemeData.value.length >= dataStore.memeMinted.length
+    displayedMemeData.value.length >= dataStore.memeMint.length
   )
     return;
 
@@ -83,7 +82,7 @@ function loadMoreItems() {
 
     displayedMemeData.value = [
       ...displayedMemeData.value,
-      ...dataStore.memeMinted.slice(start, end),
+      ...dataStore.memeMint.slice(start, end),
     ];
 
     loading.value = false;
@@ -101,7 +100,7 @@ function handleScroll() {
 // Set interval to refresh countdown every second
 onMounted(() => {
   const interval = setInterval(() => {
-    displayedMemeData.value = [...dataStore.memeMinted]; // Trigger reactivity
+    displayedMemeData.value = [...dataStore.memeMint]; // Trigger reactivity
   }, 1000);
 
   onUnmounted(() => {
