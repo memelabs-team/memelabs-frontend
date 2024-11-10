@@ -36,7 +36,10 @@
     />
     <ProfileVoted v-if="selectedMemeOwnership === 'Vote'" />
     <ProfileInvested v-if="selectedMemeOwnership === 'Invested'" />
-    <ProfileClaimed v-if="selectedMemeOwnership === 'Claimed'" />
+    <ProfileClaimed
+      v-if="selectedMemeOwnership === 'Claimed'"
+      :memeByUser="dataStore.memeByUser"
+    />
   </div>
 </template>
 
