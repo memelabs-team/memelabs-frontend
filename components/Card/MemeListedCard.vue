@@ -1,6 +1,6 @@
 <template>
   <div
-    class="meme-vote-card p-4 bg-white rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
+    class="meme-card p-4 bg-white rounded-lg shadow-md relative flex items-center gap-4 cursor-pointer"
     @click="memeListed(memeDetail)"
   >
     <!-- Mascot Image and Content -->
@@ -16,7 +16,7 @@
         "
       />
       <button
-        class="absolute bottom-4 text-white text-xs font-semibold bg-green-500 rounded-full px-4 py-1 -translate-y-2/4 transform"
+        class="absolute bottom-6 text-white text-xs font-semibold bg-green-500 rounded-full px-4 py-1 -translate-y-2/4 transform"
       >
         10%
       </button>
@@ -63,10 +63,11 @@ const memeListed = (memeDetail) => {
 </script>
 
 <style scoped>
-.meme-vote-card {
+.meme-card {
   border-radius: 10px;
   border: 1px solid #dfdfdf;
   background: #fff;
+  height: 200px;
 }
 
 .line-clamp-2 {
