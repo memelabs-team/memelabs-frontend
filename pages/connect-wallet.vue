@@ -16,16 +16,14 @@ const { $uxuy } = useNuxtApp();
 const user = ref(null);
 
 onMounted(() => {
-  Telegram.WebApp.ready();
+  // Ensure Telegram is available and get user data
+  if (typeof window !== "undefined" && window.Telegram) {
+    window.Telegram.WebApp.ready();
+    user.value = window.Telegram.WebApp.initDataUnsafe?.user;
 
-  user.value = Telegram.WebApp.initDataUnsafeM.user;
-
-  console.log("telegram user:", user.value);
-
-  if (user.value) {
-    console.log("User is already logged in: ", user);
+    console.log("User info:", user.value); // Display user info in console for debugging
   } else {
-    console.log("User is not logged in yet.");
+    console.error("Telegram Web App API is not available.");
   }
 });
 
