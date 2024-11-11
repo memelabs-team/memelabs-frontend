@@ -11,7 +11,6 @@ const MyPreset = definePreset(Lara, {
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
-  ssr: false, // to fix cannot read addEventListener because of it's client side command
   modules: ["@pinia/nuxt", "@primevue/nuxt-module", "@nuxtjs/tailwindcss"],
   primevue: {
     usePrimeVue: true,
