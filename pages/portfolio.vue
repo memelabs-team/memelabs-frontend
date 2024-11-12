@@ -45,7 +45,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useDataStore } from "../stores/data/store.js";
+import { useDataStore } from "../stores/data/store";
 
 const selectedMemeOwnership = ref("Created");
 const memeOwnershipOptions = ["Created", "Vote", "Invested", "Claimed"];

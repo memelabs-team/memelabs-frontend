@@ -36,7 +36,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from "vue";
 import Fuse from "fuse.js";
-import { useDataStore } from "../stores/data/store.js";
+import { useDataStore } from "../stores/data/store";
 
 const dataStore = useDataStore();
 const searchInput = ref("");

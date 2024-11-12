@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { useDataStore } from "~/stores/data/store.js";
+import { useDataStore } from "~/stores/data/store";
 
 const dataStore = useDataStore();
 

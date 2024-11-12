@@ -1,0 +1,1 @@
+export const MemeBuilderAddress = '0x9aa189e9Fb830aFAA17AAA41F8b02ff0E47A381F';  
