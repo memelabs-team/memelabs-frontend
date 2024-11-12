@@ -29,6 +29,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { uploadImage } from "../../services/upload";
 
 const imageUploadRef = ref();
 
@@ -53,9 +54,14 @@ async function handleSelectedFiles(data) {
   model.value.file = data.files[0];
   model.value.url = data.files[0].objectURL;
 
-  const base64 = await fileToBase64(data.files[0]);
+  const response = await uploadImage(model.value.file);
+  console.log("upload result", response);
+  const logoURL = response.publicLink;
 
-  emits("selectImage", base64);
+  console.log("upload result", logoURL);
+  //const base64 = await fileToBase64(data.files[0]);
+
+  emits("selectImage", logoURL);
 }
 
 function handleClickClear() {
