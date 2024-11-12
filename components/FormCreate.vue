@@ -276,12 +276,12 @@ watch(
 );
 
 function handleClickCreate() {
-  const amountInWei = ethers.utils
-    .parseUnits(selectedAmount.value.toString(), "ether")
-    .toString();
+  // const amountInWei = ethers.utils
+  //   .parseUnits(selectedAmount.value.toString(), "ether")
+  //   .toString();
 
   memeData.value.memeRequirement.token = selectedToken.value.address;
-  memeData.value.memeRequirement.amount = amountInWei;
+  memeData.value.memeRequirement.amount = Number(selectedAmount.value);
 
   console.log("emit create meme value:", memeData.value);
   // Emits memeData
@@ -293,6 +293,7 @@ function handleSelectImage(imageBase64) {
 }
 
 function handleClickAmount(amount) {
+  console.log("amount", amount);
   selectedAmount.value = amount;
 }
 </script>

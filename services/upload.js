@@ -7,7 +7,7 @@ async function uploadImage(file) {
   console.log("formdata", formData);
   try {
     const response = await axios.post(
-      "https://cors-anywhere.herokuapp.com/https://234e-171-103-89-205.ngrok-free.app/v1/file-management/upload",
+      "https://cors-anywhere.herokuapp.com/https://cf07-171-103-89-205.ngrok-free.app/v1/file-management/upload",
       formData,
       {
         headers: {

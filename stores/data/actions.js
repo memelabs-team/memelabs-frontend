@@ -36,9 +36,7 @@ async function createMeme(body) {
   const dataStore = useDataStore();
   try {
     // Ensure that `amount` is a BigNumber instance
-    // body.memeRequirement.amount = ethers.BigNumber.from(
-    //   body.memeRequirement.amount
-    // );
+    //body.memeRequirement.amount = parseInt(body.memeRequirement.amount);
 
     if (window.ethereum) {
       const response = await createMemeProposal(body);
