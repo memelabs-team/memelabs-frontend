@@ -112,6 +112,12 @@ const items = ref([
       navigateTo("/portfolio");
     },
   },
+  {
+    label: "UXUY Wallet",
+    command: () => {
+      navigateTo("/connect-wallet");
+    },
+  },
 ]);
 
 const formattedAddress = computed(() =>
