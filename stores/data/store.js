@@ -11,6 +11,9 @@ export const useDataStore = defineStore("data", {
       memeIMO: [],
       memeMint: [],
       memeByUser: [],
+      telegramUserInfo: {},
+      telegramInitData: "",
+      telegramBotToken: "",
     };
   },
   actions,

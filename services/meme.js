@@ -6,20 +6,35 @@ let isWalletConnected = false;
 const { initializeContract } = useContract();
 
 async function fetchConnectWallet() {
-  if (!window.ethereum) {
-    alert("Please install MetaMask!");
-    return;
-  }
+  console.log("open window", window);
+  // if (!window.ethereum) {
+  //   alert("Please install MetaMask!");
+  //   return;
+  // }
 
   try {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
+    if (window.ethereum) {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
 
-    if (accounts.length > 0) {
-      isWalletConnected = true;
-      contract = await initializeContract();
+      if (accounts.length > 0) {
+        isWalletConnected = true;
+        contract = await initializeContract();
+      }
       return { contract, address: accounts[0] };
+    } else if (window.Telegram) {
+      const tg = window.Telegram.WebApp;
+
+      tg.ready(); // Tells Telegram that the app is ready
+
+      // Expand the Web App to full height
+      tg.expand();
+
+      // Get `initData` from the URL
+      const initData = tg.initData;
+      console.log("initData received from fetch wallet:", initData);
+      return { initData };
     } else {
       alert("No account found. Please connect your wallet.");
     }

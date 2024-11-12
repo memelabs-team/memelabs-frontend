@@ -12,10 +12,12 @@
 </template>
 
 <script setup>
+import { useDataStore } from "~/stores/data";
+
 const { $uxuy } = useNuxtApp();
+const dataStore = useDataStore();
 
 const user = ref(null);
-const telegramInfo = ref();
 
 onMounted(() => {
   // Ensure Telegram WebApp object is available
@@ -27,11 +29,17 @@ onMounted(() => {
 
     // Expand the Web App to full height
     tg.expand();
-    const theme = tg.themeParams;
-    console.log("Current Telegram theme:", theme);
+
+    // Get `initData` from the URL
+    const initData = tg.initData;
+    console.log("initData", initData);
+
+    dataStore.setTelegramInitData(initData);
 
     // Retrieve and store user info
     user.value = tg.initDataUnsafe?.user;
+    dataStore.setTelegramUserInformation(user.value);
+
     console.log("Telegram user info:", user.value);
   } else {
     console.error("Telegram Web App API is not available.");
