@@ -89,7 +89,7 @@ const items = ref([
     },
   },
   {
-    label: "Meme Vote",
+    label: "Voting Memes",
     command: () => {
       navigateTo("/meme-vote");
     },
