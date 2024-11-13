@@ -75,7 +75,7 @@
 
 <script setup>
 // import { useWalletStore } from '~/stores/wallet';
-import { useDataStore } from '~/stores/data/store'
+import { useDataStore } from "~/stores/data/store";
 import { ref, computed } from "vue";
 
 const dataStore = useDataStore();
@@ -122,10 +122,9 @@ const items = ref([
 
 const formattedAddress = computed(() =>
   dataStore.walletAddress
-    ? `${dataStore.walletAddress.slice(
-        0,
-        6
-      )}...${dataStore.walletAddress.slice(-4)}`
+    ? `${dataStore.walletAddress.slice(0, 6)}...${dataStore.walletAddress.slice(
+        -4
+      )}`
     : ""
 );
 
@@ -142,7 +141,7 @@ function toggleMenu() {
 }
 
 async function handleLogout() {
-  await  dataStore.disconnectUser();
+  //await  dataStore.disconnectUser();
 }
 
 function handleClickHome() {

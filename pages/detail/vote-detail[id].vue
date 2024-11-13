@@ -178,7 +178,7 @@ const memeDetail = ref(
 );
 const disabledVoteBtn = ref(false);
 onMounted(async () => {
-  await dataStore.getUserContract();
+  // await dataStore.getUserContract();
   disabledVoteBtn.value = await hasVotedProject(memeDetail.value.id);
   console.log("onMounted");
 });

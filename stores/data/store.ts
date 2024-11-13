@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { init } from '@web3-onboard/vue';
-import injectedModule from '@web3-onboard/injected-wallets';
-import { ethers } from 'ethers';
-import { markRaw } from 'vue';
+import { init } from "@web3-onboard/vue";
+import injectedModule from "@web3-onboard/injected-wallets";
+import { ethers } from "ethers";
+import { markRaw } from "vue";
 
 const injected = injectedModule();
 const rpcUrl = `https://bsc-testnet-rpc.publicnode.com`;
@@ -10,36 +10,36 @@ const rpcUrl = `https://bsc-testnet-rpc.publicnode.com`;
 const web3Onboard = init({
   wallets: [injected],
   connect: {
-    autoConnectLastWallet: true
+    autoConnectLastWallet: true,
   },
   appMetadata: {
-    name: 'MemeLabs',
-    description: 'Jumpstart Your Meme with IMO',
+    name: "MemeLabs",
+    description: "Jumpstart Your Meme with IMO",
     recommendedInjectedWallets: [
-      { name: 'MetaMask', url: 'https://metamask.io' },
-      { name: 'Coinbase', url: 'https://wallet.coinbase.com/' }
-    ]
+      { name: "MetaMask", url: "https://metamask.io" },
+      { name: "Coinbase", url: "https://wallet.coinbase.com/" },
+    ],
   },
   chains: [
     {
-      id: '0x38', // BSC Testnet
-      token: 'BNB',
-      label: 'BNB Chain Testnet',
-      rpcUrl
+      id: "0x38", // BSC Testnet
+      token: "BNB",
+      label: "BNB Chain Testnet",
+      rpcUrl,
     },
-  ]
+  ],
 });
 
-
-import MemeBuilderABI from '~/contracts/abis/meme-builder.json'
+import MemeBuilderABI from "~/contracts/abis/meme-builder.json";
 const MEME_BUILDER_ADDRESS = "0x9aa189e9Fb830aFAA17AAA41F8b02ff0E47A381F";
 
 const defaultRPC = () => {
   return rpcUrl;
-}
-export const useDataStore = defineStore('data', () => {
-
-  const provider = ref(markRaw(new ethers.providers.JsonRpcProvider(defaultRPC())));
+};
+export const useDataStore = defineStore("data", () => {
+  const provider = ref(
+    markRaw(new ethers.providers.JsonRpcProvider(defaultRPC()))
+  );
   const signer = ref<ethers.providers.JsonRpcSigner | null>(null);
   const walletAddress = ref<string | null>(null);
   const isConnected = ref<boolean>(false);
@@ -52,27 +52,33 @@ export const useDataStore = defineStore('data', () => {
   const memeBuilderContract = ref<ethers.Contract | null>(null);
 
   const initializeContracts = async () => {
-    memeBuilderContract.value = new ethers.Contract(MEME_BUILDER_ADDRESS, MemeBuilderABI, provider.value);
-  }
-
+    memeBuilderContract.value = new ethers.Contract(
+      MEME_BUILDER_ADDRESS,
+      MemeBuilderABI,
+      provider.value
+    );
+  };
 
   const loadAllproposals = async () => {
     if (!memeBuilderContract.value) {
       return;
     }
     // try {
-      const resp = await memeBuilderContract.value.getVotingProposals(0, 10)
-      console.log(resp)
-      memeVotes.value = dataMapper(resp)
-      memeIMO.value = dataMapper(await memeBuilderContract.value.getInvestingProposals(0, 10))
-      memeMint.value = dataMapper(await memeBuilderContract.value.getMentedMemes(0, 10))
+    const resp = await memeBuilderContract.value.getVotingProposals(0, 10);
+    console.log(resp);
+    memeVotes.value = dataMapper(resp);
+    memeIMO.value = dataMapper(
+      await memeBuilderContract.value.getInvestingProposals(0, 10)
+    );
+    memeMint.value = dataMapper(
+      await memeBuilderContract.value.getMentedMemes(0, 10)
+    );
     // } catch (error) {
     //   console.error('Error fetching balance from Contract A:', error);
     // }
-  }
+  };
 
   const startConnectWallet = async () => {
-
     //TODO: handle between on Telegram and Website
 
     //For Website.
@@ -82,7 +88,9 @@ export const useDataStore = defineStore('data', () => {
         const web3Provider = wallets[0].provider;
 
         // Make etherProvider and signer non-reactive with markRaw
-        provider.value = markRaw(new ethers.providers.Web3Provider(web3Provider));
+        provider.value = markRaw(
+          new ethers.providers.Web3Provider(web3Provider)
+        );
         signer.value = markRaw(provider.value.getSigner());
 
         // Retrieve the wallet address from the first account
@@ -94,7 +102,11 @@ export const useDataStore = defineStore('data', () => {
         console.log("Connected Wallet:", walletAddress.value);
         console.log("Ether Provider:", provider.value);
 
-        memeBuilderContract.value = new ethers.Contract(MEME_BUILDER_ADDRESS, MemeBuilderABI, provider.value.getSigner());
+        memeBuilderContract.value = new ethers.Contract(
+          MEME_BUILDER_ADDRESS,
+          MemeBuilderABI,
+          provider.value.getSigner()
+        );
 
         // await loadAllproposals();
       } else {
@@ -103,7 +115,7 @@ export const useDataStore = defineStore('data', () => {
     } catch (error) {
       console.error("Error connecting wallet:", error);
     }
-  }
+  };
 
   const dataMapper = (proposals: any) => {
     return proposals
@@ -148,7 +160,7 @@ export const useDataStore = defineStore('data', () => {
           ).toISOString(),
           voteYes: item.voteYes.toNumber(),
           voteNo: item.voteNo.toNumber(),
-          minimumVoter:100,
+          minimumVoter: 100,
           minimumInvestmentAmount: 1000,
           maximumInvestmentAmount: 300,
           // minimumVoter: item.minimumVoter.toNumber(),
@@ -159,28 +171,32 @@ export const useDataStore = defineStore('data', () => {
           //   .formatEther(item.maximumInvestmentAmount)
           //   .toString(),
         };
-        console.log(newItem)
+        console.log(newItem);
         return newItem;
       })
       .sort((a: any, b: any) => b.id - a.id); // Sorting in descending order by id
-  }
-
+  };
 
   const createMeme = async (ags: any) => {
-    const body = {...ags};
+    const body = { ...ags };
     if (!memeBuilderContract.value) {
       return;
     }
     try {
-
-      body.memeRequirement.amount = ethers.utils.parseUnits(body.memeRequirement.amount.toString(), "ether");
+      body.memeRequirement.amount = ethers.utils.parseUnits(
+        body.memeRequirement.amount.toString(),
+        "ether"
+      );
       body.supply = ethers.utils.parseUnits(body.supply.toString(), "ether");
-      body.memeRequirement.communityTreasuryRate = body.memeRequirement.communityTreasuryRate * 100
-      body.memeRequirement.investorRate =  body.memeRequirement.investorRate *100
-      body.memeRequirement.liquidityRate = body.memeRequirement.liquidityRate* 100
-      body.memeRequirement.ownerRate =  body.memeRequirement.ownerRate*100
- 
-      console.log(body)
+      body.memeRequirement.communityTreasuryRate =
+        body.memeRequirement.communityTreasuryRate * 100;
+      body.memeRequirement.investorRate =
+        body.memeRequirement.investorRate * 100;
+      body.memeRequirement.liquidityRate =
+        body.memeRequirement.liquidityRate * 100;
+      body.memeRequirement.ownerRate = body.memeRequirement.ownerRate * 100;
+
+      console.log(body);
       const tx = await memeBuilderContract.value.createMemeProposal(
         body.name,
         body.symbol,
@@ -190,14 +206,14 @@ export const useDataStore = defineStore('data', () => {
         body.socialChannel,
         body.memeRequirement
       );
- 
+
       tx.wait();
-      return tx
+      return tx;
     } catch (error) {
       console.error("Error sending transaction:", error);
     }
-    return null
-  }
+    return null;
+  };
 
   return {
     startConnectWallet,
@@ -208,7 +224,6 @@ export const useDataStore = defineStore('data', () => {
     memeIMO,
     memeMint,
     isConnected,
-    walletAddress
-  }
+    walletAddress,
+  };
 });
-
