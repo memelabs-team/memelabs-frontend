@@ -60,13 +60,15 @@ export const useDataStore = defineStore('data', () => {
     if (!memeBuilderContract.value) {
       return;
     }
-    try {
-      memeVotes.value = dataMapper(await memeBuilderContract.value.getVotingProposals(0, 10))
+    // try {
+      const resp = await memeBuilderContract.value.getVotingProposals(0, 10)
+      console.log(resp)
+      memeVotes.value = dataMapper(resp)
       memeIMO.value = dataMapper(await memeBuilderContract.value.getInvestingProposals(0, 10))
       memeMint.value = dataMapper(await memeBuilderContract.value.getMentedMemes(0, 10))
-    } catch (error) {
-      console.error('Error fetching balance from Contract A:', error);
-    }
+    // } catch (error) {
+    //   console.error('Error fetching balance from Contract A:', error);
+    // }
   }
 
   const startConnectWallet = async () => {
@@ -146,15 +148,18 @@ export const useDataStore = defineStore('data', () => {
           ).toISOString(),
           voteYes: item.voteYes.toNumber(),
           voteNo: item.voteNo.toNumber(),
-          minimumVoter: item.minimumVoter.toNumber(),
-          minimumInvestmentAmount: ethers.utils
-            .formatEther(item.minimumInvestmentAmount)
-            .toString(),
-          maximumInvestmentAmount: ethers.utils
-            .formatEther(item.maximumInvestmentAmount)
-            .toString(),
+          minimumVoter:100,
+          minimumInvestmentAmount: 1000,
+          maximumInvestmentAmount: 300,
+          // minimumVoter: item.minimumVoter.toNumber(),
+          // minimumInvestmentAmount: ethers.utils
+          //   .formatEther(item.minimumInvestmentAmount)
+          //   .toString(),
+          // maximumInvestmentAmount: ethers.utils
+          //   .formatEther(item.maximumInvestmentAmount)
+          //   .toString(),
         };
-
+        console.log(newItem)
         return newItem;
       })
       .sort((a: any, b: any) => b.id - a.id); // Sorting in descending order by id
