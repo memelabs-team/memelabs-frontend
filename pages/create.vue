@@ -10,10 +10,13 @@
 import { useDataStore } from "~/stores/data/store";
 
 const dataStore = useDataStore();
+const isCreating = ref(false);
 
 async function handleClickCreate(memeData) {
+  isCreating.value = true;
   const response = await dataStore.createMeme(memeData);
   console.log("Created meme:", response);
+  isCreating.value = false;
 }
 
 function handleClickData() {

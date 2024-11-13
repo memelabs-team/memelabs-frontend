@@ -68,13 +68,13 @@ async function sendTransaction(to, value) {
   return receipt;
 }
 
-export default defineNuxtPlugin((nuxtApp) => {
-  return {
-    provide: {
-      uxuy: {
-        initializeWallet,
-        sendTransaction,
-      },
-    },
-  };
-});
+// export default defineNuxtPlugin((nuxtApp) => {
+//   return {
+//     provide: {
+//       uxuy: {
+//         initializeWallet,
+//         sendTransaction,
+//       },
+//     },
+//   };
+// });

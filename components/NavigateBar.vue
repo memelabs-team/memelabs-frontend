@@ -39,6 +39,7 @@
             label="Create Meme"
             @click="handleClickCreate"
           />
+          {{dataStore.isConnected}}xx
           <div v-if="dataStore.isConnected" class="relative">
             <button
               class="bg-gray-100 rounded-md px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-200"

@@ -92,9 +92,9 @@ export const useDataStore = defineStore('data', () => {
         console.log("Connected Wallet:", walletAddress.value);
         console.log("Ether Provider:", provider.value);
 
-        memeBuilderContract.value = new ethers.Contract(MEME_BUILDER_ADDRESS, MemeBuilderABI, signer.value);
+        memeBuilderContract.value = new ethers.Contract(MEME_BUILDER_ADDRESS, MemeBuilderABI, provider.value.getSigner());
 
-        await loadAllproposals();
+        // await loadAllproposals();
       } else {
         console.log("No wallets connected.");
       }
@@ -104,7 +104,7 @@ export const useDataStore = defineStore('data', () => {
   }
 
   const dataMapper = (proposals: any) => {
-    return  proposals
+    return proposals
       .map((item: any) => {
         const newItem = {
           id: item.id.toNumber(),
@@ -160,13 +160,50 @@ export const useDataStore = defineStore('data', () => {
       .sort((a: any, b: any) => b.id - a.id); // Sorting in descending order by id
   }
 
+
+  const createMeme = async (ags: any) => {
+    const body = {...ags};
+    if (!memeBuilderContract.value) {
+      return;
+    }
+    try {
+
+      body.memeRequirement.amount = ethers.utils.parseUnits(body.memeRequirement.amount.toString(), "ether");
+      body.supply = ethers.utils.parseUnits(body.supply.toString(), "ether");
+      body.memeRequirement.communityTreasuryRate = body.memeRequirement.communityTreasuryRate * 100
+      body.memeRequirement.investorRate =  body.memeRequirement.investorRate *100
+      body.memeRequirement.liquidityRate = body.memeRequirement.liquidityRate* 100
+      body.memeRequirement.ownerRate =  body.memeRequirement.ownerRate*100
+ 
+      console.log(body)
+      const tx = await memeBuilderContract.value.createMemeProposal(
+        body.name,
+        body.symbol,
+        body.supply,
+        body.memeStory,
+        body.logo,
+        body.socialChannel,
+        body.memeRequirement
+      );
+ 
+      tx.wait();
+      return tx
+    } catch (error) {
+      console.error("Error sending transaction:", error);
+    }
+    return null
+  }
+
   return {
     startConnectWallet,
     initializeContracts,
     loadAllproposals,
+    createMeme,
     memeVotes,
     memeIMO,
     memeMint,
+    isConnected,
+    walletAddress
   }
 });
 
