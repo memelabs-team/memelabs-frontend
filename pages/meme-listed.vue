@@ -2,7 +2,7 @@
   <div class="px-4">
     <div class="flex h-36 mb-4 flex-col justify-center">
       <h2 class="text-center font-inter text-5xl font-semibold tracking-tight">
-        Meme Raising
+        Listed Memes
       </h2>
     </div>
     <SearchBar class="flex items-center justify-center space-x-4" />
