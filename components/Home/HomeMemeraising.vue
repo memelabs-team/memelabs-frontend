@@ -2,7 +2,7 @@
   <div>
     <div class="flex flex-col sm:flex-row sm:justify-between p-4 gap-4">
       <div class="flex items-center justify-between lg:justify-start gap-4">
-        <div class="text-2xl lg:text-4xl font-bold">Meme Raising</div>
+        <div class="text-2xl lg:text-4xl font-bold">Listed Memes</div>
 
         <Button
           label="View All"
