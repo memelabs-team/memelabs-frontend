@@ -39,8 +39,8 @@
             label="Create Meme"
             @click="handleClickCreate"
           />
-
-          <div v-if="dataStore.contract.address" class="relative">
+          {{dataStore.isConnected}}xx
+          <div v-if="dataStore.isConnected" class="relative">
             <button
               class="bg-gray-100 rounded-md px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-200"
               @click="toggleMenu"
@@ -75,7 +75,8 @@
 </template>
 
 <script setup>
-import { useDataStore } from "~/stores/data/store.js";
+// import { useWalletStore } from '~/stores/wallet';
+import { useDataStore } from '~/stores/data/store'
 import { ref, computed } from "vue";
 
 const dataStore = useDataStore();
@@ -112,14 +113,20 @@ const items = ref([
       navigateTo("/portfolio");
     },
   },
+  {
+    label: "UXUY Wallet",
+    command: () => {
+      navigateTo("/connect-wallet");
+    },
+  },
 ]);
 
 const formattedAddress = computed(() =>
-  dataStore.contract.address
-    ? `${dataStore.contract.address.slice(
+  dataStore.walletAddress
+    ? `${dataStore.walletAddress.slice(
         0,
         6
-      )}...${dataStore.contract.address.slice(-4)}`
+      )}...${dataStore.walletAddress.slice(-4)}`
     : ""
 );
 
@@ -127,16 +134,16 @@ function handleClickCreate() {
   navigateTo("/create");
 }
 
-function handleClickConnectWallet() {
-  dataStore.getUserContract();
+async function handleClickConnectWallet() {
+  await dataStore.startConnectWallet();
 }
 
 function toggleMenu() {
   showMenu.value = !showMenu.value;
 }
 
-function handleLogout() {
-  dataStore.disconnectUser();
+async function handleLogout() {
+  await  dataStore.disconnectUser();
 }
 
 function handleClickHome() {

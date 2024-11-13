@@ -169,7 +169,7 @@ import { voteMemeProposal, hasVoted } from "../services/meme.js";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
 
-import { useDataStore } from "~/stores/data/store.js";
+import { useDataStore } from "~/stores/data/store";
 const dataStore = useDataStore();
 
 const route = useRoute();

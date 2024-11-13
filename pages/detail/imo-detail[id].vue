@@ -138,7 +138,7 @@ import { useRoute } from "vue-router";
 import { ref } from "vue";
 import { ethers } from "ethers";
 const { initializeErc20Contract,initializeContract } = useContract();
-import { useDataStore } from "~/stores/data/store.js";
+import { useDataStore } from "~/stores/data/store";
  
 const route = useRoute();
 const memeDetail = ref(
