@@ -40,29 +40,7 @@
             @click="handleClickCreate"
           />
 
-          <div v-if="dataStore.contract.address" class="relative">
-            <button
-              class="bg-gray-100 rounded-md px-4 py-2 flex items-center gap-2 cursor-pointer hover:bg-gray-200"
-              @click="toggleMenu"
-            >
-              {{ formattedAddress }}
-              <i class="pi pi-angle-down"></i>
-            </button>
-            <div
-              v-if="showMenu"
-              class="absolute bg-white border border-gray-300 rounded-lg p-2 shadow-lg z-10 right-0 mt-1"
-            >
-              <button
-                @click="handleLogout"
-                class="w-full text-center text-gray-800 hover:bg-gray-100 rounded-md py-2"
-              >
-                Log Out
-              </button>
-            </div>
-          </div>
-
           <Button
-            v-else
             class="rounded-md px-4 py-2 bg-blue-500 text-white hover:bg-blue-600"
             label="Connect Wallet"
             severity="secondary"
@@ -77,6 +55,7 @@
 <script setup>
 import { useDataStore } from "~/stores/data/store.js";
 import { ref, computed } from "vue";
+import privy from "@/utils/privy"; // Import your Privy instance
 
 const dataStore = useDataStore();
 const showMenu = ref(false);
@@ -127,8 +106,42 @@ function handleClickCreate() {
   navigateTo("/create");
 }
 
-function handleClickConnectWallet() {
-  dataStore.getUserContract();
+async function handleClickConnectWallet() {
+  try {
+    // Step 1: Prompt the user to enter their email address
+    const email = prompt("Enter your email to receive a 6-digit code:");
+
+    // Validate email format (basic validation)
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    // Step 2: Send the code to the provided email address
+    await privy.auth.email.sendCode(email);
+    alert("A 6-digit code has been sent to your email.");
+
+    // Step 3: Prompt the user to enter the 6-digit code they received
+    const code = prompt("Enter the 6-digit code you received in your email:");
+
+    // Ensure the code is 6 digits
+    if (!/^\d{6}$/.test(code)) {
+      alert("The code must be exactly 6 digits.");
+      return;
+    }
+
+    // Step 4: Use the code to verify and log in the user
+    const user = await privy.auth.email.loginWithCode(email, code);
+    if (user) {
+      console.log("User authenticated:", user);
+      // Here you could update your data store or UI with the user's information
+      dataStore.contract.address = user.walletAddress || ""; // Example update
+      alert("Login successful!");
+    }
+  } catch (error) {
+    console.error("Failed to connect wallet:", error);
+    alert("There was an error connecting your wallet. Please try again.");
+  }
 }
 
 function toggleMenu() {
@@ -136,7 +149,8 @@ function toggleMenu() {
 }
 
 function handleLogout() {
-  dataStore.disconnectUser();
+  // Add logout logic here if needed
+  privy.auth.logout(); // Logout from Privy
 }
 
 function handleClickHome() {
