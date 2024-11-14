@@ -33,8 +33,8 @@ const web3Onboard = init({
 const MEME_BUILDER_ADDRESS = "0x9aa189e9Fb830aFAA17AAA41F8b02ff0E47A381F";
 const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
-function initializeContracts() {
-  return new ethers.Contract(MEME_BUILDER_ADDRESS, MemeBuilderABI, provider);
+function initializeContracts(signer) {
+  return new ethers.Contract(MEME_BUILDER_ADDRESS, MemeBuilderABI, signer);
 }
 
 export default defineNuxtPlugin(() => {
