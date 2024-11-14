@@ -10,8 +10,8 @@ import { onMounted } from "vue";
 import { useDataStore } from "~/stores/data/store";
 const dataStore = useDataStore();
 onMounted(async () => {
-  await dataStore.initializeContracts()
-  await dataStore.loadAllproposals()
+  await dataStore.startConnectWallet();
+  //await dataStore.loadAllproposals()
 });
 </script>
 

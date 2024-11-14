@@ -1,15 +1,16 @@
-// dataStore.ts
 import { defineStore } from "pinia";
 import actions from "./actions";
 
 export const useDataStore = defineStore("data", {
   state: () => ({
+    provider: null,
+    signer: null,
     walletAddress: null,
-    contract: {},
+    isConnected: false,
     memeVotes: [],
     memeIMO: [],
     memeMint: [],
-    memeByUser: [],
+    memeBuilderContract: null,
   }),
-  actions, // Import actions from actions.ts
+  actions, // Import actions from actions.js
 });
