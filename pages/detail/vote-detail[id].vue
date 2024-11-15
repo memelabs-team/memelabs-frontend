@@ -39,14 +39,14 @@
             <Button
               :disabled="disabledVoteBtn"
               class="w-1/2 h-10 md:h-12 rounded-lg bg-blue-600 text-white font-bold"
-              @click="voteYes(memeDetail.id, 1)"
+              @click="handleClickVote(memeDetail.id, 1)"
             >
               Yes
             </Button>
             <Button
               :disabled="disabledVoteBtn"
               class="w-1/2 h-10 md:h-12 rounded-lg bg-gray-200 text-gray-700 font-bold"
-              @click="voteNo(memeDetail.id, 0)"
+              @click="handleClickVote(memeDetail.id, 0)"
             >
               No
             </Button>
@@ -177,9 +177,10 @@ const memeDetail = ref(
   route.query.memeDetail ? JSON.parse(route.query.memeDetail) : {}
 );
 const disabledVoteBtn = ref(false);
+
 onMounted(async () => {
   // await dataStore.getUserContract();
-  disabledVoteBtn.value = await hasVotedProject(memeDetail.value.id);
+  disabledVoteBtn.value = await checkAlreadyVoted(memeDetail.value.id);
   console.log("onMounted");
 });
 
@@ -192,16 +193,21 @@ async function voteYes(id, status) {
   }
 }
 
-async function hasVotedProject(id) {
+async function checkAlreadyVoted(id) {
   const dataStore = useDataStore();
-  const response = await hasVoted(id, dataStore.walletAddress);
+  const response = await dataStore.checkAlreadyVote(
+    id,
+    dataStore.walletAddress
+  );
   return response;
 }
 
 // Function to handle voting No
-async function voteNo(id, status) {
+async function handleClickVote(id, voteValue) {
+  const dataStore = useDataStore();
   try {
-    await voteMemeProposal(id, status);
+    const response = await dataStore.voteMeme(id, voteValue);
+    console.log("vote result:", response);
   } catch (error) {
     console.error("Error voting No:", error);
   }

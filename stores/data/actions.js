@@ -152,17 +152,20 @@ function dataMapper(proposals) {
     .sort((a, b) => b.id - a.id); // Sorting in descending order by id
 }
 
-async function loadAllProposals() {
+async function loadAllproposals() {
   const dataStore = useDataStore();
-
+  console.log("contract list", dataStore.memeBuilderContract);
   const response = await dataStore.memeBuilderContract.getVotingProposals(
     0,
     10
   );
+
   dataStore.memeVotes = dataMapper(response);
+  console.log("Loading vote proposal", dataStore.memeVotes);
   dataStore.memeIMO = dataMapper(
     await dataStore.memeBuilderContract.getInvestingProposals(0, 10)
   );
+  console.log("Loading memeIMO proposal", dataStore.memeVotes);
   dataStore.memeMint = dataMapper(
     await dataStore.memeBuilderContract.getMentedMemes(0, 10)
   );
@@ -174,9 +177,9 @@ async function createMeme(body) {
   try {
     body.memeRequirement.amount = ethers.utils.parseUnits(
       body.memeRequirement.amount.toString(),
-      "ether"
+      "wei"
     );
-    body.supply = ethers.utils.parseUnits(body.supply.toString(), "ether");
+    body.supply = ethers.utils.parseUnits(body.supply.toString(), "wei");
     body.memeRequirement.communityTreasuryRate =
       body.memeRequirement.communityTreasuryRate * 100;
     body.memeRequirement.investorRate = body.memeRequirement.investorRate * 100;
@@ -186,17 +189,56 @@ async function createMeme(body) {
 
     console.log("web3Onboard initial", dataStore.memeBuilderContract);
 
-    const response = await dataStore.memeBuilderContract.createMemeProposal(
-      body.name,
-      body.symbol,
-      body.supply,
-      body.memeStory,
-      body.logo,
-      body.socialChannel,
-      body.memeRequirement
-    );
+    if (window.Telegram && window.Telegram.WebApp.initData) {
+      const response = await createMemeWithTelegram(
+        body,
+        dataStore.telegramInitData,
+        dataStore.telegramBotToken
+      );
+
+      return response;
+    } else {
+      const response = await dataStore.memeBuilderContract.createMemeProposal(
+        body.name,
+        body.symbol,
+        body.supply,
+        body.memeStory,
+        body.logo,
+        body.socialChannel,
+        body.memeRequirement,
+        { gasLimit: ethers.utils.hexlify(2000000) } // Set an appropriate gas limit
+      );
+
+      await response.wait();
+    }
+    return response;
+  } catch (error) {
+    console.error("Error sending transaction:", error);
+  }
+}
+
+async function voteMeme(memeId, vote) {
+  const dataStore = useDataStore();
+
+  try {
+    const response = await dataStore.memeBuilderContract.vote(memeId, vote);
 
     await response.wait();
+    return response;
+  } catch (error) {
+    console.error("Error sending transaction:", error);
+  }
+}
+
+async function checkAlreadyVote(memeId, voter) {
+  const dataStore = useDataStore();
+
+  try {
+    const response = await dataStore.memeBuilderContract.hasAlreadyVoted(
+      memeId,
+      voter
+    );
+
     return response;
   } catch (error) {
     console.error("Error sending transaction:", error);
@@ -239,6 +281,8 @@ async function createMeme(body) {
 
 export default {
   startConnectWallet,
-  loadAllProposals,
+  loadAllproposals,
   createMeme,
+  voteMeme,
+  checkAlreadyVote,
 };

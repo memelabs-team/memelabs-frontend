@@ -11,7 +11,7 @@ import { useDataStore } from "~/stores/data/store";
 const dataStore = useDataStore();
 onMounted(async () => {
   await dataStore.startConnectWallet();
-  //await dataStore.loadAllproposals()
+  await dataStore.loadAllproposals();
 });
 </script>
 
