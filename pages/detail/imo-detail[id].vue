@@ -50,16 +50,14 @@
               ></div>
             </div>
           </div>
-          {{ proposal }}
           <div class="font-semibold text-sm mt-4 md:mt-5">
             <p>Purchase</p>
             <InputText
               @change="checkAllowance"
-              :value="modelValue"
+              v-model="allowanceValue"
               class="w-full h-10 sm:h-12 px-4"
               style="border-radius: 25px"
               placeholder=" $500-$1000"
-              @input="handleInput"
             />
           </div>
 
@@ -132,11 +130,11 @@
 </template>
 
 <script setup>
-import { getInvestingProposals } from "../services/meme.js";
-
 import { ethers } from "ethers";
-const { initializeErc20Contract, initializeContract } = useContract();
+const { initializeContract } = useContract();
 import { useDataStore } from "~/stores/data/store";
+
+const dataStore = useDataStore();
 
 const route = useRoute();
 const memeDetail = ref(
@@ -145,28 +143,16 @@ const memeDetail = ref(
 
 const erc20Contract = ref(null);
 const memeBuilderContract = ref(null);
-const dataStore = useDataStore();
-onMounted(async () => {
-  await loadData();
-  memeBuilderContract.value = await initializeContract();
-  erc20Contract.value = await initializeErc20Contract(
-    memeDetail.value.memeRequirement.token
-  );
-  console.log(
-    "initializeErc20Contract",
-    memeDetail.value.memeRequirement.token
-  );
-  modelValue.value = 300;
-});
 
-async function loadData() {
-  const proposals = await getInvestingProposals();
-  if (!proposals) return;
-  if (proposals.length >= 0) {
-    memeDetail.value = proposals[0];
-  }
-  return null;
-}
+const allowanceValue = ref(300);
+
+onMounted(async () => {
+  memeBuilderContract.value = await initializeContract();
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  console.log("initialize Erc20 Contract", dataStore.erc20Contract);
+  console.log("initializeDefault Contract", dataStore.memeBuilderContract);
+});
 
 const modelValue = ref();
 const disabledApproveBtn = ref(false);
@@ -182,9 +168,6 @@ async function checkAllowance() {
     disabledApproveBtn.value = result;
     console.log("checkAllowance:", result);
   }, 2000);
-}
-function handleInput(event) {
-  modelValue.value = event.target.value;
 }
 
 async function isValidAllowance() {
@@ -238,9 +221,4 @@ const updateCountdown = () => {
   countdown.value =
     timeLeft.value > 0 ? formatTime(timeLeft.value) : "Voting started!";
 };
-
-onMounted(() => {
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
-});
 </script>

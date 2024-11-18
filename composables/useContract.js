@@ -3,11 +3,10 @@ import { ethers } from "ethers";
 import abi from "../public/data/abi";
 import erc20Abi from "../public/data/erc20Abi";
 
-const config = useRuntimeConfig();
-export const contractAddress = config.public.CONTRACT_ADDRESS;
-
 function useContract() {
   const contract = ref(null);
+  const config = useRuntimeConfig();
+  const contractAddress = config.public.CONTRACT_ADDRESS;
 
   async function initializeErc20Contract(contractAddress) {
     if (window.ethereum) {
@@ -29,7 +28,11 @@ function useContract() {
       console.error("Ethereum provider not found. Install MetaMask.");
     }
   }
+
   async function initializeContract() {
+    const config = useRuntimeConfig();
+    const contractAddress = config.public.CONTRACT_ADDRESS;
+
     if (
       typeof ethers === "undefined" ||
       typeof ethers.providers === "undefined"

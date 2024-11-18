@@ -3,10 +3,6 @@ import { init } from "@web3-onboard/vue";
 import injectedModule from "@web3-onboard/injected-wallets";
 import { ethers } from "ethers";
 
-import MemeBuilderABI from "~/contracts/abis/meme-builder.json";
-
-const config = useRuntimeConfig();
-
 const injected = injectedModule();
 
 const rpcUrl = `https://bsc-testnet-rpc.publicnode.com`;
@@ -34,11 +30,11 @@ const web3Onboard = init({
   ],
 });
 
-const memeBuilderAddress = config.public.CONTRACT_ADDRESS;
-const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
+function initializeContracts(abi, signer) {
+  const config = useRuntimeConfig();
+  const memeBuilderAddress = config.public.CONTRACT_ADDRESS;
 
-function initializeContracts(signer) {
-  return new ethers.Contract(memeBuilderAddress, MemeBuilderABI, signer);
+  return new ethers.Contract(memeBuilderAddress, abi, signer);
 }
 
 export default defineNuxtPlugin(() => {

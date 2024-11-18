@@ -5,6 +5,9 @@ import { useDataStore } from "./store";
 
 import { createMemeWithTelegram } from "../../services/telegram";
 
+import MemeBuilderABI from "~/contracts/abis/meme-builder.json";
+import erc20Abi from "../public/data/erc20Abi";
+
 async function startConnectWallet() {
   const dataStore = useDataStore();
   const { $web3Onboard, $initializeContracts } = useNuxtApp();
@@ -31,8 +34,10 @@ async function startConnectWallet() {
         console.log("signer", dataStore.signer);
 
         dataStore.memeBuilderContract = markRaw(
-          $initializeContracts(dataStore.signer)
+          $initializeContracts(MemeBuilderABI, dataStore.signer)
         );
+
+        dataStore.erc20Contract = await getErc20Contract(dataStore.signer);
 
         dataStore.walletAddress = wallets[0].accounts[0].address;
         console.log("walletAddress", dataStore.walletAddress);
@@ -42,6 +47,11 @@ async function startConnectWallet() {
   } catch (error) {
     console.error("Error connecting wallet:", error);
   }
+}
+
+async function getErc20Contract(signer) {
+  const { $initializeContracts } = useNuxtApp();
+  return markRaw($initializeContracts(erc20Abi, signer));
 }
 
 async function connectTelegram() {

@@ -14,6 +14,7 @@ export const useDataStore = defineStore("data", {
     telegramUserInfo: {},
     telegramInitData: "",
     telegramBotToken: "",
+    erc20Contract: null,
   }),
   actions, // Import actions from actions.js
 });

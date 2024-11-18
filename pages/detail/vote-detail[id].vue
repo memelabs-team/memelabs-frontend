@@ -181,7 +181,8 @@ const disabledVoteBtn = ref(false);
 onMounted(async () => {
   // await dataStore.getUserContract();
   disabledVoteBtn.value = await checkAlreadyVoted(memeDetail.value.id);
-  console.log("onMounted");
+
+  console.log("vote page initializeErc20Contract", dataStore.erc20Contract);
 });
 
 // Function to handle voting Yes
