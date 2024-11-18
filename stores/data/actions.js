@@ -3,6 +3,8 @@ import { useNuxtApp } from "#app";
 
 import { useDataStore } from "./store";
 
+import { createMemeWithTelegram } from "../../services/telegram";
+
 async function startConnectWallet() {
   const dataStore = useDataStore();
   const { $web3Onboard, $initializeContracts } = useNuxtApp();
@@ -244,40 +246,6 @@ async function checkAlreadyVote(memeId, voter) {
     console.error("Error sending transaction:", error);
   }
 }
-
-// async function getUserContract() {
-//   const dataStore = useDataStore();
-//   const response = await fetchConnectWallet();
-//   dataStore.walletAddress = response.address;
-// }
-
-// async function disconnectUser() {
-//   const dataStore = useDataStore();
-//   dataStore.walletAddress = null;
-//   dataStore.isConnected = false
-//   await web3Onboard.disconnectWallet()
-//   console.log("Wallet disconnected.");
-// }
-
-// async function createMeme(body) {
-//   try {
-//     // Ensure that `amount` is a BigNumber instance
-//     body.memeRequirement.amount = ethers.BigNumber.from(
-//       body.memeRequirement.amount
-//     );
-
-//     const response = await createMemeProposal(body);
-//     console.log("create response :", response);
-//   } catch (error) {
-//     console.error("Error sending transaction:", error);
-//   }
-// }
-
-// export default {
-//   getUserContract,
-//   disconnectUser,
-//   createMeme,
-// };
 
 export default {
   startConnectWallet,

@@ -1,11 +1,13 @@
 import axios from "axios";
 
 async function createMemeWithTelegram(memeItem, userInfo, tokenBot) {
+  const config = useRuntimeConfig();
+
   try {
     console.log("call createMemeWithTelegram", memeItem);
     const response = await axios({
       method: "post",
-      url: "https://api.memelabs.org/v1/meme-proposals/create",
+      url: `${config.public.API_BASE_URL}/v1/meme-proposals/create`,
       data: {
         data: memeItem,
         userInfo: userInfo,

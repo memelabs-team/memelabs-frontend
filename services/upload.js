@@ -1,13 +1,15 @@
 import axios from "axios";
 
 async function uploadImage(file) {
-  const formData = new FormData();
+  const config = useRuntimeConfig();
 
+  const formData = new FormData();
   formData.append("file", file); // 'image' should match your API's expected field name
   console.log("formdata", formData);
+
   try {
     const response = await axios.post(
-      "https://cors-anywhere.herokuapp.com/https://api.memelabs.org/v1/file-management/upload",
+      `https://cors-anywhere.herokuapp.com/${config.public.API_BASE_URL}/v1/file-management/upload`,
       formData,
       {
         headers: {

@@ -2,7 +2,9 @@ import { ethers } from "ethers";
 
 import abi from "../public/data/abi";
 import erc20Abi from "../public/data/erc20Abi";
-export const contractAddress = "0x9aa189e9Fb830aFAA17AAA41F8b02ff0E47A381F";
+
+const config = useRuntimeConfig();
+export const contractAddress = config.public.CONTRACT_ADDRESS;
 
 function useContract() {
   const contract = ref(null);
@@ -56,7 +58,7 @@ function useContract() {
     }
   }
 
-  return { initializeContract,initializeErc20Contract };
+  return { initializeContract, initializeErc20Contract };
 }
 
 export default useContract;
